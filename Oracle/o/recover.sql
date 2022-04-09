@@ -1,0 +1,10 @@
+alter database recover datafile '/appsdes/oracle/oradata/oratst/data_tst01.dbf';
+alter database datafile '/appsdes/oracle/oradata/oratst/data_tst01.dbf' online;
+alter database recover logfile '/producao/arch2/lf_T0001S0000055208.arc';
+alter database recover logfile '/producao/arch2/lf_T0001S0000057054.arc';
+alter database recover logfile '/producao/arch2/lf_T0001S0000057055.arc';
+alter database recover logfile '/producao/arch2/lf_T0001S0000057056.arc';
+alter database recover logfile '/producao/arch2/lf_T0001S0000057057.arc';
+alter database recover logfile '/producao/arch2/lf_T0001S0000057058.arc';
+alter database recover logfile '/producao/arch2/lf_T0001S0000057059.arc';
+alter database recover logfile '/producao/arch2/lf_T0001S0000057060.arc';

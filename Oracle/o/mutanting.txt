@@ -1,0 +1,44 @@
+ORA-4091 - Table is mutating
+Há restrições nas tabelas e colunas que uma trigger pode acessar. 
+Uma tabela mutanting é uma tabela que está sendo modificada pela trigger 
+e que tem constraint ou uma atualização em cascata. Para resolver este erro
+é necessário guardar o ID da linha que esta sendo atualizada para posteriormente efetivar a atualização.
+
+/* Define as variaveis que serao armazenadas */
+Create or Replace package pai_pkg as
+  type    pai_tab_type  is table of rowid index             by binary_integer;
+  TYPE    T_CODIGO_type IS TABLE OF PAI.CODIGO_0%TYPE INDEX BY BINARY_INTEGER;
+  TYPE    T_DESCRICAO_type IS TABLE OF PAI.DESCRICAO%TYPE INDEX BY BINARY_INTEGER;
+  pai_tab pai_tab_type;
+  pai_index binary_integer;
+  v_codigo_1    t_codigo_type;
+  v_descricao   t_descricao_type;
+end pai_pkg;
+/  
+
+
+/* Guarda as alteracoes */
+Create or Replace trigger pai_aft_row_all
+after insert or update of descricao on pai
+for each row
+begin
+  pai_pkg.pai_index := pai_pkg.pai_index + 1;
+  pai_pkg.pai_tab(pai_pkg.pai_index) := :new.rowid;
+  pai_pkg.v_codigo_1(pai_pkg.pai_index)  := :new.codigo_1;
+  pai_pkg.v_descricao(pai_pkg.pai_index)  := :new.descricao;
+end;
+/
+
+/* Efetiva a alteracao */
+Create or Replace trigger pai_aft_stm_all
+after insert or update of descricao on pai
+begin
+  for i in 1 .. pai_pkg.pai_index loop
+   dbms_output.put_line(pai_pkg.v_codigo_1(i));
+   update pai
+      set descricao = pai_pkg.v_descricao(i)
+    where codigo_0 = pai_pkg.v_codigo_1(i);
+  end loop;
+  pai_pkg.pai_index := 0;
+end;
+/

@@ -1,0 +1,14 @@
+SELECT  block_id, bytes/1024/1024, blocks
+FROM  dba_free_space
+WHERE tablespace_name = 'TS_POLI_IX_01'  
+--  AND FILE_ID = 23
+ORDER BY block_id DESC;
+
+SELECT SEGMENT_NAME,
+EXTENT_ID,
+BLOCK_ID, BLOCKS , BYTES/1024/1024 , RELATIVE_FNO
+FROM DBA_EXTENTS
+WHERE 
+tablespace_name = 'TS_POLI_IX_01'
+-- AND RELATIVE_FNO = 23
+ORDER BY BLOCK_ID DESC;

@@ -1,0 +1,430 @@
+------------------------------------------------------------------------------------------------------------------
+
+select R.OWNER, C.NOME, C.AREA, R.OBJECT_TYPE, R.OBJECT_NAME
+   from dba_OBJECTS R,
+(SELECT 'F'||LPAD(TO_CHAR(CO.CON_CDICONTRATADO),5,'0') "GRANTEE",
+       CO.CON_CDICONTRATADO "MATRICULA", 
+       CO.CON_DSSNOME "NOME" , 
+       CE.CCU_D1SCENTROCUSTORES "AREA"  
+  FROM OWN_APDAT.CONTRATADOS CO, OWN_APDAT.CENTROSCUSTOS CE 
+ WHERE CE.CCU_D1SCENTROCUSTORES  IN ('ATD','ATI')
+   AND CO.CON_CDICONTRATADO IN (
+   select TO_NUMBER(SUBSTR(USERNAME,2,5)) from dba_users where username like 'F0%' AND ACCOUNT_STATUS NOT LIKE '%LOCK%'
+)
+AND CO.CON_CDICENTROCUSTO = CE.CCU_CDICENTROCUSTO ) C
+WHERE R.OWNER = C.GRANTEE
+ORDER BY 1,4,5
+------------------------------------------------------------------------------------------------------------------
+select R.GRANTEE, C.NOME, C.AREA, R.GRANTED_ROLE
+   from dba_role_privs R,
+(SELECT 'F'||LPAD(TO_CHAR(CO.CON_CDICONTRATADO),5,'0') "GRANTEE",
+       CO.CON_CDICONTRATADO "MATRICULA", 
+       CO.CON_DSSNOME "NOME" , 
+       CE.CCU_D1SCENTROCUSTORES "AREA"  
+  FROM OWN_APDAT.CONTRATADOS CO, OWN_APDAT.CENTROSCUSTOS CE 
+ WHERE CE.CCU_D1SCENTROCUSTORES  NOT IN ('ATD','ATI')
+   AND CO.CON_CDICONTRATADO IN (
+   select TO_NUMBER(SUBSTR(USERNAME,2,5)) from dba_users where username like 'F0%' AND ACCOUNT_STATUS NOT LIKE '%LOCK%'
+)
+AND CO.CON_CDICENTROCUSTO = CE.CCU_CDICENTROCUSTO ) C
+WHERE R.GRANTEE = C.GRANTEE
+ORDER BY 1,4
+------------------------------------------------------------------------------------------------------------------
+select z.GRANTEE, z.NOME, z.AREA,
+       max(decode(rn,1,z.GRANTED_ROLE)) esp01,
+       max(decode(rn,2,z.GRANTED_ROLE)) esp02,
+       max(decode(rn,3,z.GRANTED_ROLE)) esp03,
+       max(decode(rn,4,z.GRANTED_ROLE)) esp04,
+       max(decode(rn,5,z.GRANTED_ROLE)) esp05,
+       max(decode(rn,6,z.GRANTED_ROLE)) esp06,
+       max(decode(rn,7,z.GRANTED_ROLE)) esp07,
+       max(decode(rn,8,z.GRANTED_ROLE)) esp08                     
+   from 
+(select R.GRANTEE, C.NOME, C.AREA, R.GRANTED_ROLE ,
+      row_number() over (partition by R.GRANTEE order by GRANTED_ROLE) rn
+      from dba_role_privs R,
+ (SELECT 'F'||LPAD(TO_CHAR(CO.CON_CDICONTRATADO),5,'0') "GRANTEE",
+       CO.CON_CDICONTRATADO "MATRICULA", 
+       CO.CON_DSSNOME "NOME" , 
+       CE.CCU_D1SCENTROCUSTORES "AREA"  
+  FROM OWN_APDAT.CONTRATADOS CO, OWN_APDAT.CENTROSCUSTOS CE 
+ WHERE CE.CCU_D1SCENTROCUSTORES  NOT IN ('ATD','ATI')
+   AND CO.CON_CDICONTRATADO IN (
+   select TO_NUMBER(SUBSTR(USERNAME,2,5)) from dba_users where username like 'F0%' AND ACCOUNT_STATUS NOT LIKE '%LOCK%'
+)
+AND CO.CON_CDICENTROCUSTO = CE.CCU_CDICENTROCUSTO ) C
+WHERE R.GRANTEE = C.GRANTEE
+) z
+group by z.GRANTEE, z.NOME, z.AREA
+order by z.AREA, z.grantee
+
+------------------------------------------------------------------------------------------------------------------
+select R.GRANTEE, C.NOME, C.AREA, r.owner, R.TABLE_NAME, R.PRIVILEGE
+   from dba_TAB_privs R,
+(SELECT 'F'||LPAD(TO_CHAR(CO.CON_CDICONTRATADO),5,'0') "GRANTEE",
+       CO.CON_CDICONTRATADO "MATRICULA", 
+       CO.CON_DSSNOME "NOME" , 
+       CE.CCU_D1SCENTROCUSTORES "AREA"  
+  FROM OWN_APDAT.CONTRATADOS CO, OWN_APDAT.CENTROSCUSTOS CE 
+ WHERE CE.CCU_D1SCENTROCUSTORES  IN ('ATD','ATI')
+   AND CO.CON_CDICONTRATADO IN (
+   select TO_NUMBER(SUBSTR(USERNAME,2,5)) from dba_users where username like 'F0%' AND ACCOUNT_STATUS NOT LIKE '%LOCK%'
+)
+AND CO.CON_CDICENTROCUSTO = CE.CCU_CDICENTROCUSTO ) C
+WHERE R.GRANTEE = C.GRANTEE
+ORDER BY 1,4,5
+------------------------------------------------------------------------------------------------------------------
+select R.GRANTEE, C.NOME, C.AREA, R.PRIVILEGE, R.ADMIN_OPTION
+  from dba_SYS_privs R,
+(SELECT 'F'||LPAD(TO_CHAR(CO.CON_CDICONTRATADO),5,'0') "GRANTEE",
+       CO.CON_CDICONTRATADO "MATRICULA", 
+       CO.CON_DSSNOME "NOME" , 
+       CE.CCU_D1SCENTROCUSTORES "AREA"  
+  FROM OWN_APDAT.CONTRATADOS CO, OWN_APDAT.CENTROSCUSTOS CE 
+ WHERE CE.CCU_D1SCENTROCUSTORES  NOT IN ('ATD','ATI')
+   AND CO.CON_CDICONTRATADO IN (
+   select TO_NUMBER(SUBSTR(USERNAME,2,5)) from dba_users where username like 'F0%' AND ACCOUNT_STATUS NOT LIKE '%LOCK%'
+)
+AND CO.CON_CDICENTROCUSTO = CE.CCU_CDICENTROCUSTO ) C
+WHERE R.GRANTEE = C.GRANTEE
+ORDER BY 1,4
+------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
+SELECT * FROM DBA_ROLE_PRIVS
+WHERE GRANTEE NOT IN (
+select username from dba_users where account_status LIKE '%LOCK%' 
+)
+AND GRANTED_ROLE = 'DBA'
+ORDER BY GRANTEE, GRANTED_ROLE
+
+select * from dba_role_privs
+where grantee in (
+select username from dba_users where account_status not LIKE '%LOCK%' AND USERNAME LIKE 'F0%'
+)
+and granted_role = 'RFCP_INFORMATICA'
+order by grantee, granted_role
+
+select * from dba_ROLE_privs
+where grantee in (
+select username from dba_users where account_status not LIKE '%LOCK%' AND USERNAME LIKE 'F0%'
+)
+ORDER BY GRANTEE, GRANTED_ROLE
+
+
+select * from dba_sys_privs
+where grantee in (
+select username from dba_users where account_status not LIKE '%LOCK%' AND USERNAME LIKE 'F0%'
+)
+ORDER BY GRANTEE, PRIVILEGE
+
+select * from dba_TAB_privs
+where grantee in (
+select username from dba_users where account_status not LIKE '%LOCK%' AND USERNAME LIKE 'F0%'
+)
+ORDER BY GRANTEE, PRIVILEGE
+
+select o.object_type, o.* from dba_objects o
+where owner in  (
+select username from dba_users where account_status not LIKE '%LOCK%' AND USERNAME LIKE 'F0%'
+)
+order by o.owner, o.object_type, o.object_name
+
+
+select * from dba_sys_privs
+where grantee in (
+select GRANTED_ROLE -- , admin_option, default_role 
+from dba_role_privs
+where grantee in (
+select username from dba_users where account_status not LIKE '%LOCK%' AND USERNAME LIKE 'F0%'
+)
+union
+select GRANTED_ROLE -- , admin_option, default_role 
+from dba_role_privs
+where grantee in (
+select granted_role from dba_role_privs
+where grantee in (
+select username from dba_users where account_status not LIKE '%LOCK%' AND USERNAME LIKE 'F0%'
+)
+) 
+)
+ORDER BY GRANTEe, privilege 
+
+SELECT * FROM DBA_ROLE_PRIVS
+WHERE GRANTEe= 'RTMP_DEBUG_EXT_SAUDE'
+
+SELECT * FROM DBA_tab_PRIVS
+WHERE GRANTEe= 'RTMP_DEBUG_EXT_SAUDE'
+
+SELECT * FROM DBA_sys_PRIVS
+WHERE GRANTEe = 'RTMP_DEBUG_EXT_SAUDE'
+
+SELECT * FROM DBA_ROLE_PRIVS
+WHERE GRANTED_ROLE = 'RTMP_DEBUG_EXT_SAUDE'
+
+SELECT * FROM DBA_ROLE_PRIVS
+WHERE GRANTEE IN (
+select username from dba_users where account_status not LIKE '%LOCK%' AND USERNAME LIKE 'F0%'
+)
+AND GRANTED_ROLE in ('RESOURCE','RFCP_INFORMATICA')
+ORDER BY GRANTEE, GRANTED_ROLE
+
+select * from dba_sys_privs
+where grantee in (
+'RESOURCE','CONNECT'
+)
+
+SELECT * FROM DBA_ROLE_PRIVS
+WHERE GRANTEE = 'RFCP_INFORMATICA'
+
+SELECT * FROM DBA_SYS_PRIVS
+WHERE GRANTEE = 'RFCP_INFORMATICA'
+
+SELECT * FROM DBA_TAB_PRIVS
+WHERE GRANTEE = 'RFCP_INFORMATICA'
+
+select GRANTEE, OWNER, TABLE_NAME, PRIVILEGE
+from dba_tab_privs
+where grantee in 
+(select username from dba_users
+  where default_tablespace <> 'SYSTEM'
+   AND USERNAME NOT LIKE '%SYS'
+   AND account_status not like '%LOCK%')
+   and GRANTEE NOT IN ('SNAPPROXY','ATT_WEB','AMADEUS', 'SCAM', 'INT_4819','OWN_INTEG_TISS')
+   and privilege not in ('SELECT','REFERENCES','EXECUTE')
+   AND OWNER = 'ATT'
+ORDER BY GRANTEE, OWNER, TABLE_NAME, PRIVILEGE
+
+select * 
+from dba_sys_privs
+where grantee in 
+(select username from dba_users
+  where default_tablespace <> 'SYSTEM'
+   AND USERNAME NOT LIKE '%SYS'
+   AND account_status not like '%LOCK%')
+--   and GRANTEE NOT IN ('SNAPPROXY','ATT_WEB','AMADEUS', 'SCAM', 'INT_4819','OWN_INTEG_TISS')
+--   and privilege not in ('SELECT','REFERENCES','EXECUTE')
+ORDER BY GRANTEE, privilege
+
+select GRANTEE, OWNER, TABLE_NAME, PRIVILEGE
+from dba_tab_privs
+where grantee LIKE '%SELECT'
+  AND PRIVILEGE <> 'SELECT'
+ORDER BY GRANTEE, OWNER, TABLE_NAME, PRIVILEGE
+
+select * from dba_tab_privs
+where table_name in (
+'FN_CALC_DIGITO_BCO_REAL',
+'FN_CNAB_CODBAR_BCO_REAL',
+'FN_CO_MATMOD11' -- NAO ESTA NO ROPP_EXECUTE
+)
+AND owner = 'OPPORTUNITY'
+
+SELECT * FROM DBA_ROLE_PRIVS
+WHERE GRANTED_ROLE = 'ROPP_EXECUTE'
+
+select * 
+from dba_sys_privs
+where grantee in 
+(select ROLE from dba_roles
+   WHERE ROLE LIKE 'R%'
+   AND ROLE NOT IN ('RECOVERY_CATALOG_OWNER','RESOURCE')
+ )
+ORDER BY GRANTEE, privilege
+-------------------------------------------------------------------------------------------------------------------
+select * from dba_sys_privs
+where grantee in (
+'F02128','F00634','F00561',
+'F02237','F00643','F01758','F01798','F01822','F02016','F02063','F02081','F02137','F02190','F02237'
+)
+
+select * from dba_sys_privs
+where grantee in (
+select GRANTED_ROLE -- , admin_option, default_role 
+from dba_role_privs
+where grantee in (
+'F02128','F00634','F00561',
+'F02237','F00643','F01758','F01798','F01822','F02016','F02063','F02081','F02137','F02190','F02237'
+)
+union
+select GRANTED_ROLE -- , admin_option, default_role 
+from dba_role_privs
+where grantee in (
+select granted_role from dba_role_privs
+where grantee in (
+'F02128','F00634','F00561',
+'F02237','F00643','F01758','F01798','F01822','F02016','F02063','F02081','F02137','F02190','F02237'
+)
+)
+-- ORDER BY GRANTED_ROLE 
+)
+
+select * from dba_sys_privs
+where grantee in 
+(
+'CONNECT',
+'RAPD_SELECT',
+'RATT_SELECT',
+'RCMS_SELECT',
+'RCNL_SELECT',
+'RCORP_SELECT',
+'RCRM_SELECT',
+'RFACIL_SELECT',
+'RFCP_INFORMATICA',
+'RHIST_SELECT',
+'RHST_SELECT',
+'RIFC_SELECT',
+'RINT_SELECT',
+'RIPL_SELECT',
+'RIRE_SELECT',
+'ROPPHIST_SELECT',
+'ROPP_SELECT',
+'RPOL_SELECT',
+'RSAUDE_SELECT',
+'RSEP_SELECT',
+'RWCR_SELECT',
+'RYMFBDG_SELECT',
+'RYMFGER_SELECT',
+'RYMF_SELECT'
+)
+-------------------------------------------------------------------------------------------------------------------
+SELECT * FROM DBA_OBJECTS
+WHERE OBJECT_NAME IN (
+'INT_RETORNO_4819_NAO_DESC', -- SYS_IPL. 
+'XX' -- INT_POLI.
+)
+-- prod/newdev
+OWNER	OBJECT_NAME	OBJECT_TYPE
+INT_POLI XX		                      TABLE
+SYS_IPL	 INT_RETORNO_4819_NAO_DESC  TABLE        
+-- newtst
+INT_POLI	XX		TABLE
+--
+
+
+SELECT * FROM DBA_TAB_PRIVS
+WHERE TABLE_NAME IN (
+'INT_RETORNO_4819_NAO_DESC', -- SYS_IPL. 
+'XX' -- INT_POLI.
+)
+-- prod/newtst
+   	GRANTEE	OWNER	TABLE_NAME	GRANTOR	PRIVILEGE	GRANTABLE	HIERARCHY
+ 1	RIPL_SELECT	INT_POLI	XX	INT_POLI	SELECT	NO	NO
+ 
+-- newdev 
+    	GRANTEE	OWNER	TABLE_NAME	GRANTOR	PRIVILEGE	GRANTABLE	HIERARCHY
+1	F00634	SYS_IPL	INT_RETORNO_4819_NAO_DESC	SYS_IPL	SELECT	NO	NO
+2	RIPL_SELECT	INT_POLI	XX	INT_POLI	SELECT	NO	NO
+
+SELECT COUNT(*) FROM SYS_IPL.INT_RETORNO_4819_NAO_DESC -- 187
+SELECT COUNT(*) FROM INT_POLI.XX  -- 10217
+-------------------------------------------------------------------------------------------------------------------
+SELECT 'F'||LPAD(TO_CHAR(CO.CON_CDICONTRATADO),5,'0') "GRANTEE",
+       CO.CON_CDICONTRATADO "MATRICULA", 
+       CO.CON_DSSNOME "NOME" , 
+       CE.CCU_D1SCENTROCUSTORES "AREA"  
+  FROM OWN_APDAT.CONTRATADOS CO, OWN_APDAT.CENTROSCUSTOS CE 
+ WHERE CE.CCU_D1SCENTROCUSTORES  IN ('ATD','ATI')
+   AND CO.CON_CDICONTRATADO IN (
+   select TO_NUMBER(SUBSTR(USERNAME,2,5)) from dba_users where username like 'F0%' AND ACCOUNT_STATUS NOT LIKE '%LOCK%'
+   )
+AND CO.CON_CDICENTROCUSTO = CE.CCU_CDICENTROCUSTO    
+ORDER BY 1
+
+SELECT 'ALTER USER '||'F'||LPAD(TO_CHAR(CO.CON_CDICONTRATADO),5,'0')||' ACCOUNT LOCK;'
+  FROM OWN_APDAT.CONTRATADOS CO, OWN_APDAT.CENTROSCUSTOS CE 
+ WHERE CE.CCU_D1SCENTROCUSTORES  NOT IN ('ATD','ATI')
+   AND CO.CON_CDICONTRATADO IN (
+   select TO_NUMBER(SUBSTR(USERNAME,2,5)) from dba_users where username like 'F0%' AND ACCOUNT_STATUS NOT LIKE '%LOCK%'
+   )
+AND CO.CON_CDICENTROCUSTO = CE.CCU_CDICENTROCUSTO    
+ORDER BY 1
+
+SELECT * FROM DBA_USERS U
+WHERE U.account_status not like '%LOCK%'
+--   and u.username like 'F%'
+ORDER BY USERNAME
+
+SELECT  'ALTER USER '||username||' account lock;'
+FROM DBA_USERS U
+WHERE U.account_status like '%EXPIRE%'
+AND U.account_status NOT like '%LOCK%' 
+ORDER BY USERNAME
+
+-------------------------------------------------------------------------------------------------------------------
+SELECT * FROM DBA_ROLE_PRIVS
+WHERE GRANTED_ROLE = 'DBA'
+
+select GRANTED_ROLE, admin_option, default_role from dba_role_privs
+where grantee in (
+'F02128','F00634','F00561',
+'F02237','F00643','F01758','F01798','F01822','F02016','F02063','F02081','F02137','F02190','F02237'
+)
+union
+select GRANTED_ROLE, admin_option, default_role from dba_role_privs
+where grantee in (
+select granted_role from dba_role_privs
+where grantee in (
+'F02128','F00634','F00561',
+'F02237','F00643','F01758','F01798','F01822','F02016','F02063','F02081','F02137','F02190','F02237'
+)
+)
+ORDER BY GRANTED_ROLE 
+-----------
+SELECT * FROM DBA_ROLE_PRIVS
+WHERE GRANTEE = 'RFCP_INFORMATICA'
+
+-----------
+
+select * from dba_TAB_privs
+where grantee in (
+'CONNECT','RAPD_SELECT','RFACIL_SELECT','RFCP_INFORMATICA','ROPPHIST_SELECT','RYMF_SELECT','RYMFBDG_SELECT',
+'RYMFGER_SELECT','RATT_SELECT','RCMS_SELECT','RCNL_SELECT','RCORP_SELECT','RCRM_SELECT','RHIST_SELECT',
+'RHST_SELECT','RIFC_SELECT','RINT_SELECT','RIPL_SELECT','RIRE_SELECT','ROPP_SELECT','RPOL_SELECT',
+'RSAUDE_SELECT','RSEP_SELECT','RWCR_SELECT'
+)
+ORDER BY GRANTEE , OWNER, TABLE_NAME, PRIVILEGE
+
+select * from dba_TAB_privs
+where grantee in (
+'RFCP_INFORMATICA'
+)
+ORDER BY GRANTEE , OWNER, TABLE_NAME, PRIVILEGE
+
+select PRIVILEGE from dba_TAB_privs
+where grantee in (
+'CONNECT',
+'RATT_SELECT',
+'RESOURCE',
+'RFCP_INFORMATICA',
+'RITISS_SELECT'
+)
+GROUP BY PRIVILEGE
+-- ORDER BY GRANTEE , OWNER, TABLE_NAME, PRIVILEGE
+
+select * from dba_TAB_privs
+where PRIVILEGE not IN ('SELECT')
+AND grantee in (
+'CONNECT',
+'RATT_SELECT',
+'RESOURCE',
+'RFCP_INFORMATICA',
+'RITISS_SELECT'
+)
+order by grantee, owner, table_name, privilege
+
+select * from dba_SYS_privs
+where grantee in (
+'F02128','F00634','F00561',
+'F02237','F00643','F01758','F01798','F01822','F02016','F02063','F02081','F02137','F02190','F02237'
+)
+ORDER BY GRANTEE , PRIVILEGE
+
+
+select * from dba_TAB_privs
+where grantee in (
+'F02128','F00634','F00561',
+'F02237','F00643','F01758','F01798','F01822','F02016','F02063','F02081','F02137','F02190','F02237'
+)
+ORDER BY GRANTEE , PRIVILEGE
+-------------------------------------------------------------------------------------------------------------------
+

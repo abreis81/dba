@@ -1,0 +1,15 @@
+buffer      =2000
+compress    =n
+consistent  =y
+constraints =y
+feedback    =1000
+full        =y
+grants      =y
+#inctype     =incremental
+indexes     =y
+rows        =y
+file        =c:\db\oradata\ocpe\backup\bkp.dmp
+log         =c:\db\oradata\ocpe\backup\logbkp.log
+#owner      =ocpedba
+#tables     =ocpedba.clientes
+

@@ -1,0 +1,18 @@
+com pid
+SELECT LO.TIME_REMAINING, p.spid, LO.* 
+FROM V$SESSION_LONGOPS LO, V$SESSION S, V$PROCESS P
+WHERE LO.TIME_REMAINING > 0
+and  lo.sid   = s.sid
+and  lo.serial# = s.serial#
+AND  S.paddr  = P.addr
+AND  S.paddr  = P.addr
+ORDER BY LO.START_TIME DESC 
+/
+---------------
+SELECT LO.TIME_REMAINING, LO.* 
+FROM V$SESSION_LONGOPS LO
+WHERE LO.TIME_REMAINING > 0
+ORDER BY LO.START_TIME DESC 
+/
+
+-----------

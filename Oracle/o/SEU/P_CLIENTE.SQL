@@ -1,0 +1,52 @@
+CREATE OR REPLACE Procedure SEU.P_CLIENTE is
+BEGIN
+
+    INSERT INTO SEU.SEUAET(SAET_IDEMPRESA, SAET_NUMRA, SAET_NOME, SAET_RG, SAET_DTNASC, SAET_CPF, SAET_DTMAT, SAET_ANO, SAET_UNIDADE, SAET_CURSO, SAET_SEMESTR, SAET_SERIE, SAET_TURMA, SAET_BOLSA, SAET_JUIZO, SAET_SITUAC, SAET_END, SAET_MUN, SAET_EST, SAET_BAIRRO, SAET_CEP, SAET_TEL, SAET_FAX, SAET_EMAIL, SAET_CLIENTE, SAET_PAIS, SAET_SEXO, SAET_PAI, SAET_MAE, SAET_INIJUIZ, SAET_FIMJUIZ, SAET_IDUSUARIO, SAET_NREG, SAET_NUM, SAET_COMPL, SAET_TURNO )
+    SELECT SABP_IDEMPRESA,
+           SABP_NUMRA,
+           SABP_DESC,
+           SABP_RG,
+           SABP_DTNASC,
+           SABP_CPF,
+           SABO_DATA,
+           SABO_ANOLET,
+           SABO_CODUND,
+           SABO_CODCUR,
+           SABO_PERIODO,
+           SABO_SERIE,
+           SABO_TURMA,
+           '000000' AS BOLSA,
+           'N'      AS JUIZO,
+           SABO_SITALU,
+           SABP_LOGRADOURO,
+           SABP_CIDADE,
+           SABP_ESTADO,
+           SABP_BAIRRO,
+           SABP_CEP,
+           SABP_TELEFONE1,
+           ' ' FAX,
+           SABP_EMAIL,
+           '000000' AS CLIENTE,
+           ' '      AS PAIS,
+           SABP_SEXO,
+           SABP_PAI,
+           SABP_MAE,
+           '' AS INIJUIZ,
+           '' AS FIMJUIZ ,
+           1  AS IDUSUARIO,
+           0  AS NREG,
+           SABP_NUM,
+           SABP_COMPL,
+           SABO_TURNO
+      FROM SEU.SEUABP,
+           SEU.SEUABO
+     WHERE SABP_IDEMPRESA = SABO_IDEMPRESA
+       AND SABP_NUMRA     = SABO_NUMRA
+       AND SABO_ATIVO     = 'S'
+       AND SABP_NUMRA NOT IN (SELECT SAET_NUMRA
+                                FROM SEU.SEUAET );
+
+
+     COMMIT;
+END;
+/

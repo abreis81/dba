@@ -1,0 +1,68 @@
+select s1.username || '@' || s1.machine
+    || ' ( SID=' || s1.sid || ' )  is blocking '
+    || s2.username || '@' || s2.machine || ' ( SID=' || s2.sid || ' ) ' AS blocking_status
+    from v$lock l1, v$session s1, v$lock l2, v$session s2
+    where s1.sid=l1.sid and s2.sid=l2.sid
+    and l1.BLOCK=1 and l2.request > 0
+    and l1.id1 = l2.id1
+    and l2.id2 = l2.id2;
+
+
+##############################################################################################
+set line 200 
+column lock_type format a24
+column blocking_others format a20
+column mode_held format A20
+column lock_id1 format a8
+column lock_id2 format a8
+break on lock_id1 skip
+select sysdate from dual;
+select * from sys.dba_lock where blocking_others != 'Not Blocking' ;
+
+###############################################################################################
+
+REM: Script to find Database locks
+REM: 
+REM:*****************************************
+REM: Author: Babu
+REM: Date Submitted: 27-Dec-2008
+REM:
+REM:
+REM: NOTE: PLEASE TEST THIS SCRIPT BEFORE USE.
+REM: Author will not be responsible for any damage that may be cause by this script.
+REM:*****************************************
+column blocker format a25
+column blockee format a25
+column sid_serial format a10
+select
+ (select username || ' - ' || osuser from v$session where sid=a.sid) blocker,
+ a.sid || ', ' ||
+ (select serial# from v$session where sid=a.sid) sid_serial,
+ ' is blocking ',
+ (select username || ' - ' || osuser from v$session where sid=b.sid) blockee,
+ b.sid || ', ' ||
+ (select serial# from v$session where sid=b.sid) sid_serial
+ from v$lock a, v$lock b
+ where a.block = 1
+   and b.request > 0
+   and a.id1 = b.id1
+   and a.id2 = b.id2;
+ 
+
+################################################################################################# 
+
+select lock_id1,
+lock_id2,
+session_id
+from sys.dba_lock
+where blocking_others = 'Not Blocking'
+and lock_type = 'Transaction'
+group by lock_id1, lock_id2, session_id;
+
+ 
+
+select to_char((count(*)/10) * 100, '99' ) from v$session where lockwait is not null;
+
+
+
+

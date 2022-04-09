@@ -1,0 +1,784 @@
+
+20:09:13 DB2> DECLARE
+20:09:15   2  
+20:09:15   3   CURSOR C1 IS SELECT OWNER, TABLE_NAME FROM DBA_TABLES WHERE OWNER='SEU'
+20:09:15   4                               AND TABLE_NAME IN (SELECT TABELA FROM SEUMIG.MAX_TABLE)
+20:09:15   5                              -- AND TABLE_NAME IN ('SEUZZZ','SEUZZ1')
+20:09:15   6                              ORDER BY TABLE_NAME;
+20:09:15   7   CURSOR C2(TABELA IN VARCHAR2, OWN IN VARCHAR2) IS SELECT COLUMN_NAME, COLUMN_ID
+20:09:15   8                            FROM DBA_TAB_COLUMNS
+20:09:15   9                            WHERE OWNER=OWN
+20:09:15  10                              AND TABLE_NAME=TABELA
+20:09:15  11                              AND DATA_TYPE IN ('VARCHAR2','CHAR')
+20:09:15  12                               ORDER BY COLUMN_ID ASC;
+20:09:15  13   CURSOR C3(TABELA IN VARCHAR2, OWN IN VARCHAR2) IS SELECT TRIGGER_NAME FROM DBA_TRIGGERS
+20:09:15  14                                      WHERE OWNER=OWN
+20:09:15  15                                        AND TABLE_NAME=TABELA
+20:09:15  16                                        AND TRIGGER_NAME LIKE '%AUDIT%';
+20:09:15  17   CURSOR C4(OWN IN VARCHAR2) IS SELECT OWNER, TABLE_NAME, CONSTRAINT_NAME FROM DBA_CONSTRAINTS
+20:09:16  18                                 WHERE OWNER=OWN
+20:09:16  19                                   --AND TABLE_NAME IN ('SEUZZZ','SEUZZ1')
+20:09:16  20                                   AND TABLE_NAME IN (SELECT TABELA FROM SEUMIG.MAX_TABLE)
+20:09:16  21                                   AND CONSTRAINT_TYPE='R';
+20:09:16  22  
+20:09:16  23  
+20:09:16  24   STR VARCHAR2(4000);
+20:09:16  25   ATUALIZADOS NUMBER := 0;
+20:09:16  26   ERRO VARCHAR2(1000);
+20:09:16  27   CONT NUMBER := 0;
+20:09:16  28  
+20:09:16  29  BEGIN
+20:09:16  30    FOR RC4 IN C4('SEU') LOOP
+20:09:16  31     STR := 'ALTER TABLE SEU.'||RC4.TABLE_NAME||' DISABLE CONSTRAINT '||RC4.CONSTRAINT_NAME;
+20:09:16  32     DBMS_OUTPUT.PUT_LINE(STR);
+20:09:16  33     EXECUTE IMMEDIATE STR;
+20:09:16  34    END LOOP;
+20:09:16  35   FOR RC1 IN C1 LOOP
+20:09:16  36    FOR RC3 IN C3(RC1.TABLE_NAME,RC1.OWNER) LOOP
+20:09:16  37     STR := 'ALTER TRIGGER '||RC1.OWNER||'.'||RC3.TRIGGER_NAME||' DISABLE';
+20:09:16  38     DBMS_OUTPUT.PUT_LINE(STR);
+20:09:16  39     EXECUTE IMMEDIATE STR;
+20:09:16  40    END LOOP;
+20:09:16  41     ATUALIZADOS := 0;
+20:09:16  42     STR := 'UPDATE SEU.'||RC1.TABLE_NAME||' SET ';
+20:09:16  43     CONT := 0;
+20:09:16  44     FOR RC2 IN C2(RC1.TABLE_NAME, RC1.OWNER) LOOP
+20:09:16  45     IF CONT = 0 THEN
+20:09:16  46      STR := STR||RC2.COLUMN_NAME||'=NVL(TRIM('||RC2.COLUMN_NAME||'),'||RC2.COLUMN_NAME||')';
+20:09:16  47      CONT := CONT + 1;
+20:09:17  48     ELSE
+20:09:17  49      STR := STR||','||RC2.COLUMN_NAME||'=NVL(TRIM('||RC2.COLUMN_NAME||'),'||RC2.COLUMN_NAME||')';
+20:09:17  50      CONT := CONT + 1;
+20:09:17  51     END IF;
+20:09:17  52    END LOOP;
+20:09:17  53    BEGIN
+20:09:17  54     EXECUTE IMMEDIATE STR;
+20:09:17  55     DBMS_OUTPUT.PUT_LINE(STR);
+20:09:17  56     ATUALIZADOS := SQL%ROWCOUNT;
+20:09:17  57     INSERT INTO LOG_TABELA VALUES (RC1.TABLE_NAME, ATUALIZADOS);
+20:09:17  58     COMMIT;
+20:09:17  59    EXCEPTION WHEN OTHERS THEN
+20:09:17  60     erro := sqlerrm;
+20:09:17  61     INSERT INTO LOG_TABELA_ERRO VALUES (RC1.TABLE_NAME,erro);
+20:09:17  62    END;
+20:09:17  63    FOR RC3 IN C3(RC1.TABLE_NAME,RC1.OWNER) LOOP
+20:09:17  64     STR := 'ALTER TRIGGER '||RC1.OWNER||'.'||RC3.TRIGGER_NAME||' ENABLE';
+20:09:17  65     EXECUTE IMMEDIATE STR;
+20:09:17  66    END LOOP;
+20:09:17  67   END LOOP;
+20:09:17  68   FOR RC4 IN C4('SEU') LOOP
+20:09:17  69     STR := 'ALTER TABLE SEU.'||RC4.TABLE_NAME||' ENABLE CONSTRAINT '||RC4.CONSTRAINT_NAME;
+20:09:17  70     EXECUTE IMMEDIATE STR;
+20:09:17  71    END LOOP;
+20:09:17  72  END;
+20:09:17  73  /
+ALTER TABLE SEU.SEUAAM DISABLE CONSTRAINT FK_SEUAAM_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUAAM DISABLE CONSTRAINT FK_SEUAAM_SEUACK                                                                                            
+ALTER TABLE SEU.SEUAAO DISABLE CONSTRAINT FK_SEUAAO_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUAAP DISABLE CONSTRAINT FK_SEUAAP_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUAAP DISABLE CONSTRAINT FK_SEUAAP_SEUAAO                                                                                            
+ALTER TABLE SEU.SEUAAP DISABLE CONSTRAINT FK_SEUAAP_SEUAAQ                                                                                            
+ALTER TABLE SEU.SEUAAQ DISABLE CONSTRAINT FK_SEUAAQ_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUAAR DISABLE CONSTRAINT FK_SEUAAR_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUAAS DISABLE CONSTRAINT FK_SEUAAS_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUAAS DISABLE CONSTRAINT FK_SEUAAS_SEUAAM                                                                                            
+ALTER TABLE SEU.SEUAAT DISABLE CONSTRAINT FK_SEUAAT_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUAAT DISABLE CONSTRAINT FK_SEUAAT_SEUAAM                                                                                            
+ALTER TABLE SEU.SEUAAU DISABLE CONSTRAINT FK_SEUAAU_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUAAU DISABLE CONSTRAINT FK_SEUAAU_SEUAAM                                                                                            
+ALTER TABLE SEU.SEUAAV DISABLE CONSTRAINT FK_SEUAAV_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUAAW DISABLE CONSTRAINT FK_SEUAAW_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUAAX DISABLE CONSTRAINT FK_SEUAAX_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUAAY DISABLE CONSTRAINT FK_SEUAAY_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUAAY DISABLE CONSTRAINT FK_SEUAAY_SEUAAP                                                                                            
+ALTER TABLE SEU.SEUAAY DISABLE CONSTRAINT FK_SEUAAY_SEUABA                                                                                            
+ALTER TABLE SEU.SEUABA DISABLE CONSTRAINT FK_SEUABA_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABB DISABLE CONSTRAINT FK_SEUABB_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABB DISABLE CONSTRAINT FK_SEUABB_SEUAAP                                                                                            
+ALTER TABLE SEU.SEUABB DISABLE CONSTRAINT FK_SEUABB_SEUABA                                                                                            
+ALTER TABLE SEU.SEUABC DISABLE CONSTRAINT FK_SEUABC_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABD DISABLE CONSTRAINT FK_SEUABD_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABE DISABLE CONSTRAINT FK_SEUABE_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABF DISABLE CONSTRAINT FK_SEUABF_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABF DISABLE CONSTRAINT FK_SEUABF_SEUAAM                                                                                            
+ALTER TABLE SEU.SEUABG DISABLE CONSTRAINT FK_SEUABG_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABH DISABLE CONSTRAINT FK_SEUABH_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABH DISABLE CONSTRAINT FK_SEUABH_SEUAAM                                                                                            
+ALTER TABLE SEU.SEUABH DISABLE CONSTRAINT FK_SEUABH_SEUAAW                                                                                            
+ALTER TABLE SEU.SEUABI DISABLE CONSTRAINT FK_SEUABI_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABJ DISABLE CONSTRAINT FK_SEUABJ_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABK DISABLE CONSTRAINT FK_SEUABK_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABN DISABLE CONSTRAINT FK_SEUABN_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABO DISABLE CONSTRAINT FK_SEUABO_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABP DISABLE CONSTRAINT FK_SEUABP_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABP DISABLE CONSTRAINT FK_SEUABP_SEUACG                                                                                            
+ALTER TABLE SEU.SEUABP DISABLE CONSTRAINT FK_SEUABP_SEUACK                                                                                            
+ALTER TABLE SEU.SEUABQ DISABLE CONSTRAINT FK_SEUABQ_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABR DISABLE CONSTRAINT FK_SEUABR_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABS DISABLE CONSTRAINT FK_SEUABS_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABT DISABLE CONSTRAINT FK_SEUABT_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABU DISABLE CONSTRAINT FK_SEUABU_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUACB DISABLE CONSTRAINT FK_SEUACB_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUACC DISABLE CONSTRAINT FK_SEUACC_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUACF DISABLE CONSTRAINT FK_SEUACF_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUACG DISABLE CONSTRAINT FK_SEUACG_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUACG DISABLE CONSTRAINT FK_SEUACG_SEUACK                                                                                            
+ALTER TABLE SEU.SEUACQ DISABLE CONSTRAINT FK_SEUACQ_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUACR DISABLE CONSTRAINT FK_SEUACR_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUACV DISABLE CONSTRAINT FK_SEUACV_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUACW DISABLE CONSTRAINT FK_SEUACW_SEUAAA                                                                                            
+ALTER TRIGGER SEU.TRG_SEUAAM_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUAAM SET                                                                                                                                 
+SAAM_CODIGO=NVL(TRIM(SAAM_CODIGO),SAAM_CODIGO),SAAM_DESC=NVL(TRIM(SAAM_DESC),SAAM_DESC),SAAM_CNPJ=NVL(TRIM(SAAM_CNPJ),SAAM_CNPJ),SAAM_CEP=NVL(TRIM(SAA
+M_CEP),SAAM_CEP),SAAM_TPLOG=NVL(TRIM(SAAM_TPLOG),SAAM_TPLOG),SAAM_LOGRADOURO=NVL(TRIM(SAAM_LOGRADOURO),SAAM_LOGRADOURO),SAAM_NUM=NVL(TRIM(SAAM_NUM),SA
+AM_NUM),SAAM_COMPL=NVL(TRIM(SAAM_COMPL),SAAM_COMPL),SAAM_BAIRRO=NVL(TRIM(SAAM_BAIRRO),SAAM_BAIRRO),SAAM_CIDADE=NVL(TRIM(SAAM_CIDADE),SAAM_CIDADE),SAAM
+_ESTADO=NVL(TRIM(SAAM_ESTADO),SAAM_ESTADO),SAAM_TELEFONE=NVL(TRIM(SAAM_TELEFONE),SAAM_TELEFONE)                                                       
+ALTER TRIGGER SEU.TRG_SEUAAO_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUAAO SET SAAO_CODIGO=NVL(TRIM(SAAO_CODIGO),SAAO_CODIGO),SAAO_DESC=NVL(TRIM(SAAO_DESC),SAAO_DESC)                                         
+ALTER TRIGGER SEU.TRG_SEUAAP_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUAAP SET                                                                                                                                 
+SAAP_CODIGO=NVL(TRIM(SAAP_CODIGO),SAAP_CODIGO),SAAP_VERSAO=NVL(TRIM(SAAP_VERSAO),SAAP_VERSAO),SAAP_DESC=NVL(TRIM(SAAP_DESC),SAAP_DESC),SAAP_DESCMEC=NV
+L(TRIM(SAAP_DESCMEC),SAAP_DESCMEC),SAAP_CODAREA=NVL(TRIM(SAAP_CODAREA),SAAP_CODAREA),SAAP_HABILITACAO=NVL(TRIM(SAAP_HABILITACAO),SAAP_HABILITACAO),SAA
+P_TPHORA=NVL(TRIM(SAAP_TPHORA),SAAP_TPHORA),SAAP_GRAU=NVL(TRIM(SAAP_GRAU),SAAP_GRAU),SAAP_TPFORMA=NVL(TRIM(SAAP_TPFORMA),SAAP_TPFORMA),SAAP_TPCURSO=NV
+L(TRIM(SAAP_TPCURSO),SAAP_TPCURSO),SAAP_VALOR=NVL(TRIM(SAAP_VALOR),SAAP_VALOR),SAAP_GRPDOC=NVL(TRIM(SAAP_GRPDOC),SAAP_GRPDOC),SAAP_OBS=NVL(TRIM(SAAP_O
+BS),SAAP_OBS),SAAP_TITULO=NVL(TRIM(SAAP_TITULO),SAAP_TITULO)                                                                                          
+ALTER TRIGGER SEU.TRG_SEUAAQ_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUAAQ SET SAAQ_CODIGO=NVL(TRIM(SAAQ_CODIGO),SAAQ_CODIGO),SAAQ_DESC=NVL(TRIM(SAAQ_DESC),SAAQ_DESC)                                         
+ALTER TRIGGER SEU.TRG_SEUAAR_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUAAR SET                                                                                                                                 
+SAAR_GRPDOC=NVL(TRIM(SAAR_GRPDOC),SAAR_GRPDOC),SAAR_CODDOC=NVL(TRIM(SAAR_CODDOC),SAAR_CODDOC),SAAR_REGRA=NVL(TRIM(SAAR_REGRA),SAAR_REGRA),SAAR_OBRIGAC
+C=NVL(TRIM(SAAR_OBRIGACC),SAAR_OBRIGACC)                                                                                                              
+ALTER TRIGGER SEU.TRG_SEUAAS_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUAAS SET                                                                                                                                 
+SAAS_CODCUR=NVL(TRIM(SAAS_CODCUR),SAAS_CODCUR),SAAS_CODUND=NVL(TRIM(SAAS_CODUND),SAAS_CODUND),SAAS_CCUSTO=NVL(TRIM(SAAS_CCUSTO),SAAS_CCUSTO)          
+ALTER TRIGGER SEU.TRG_SEUAAT_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUAAT SET                                                                                                                                 
+SAAT_CODUND=NVL(TRIM(SAAT_CODUND),SAAT_CODUND),SAAT_ANOLET=NVL(TRIM(SAAT_ANOLET),SAAT_ANOLET),SAAT_PERIODO=NVL(TRIM(SAAT_PERIODO),SAAT_PERIODO),SAAT_F
+AIXA1=NVL(TRIM(SAAT_FAIXA1),SAAT_FAIXA1),SAAT_FAIXA2=NVL(TRIM(SAAT_FAIXA2),SAAT_FAIXA2),SAAT_FAIXAATU=NVL(TRIM(SAAT_FAIXAATU),SAAT_FAIXAATU)          
+ALTER TRIGGER SEU.TRG_SEUAAU_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUAAU SET                                                                                                                                 
+SAAU_CODCUR=NVL(TRIM(SAAU_CODCUR),SAAU_CODCUR),SAAU_CODUND=NVL(TRIM(SAAU_CODUND),SAAU_CODUND),SAAU_DATA1=NVL(TRIM(SAAU_DATA1),SAAU_DATA1),SAAU_DATA2=N
+VL(TRIM(SAAU_DATA2),SAAU_DATA2)                                                                                                                       
+ALTER TRIGGER SEU.TRG_SEUAAV_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUAAV SET                                                                                                                                 
+SAAV_CODCUR=NVL(TRIM(SAAV_CODCUR),SAAV_CODCUR),SAAV_VERSAO=NVL(TRIM(SAAV_VERSAO),SAAV_VERSAO),SAAV_SERIE=NVL(TRIM(SAAV_SERIE),SAAV_SERIE),SAAV_CODDIS=
+NVL(TRIM(SAAV_CODDIS),SAAV_CODDIS)                                                                                                                    
+ALTER TRIGGER SEU.TRG_SEUAAW_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUAAW SET                                                                                                                                 
+SAAW_CODCUR=NVL(TRIM(SAAW_CODCUR),SAAW_CODCUR),SAAW_VERSAO=NVL(TRIM(SAAW_VERSAO),SAAW_VERSAO),SAAW_SERIE=NVL(TRIM(SAAW_SERIE),SAAW_SERIE),SAAW_ANOLET=
+NVL(TRIM(SAAW_ANOLET),SAAW_ANOLET),SAAW_PERIODO=NVL(TRIM(SAAW_PERIODO),SAAW_PERIODO),SAAW_DATA1=NVL(TRIM(SAAW_DATA1),SAAW_DATA1),SAAW_DATA2=NVL(TRIM(S
+AAW_DATA2),SAAW_DATA2),SAAW_DTMAT1=NVL(TRIM(SAAW_DTMAT1),SAAW_DTMAT1),SAAW_DTMAT2=NVL(TRIM(SAAW_DTMAT2),SAAW_DTMAT2),SAAW_REPSERIE=NVL(TRIM(SAAW_REPSE
+RIE),SAAW_REPSERIE),SAAW_TPAPON=NVL(TRIM(SAAW_TPAPON),SAAW_TPAPON),SAAW_GRPAVA=NVL(TRIM(SAAW_GRPAVA),SAAW_GRPAVA),SAAW_COBSUB=NVL(TRIM(SAAW_COBSUB),SA
+AW_COBSUB),SAAW_PROMCUR=NVL(TRIM(SAAW_PROMCUR),SAAW_PROMCUR),SAAW_DIA1=NVL(TRIM(SAAW_DIA1),SAAW_DIA1),SAAW_DIA2=NVL(TRIM(SAAW_DIA2),SAAW_DIA2),SAAW_DI
+A3=NVL(TRIM(SAAW_DIA3),SAAW_DIA3),SAAW_DIA4=NVL(TRIM(SAAW_DIA4),SAAW_DIA4),SAAW_DIA5=NVL(TRIM(SAAW_DIA5),SAAW_DIA5),SAAW_DIA6=NVL(TRIM(SAAW_DIA6),SAAW
+_DIA6),SAAW_DIA7=NVL(TRIM(SAAW_DIA7),SAAW_DIA7),SAAW_ARRED=NVL(TRIM(SAAW_ARRED),SAAW_ARRED),SAAW_GRPARD=NVL(TRIM(SAAW_GRPARD),SAAW_GRPARD),SAAW_REGIME
+=NVL(TRIM(SAAW_REGIME),SAAW_REGIME),SAAW_DIANU=NVL(TRIM(SAAW_DIANU),SAAW_DIANU),SAAW_ANOLETREG=NVL(TRIM(SAAW_ANOLETREG),SAAW_ANOLETREG),SAAW_PERIODORE
+G=NVL(TRIM(SAAW_PERIODOREG),SAAW_PERIODOREG)                                                                                                          
+ALTER TRIGGER SEU.TRG_SEUAAX_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUAAX SET                                                                                                                                 
+SAAX_CODCUR=NVL(TRIM(SAAX_CODCUR),SAAX_CODCUR),SAAX_VERSAO=NVL(TRIM(SAAX_VERSAO),SAAX_VERSAO),SAAX_SERIE=NVL(TRIM(SAAX_SERIE),SAAX_SERIE),SAAX_CODDIS=
+NVL(TRIM(SAAX_CODDIS),SAAX_CODDIS),SAAX_ITEM=NVL(TRIM(SAAX_ITEM),SAAX_ITEM),SAAX_DESC=NVL(TRIM(SAAX_DESC),SAAX_DESC)                                  
+ALTER TRIGGER SEU.TRG_SEUAAY_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUAAY SET                                                                                                                                 
+SAAY_CODCUR=NVL(TRIM(SAAY_CODCUR),SAAY_CODCUR),SAAY_VERSAO=NVL(TRIM(SAAY_VERSAO),SAAY_VERSAO),SAAY_SERIE=NVL(TRIM(SAAY_SERIE),SAAY_SERIE),SAAY_CODDIS=
+NVL(TRIM(SAAY_CODDIS),SAAY_CODDIS),SAAY_TPNOTA=NVL(TRIM(SAAY_TPNOTA),SAAY_TPNOTA),SAAY_PARTAMG=NVL(TRIM(SAAY_PARTAMG),SAAY_PARTAMG),SAAY_TPGRADE=NVL(T
+RIM(SAAY_TPGRADE),SAAY_TPGRADE),SAAY_TPCURSO=NVL(TRIM(SAAY_TPCURSO),SAAY_TPCURSO),SAAY_PARTBLOQ=NVL(TRIM(SAAY_PARTBLOQ),SAAY_PARTBLOQ),SAAY_GRPPRE=NVL
+(TRIM(SAAY_GRPPRE),SAAY_GRPPRE),SAAY_MODALIDADE=NVL(TRIM(SAAY_MODALIDADE),SAAY_MODALIDADE),SAAY_ATIVCOMP=NVL(TRIM(SAAY_ATIVCOMP),SAAY_ATIVCOMP),SAAY_C
+ONCEITO=NVL(TRIM(SAAY_CONCEITO),SAAY_CONCEITO),SAAY_GRPEQV=NVL(TRIM(SAAY_GRPEQV),SAAY_GRPEQV),SAAY_OBRIGACC=NVL(TRIM(SAAY_OBRIGACC),SAAY_OBRIGACC)    
+ALTER TRIGGER SEU.TRG_SEUABA_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABA SET                                                                                                                                 
+SABA_CODIGO=NVL(TRIM(SABA_CODIGO),SABA_CODIGO),SABA_DESC=NVL(TRIM(SABA_DESC),SABA_DESC),SABA_DESCMEC=NVL(TRIM(SABA_DESCMEC),SABA_DESCMEC),SABA_TIPO=NV
+L(TRIM(SABA_TIPO),SABA_TIPO),SABA_DISPAI=NVL(TRIM(SABA_DISPAI),SABA_DISPAI),SABA_CORREQ=NVL(TRIM(SABA_CORREQ),SABA_CORREQ),SABA_MODALID=NVL(TRIM(SABA_
+MODALID),SABA_MODALID)                                                                                                                                
+ALTER TRIGGER SEU.TRG_SEUABB_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABB SET                                                                                                                                 
+SABB_CODCUR=NVL(TRIM(SABB_CODCUR),SABB_CODCUR),SABB_VERSAO=NVL(TRIM(SABB_VERSAO),SABB_VERSAO),SABB_CODDIS1=NVL(TRIM(SABB_CODDIS1),SABB_CODDIS1),SABB_C
+ODDIS2=NVL(TRIM(SABB_CODDIS2),SABB_CODDIS2),SABB_TIPO=NVL(TRIM(SABB_TIPO),SABB_TIPO),SABB_DATA1=NVL(TRIM(SABB_DATA1),SABB_DATA1),SABB_DATA2=NVL(TRIM(S
+ABB_DATA2),SABB_DATA2),SABB_GRPEQV=NVL(TRIM(SABB_GRPEQV),SABB_GRPEQV)                                                                                 
+ALTER TRIGGER SEU.TRG_SEUABC_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABC SET SABC_CODIGO=NVL(TRIM(SABC_CODIGO),SABC_CODIGO),SABC_DESC=NVL(TRIM(SABC_DESC),SABC_DESC)                                         
+ALTER TRIGGER SEU.TRG_SEUABD_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABD SET                                                                                                                                 
+SABD_CODGRP=NVL(TRIM(SABD_CODGRP),SABD_CODGRP),SABD_CODAVA=NVL(TRIM(SABD_CODAVA),SABD_CODAVA),SABD_CODATV=NVL(TRIM(SABD_CODATV),SABD_CODATV),SABD_SUBA
+VA=NVL(TRIM(SABD_SUBAVA),SABD_SUBAVA),SABD_TIPO=NVL(TRIM(SABD_TIPO),SABD_TIPO),SABD_POSATIV=NVL(TRIM(SABD_POSATIV),SABD_POSATIV),SABD_DESC=NVL(TRIM(SA
+BD_DESC),SABD_DESC)                                                                                                                                   
+ALTER TRIGGER SEU.TRG_SEUABE_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABE SET                                                                                                                                 
+SABE_CODCUR=NVL(TRIM(SABE_CODCUR),SABE_CODCUR),SABE_VERSAO=NVL(TRIM(SABE_VERSAO),SABE_VERSAO),SABE_SERIE=NVL(TRIM(SABE_SERIE),SABE_SERIE),SABE_ANOLET=
+NVL(TRIM(SABE_ANOLET),SABE_ANOLET),SABE_PERIODO=NVL(TRIM(SABE_PERIODO),SABE_PERIODO),SABE_GRPAVA=NVL(TRIM(SABE_GRPAVA),SABE_GRPAVA),SABE_CODAVA=NVL(TR
+IM(SABE_CODAVA),SABE_CODAVA),SABE_CODATV=NVL(TRIM(SABE_CODATV),SABE_CODATV),SABE_DATA1=NVL(TRIM(SABE_DATA1),SABE_DATA1),SABE_DATA2=NVL(TRIM(SABE_DATA2
+),SABE_DATA2),SABE_DTAPON1=NVL(TRIM(SABE_DTAPON1),SABE_DTAPON1),SABE_DTAPON2=NVL(TRIM(SABE_DTAPON2),SABE_DTAPON2)                                     
+ALTER TRIGGER SEU.TRG_SEUABF_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABF SET                                                                                                                                 
+SABF_CODIGO=NVL(TRIM(SABF_CODIGO),SABF_CODIGO),SABF_CODUND=NVL(TRIM(SABF_CODUND),SABF_CODUND),SABF_PREDIO=NVL(TRIM(SABF_PREDIO),SABF_PREDIO),SABF_DESC
+=NVL(TRIM(SABF_DESC),SABF_DESC)                                                                                                                       
+ALTER TRIGGER SEU.TRG_SEUABG_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABG SET                                                                                                                                 
+SABG_CODIGO=NVL(TRIM(SABG_CODIGO),SABG_CODIGO),SABG_CODPRE=NVL(TRIM(SABG_CODPRE),SABG_CODPRE),SABG_ANDAR=NVL(TRIM(SABG_ANDAR),SABG_ANDAR),SABG_SALA=NV
+L(TRIM(SABG_SALA),SABG_SALA)                                                                                                                          
+ALTER TRIGGER SEU.TRG_SEUABH_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABH SET                                                                                                                                 
+SABH_CODCUR=NVL(TRIM(SABH_CODCUR),SABH_CODCUR),SABH_VERSAO=NVL(TRIM(SABH_VERSAO),SABH_VERSAO),SABH_ANOLET=NVL(TRIM(SABH_ANOLET),SABH_ANOLET),SABH_PERI
+ODO=NVL(TRIM(SABH_PERIODO),SABH_PERIODO),SABH_CODUND=NVL(TRIM(SABH_CODUND),SABH_CODUND),SABH_TURNO=NVL(TRIM(SABH_TURNO),SABH_TURNO),SABH_SERIE=NVL(TRI
+M(SABH_SERIE),SABH_SERIE),SABH_TURMA=NVL(TRIM(SABH_TURMA),SABH_TURMA),SABH_CODLOC=NVL(TRIM(SABH_CODLOC),SABH_CODLOC)                                  
+ALTER TRIGGER SEU.TRG_SEUABI_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABI SET                                                                                                                                 
+SABI_CODCUR=NVL(TRIM(SABI_CODCUR),SABI_CODCUR),SABI_VERSAO=NVL(TRIM(SABI_VERSAO),SABI_VERSAO),SABI_ANOLET=NVL(TRIM(SABI_ANOLET),SABI_ANOLET),SABI_PERI
+ODO=NVL(TRIM(SABI_PERIODO),SABI_PERIODO),SABI_CODUND=NVL(TRIM(SABI_CODUND),SABI_CODUND),SABI_TURNO=NVL(TRIM(SABI_TURNO),SABI_TURNO),SABI_SERIE=NVL(TRI
+M(SABI_SERIE),SABI_SERIE),SABI_TURMA=NVL(TRIM(SABI_TURMA),SABI_TURMA),SABI_CODDIS=NVL(TRIM(SABI_CODDIS),SABI_CODDIS),SABI_DIASEM=NVL(TRIM(SABI_DIASEM)
+,SABI_DIASEM),SABI_CODHOR=NVL(TRIM(SABI_CODHOR),SABI_CODHOR),SABI_DATA1=NVL(TRIM(SABI_DATA1),SABI_DATA1),SABI_DATA2=NVL(TRIM(SABI_DATA2),SABI_DATA2),S
+ABI_CODMAT=NVL(TRIM(SABI_CODMAT),SABI_CODMAT),SABI_GRPMAT=NVL(TRIM(SABI_GRPMAT),SABI_GRPMAT),SABI_FORMOU=NVL(TRIM(SABI_FORMOU),SABI_FORMOU),SABI_REMUN
+ERA=NVL(TRIM(SABI_REMUNERA),SABI_REMUNERA),SABI_TROCAMAT=NVL(TRIM(SABI_TROCAMAT),SABI_TROCAMAT),SABI_DTESP=NVL(TRIM(SABI_DTESP),SABI_DTESP),SABI_CODLO
+C=NVL(TRIM(SABI_CODLOC),SABI_CODLOC),SABI_QTDEVAG=NVL(TRIM(SABI_QTDEVAG),SABI_QTDEVAG),SABI_ATVCOMP=NVL(TRIM(SABI_ATVCOMP),SABI_ATVCOMP)              
+ALTER TRIGGER SEU.TRG_SEUABJ_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABJ SET                                                                                                                                 
+SABJ_CODIGO=NVL(TRIM(SABJ_CODIGO),SABJ_CODIGO),SABJ_CODMAT=NVL(TRIM(SABJ_CODMAT),SABJ_CODMAT),SABJ_NIVEL=NVL(TRIM(SABJ_NIVEL),SABJ_NIVEL),SABJ_APONTA=
+NVL(TRIM(SABJ_APONTA),SABJ_APONTA)                                                                                                                    
+ALTER TRIGGER SEU.TRG_SEUABK_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABK SET                                                                                                                                 
+SABK_CODIGO=NVL(TRIM(SABK_CODIGO),SABK_CODIGO),SABK_HORA1=NVL(TRIM(SABK_HORA1),SABK_HORA1),SABK_HORA2=NVL(TRIM(SABK_HORA2),SABK_HORA2)                
+ALTER TRIGGER SEU.TRG_SEUABN_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABN SET                                                                                                                                 
+SABN_CODCUR=NVL(TRIM(SABN_CODCUR),SABN_CODCUR),SABN_VERSAO=NVL(TRIM(SABN_VERSAO),SABN_VERSAO),SABN_ANOLET=NVL(TRIM(SABN_ANOLET),SABN_ANOLET),SABN_PERI
+ODO=NVL(TRIM(SABN_PERIODO),SABN_PERIODO),SABN_CODUND=NVL(TRIM(SABN_CODUND),SABN_CODUND),SABN_TURNO=NVL(TRIM(SABN_TURNO),SABN_TURNO),SABN_SERIE=NVL(TRI
+M(SABN_SERIE),SABN_SERIE),SABN_TURMA=NVL(TRIM(SABN_TURMA),SABN_TURMA),SABN_CODDIS=NVL(TRIM(SABN_CODDIS),SABN_CODDIS),SABN_DIASEM=NVL(TRIM(SABN_DIASEM)
+,SABN_DIASEM),SABN_DATA=NVL(TRIM(SABN_DATA),SABN_DATA)                                                                                                
+ALTER TRIGGER SEU.TRG_SEUABO_AUDIT_T DISABLE                                                                                                          
+ALTER TRIGGER SEU.TRG_SEUABO_AUDIT2_T DISABLE                                                                                                         
+UPDATE SEU.SEUABO SET                                                                                                                                 
+SABO_NUMRA=NVL(TRIM(SABO_NUMRA),SABO_NUMRA),SABO_CODCUR=NVL(TRIM(SABO_CODCUR),SABO_CODCUR),SABO_VERSAO=NVL(TRIM(SABO_VERSAO),SABO_VERSAO),SABO_ANOLET=
+NVL(TRIM(SABO_ANOLET),SABO_ANOLET),SABO_PERIODO=NVL(TRIM(SABO_PERIODO),SABO_PERIODO),SABO_CODUND=NVL(TRIM(SABO_CODUND),SABO_CODUND),SABO_TURNO=NVL(TRI
+M(SABO_TURNO),SABO_TURNO),SABO_SERIE=NVL(TRIM(SABO_SERIE),SABO_SERIE),SABO_TURMA=NVL(TRIM(SABO_TURMA),SABO_TURMA),SABO_SITALU=NVL(TRIM(SABO_SITALU),SA
+BO_SITALU),SABO_TPSIT=NVL(TRIM(SABO_TPSIT),SABO_TPSIT),SABO_ATIVO=NVL(TRIM(SABO_ATIVO),SABO_ATIVO),SABO_DATA=NVL(TRIM(SABO_DATA),SABO_DATA),SABO_ORIGE
+M=NVL(TRIM(SABO_ORIGEM),SABO_ORIGEM),SABO_QTDPARC=NVL(TRIM(SABO_QTDPARC),SABO_QTDPARC)                                                                
+ALTER TRIGGER SEU.TRG_SEUABP_AUDIT2_T DISABLE                                                                                                         
+ALTER TRIGGER SEU.TRG_SEUABP_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABP SET                                                                                                                                 
+SABP_NUMRA=NVL(TRIM(SABP_NUMRA),SABP_NUMRA),SABP_DESC=NVL(TRIM(SABP_DESC),SABP_DESC),SABP_CODPRSEL=NVL(TRIM(SABP_CODPRSEL),SABP_CODPRSEL),SABP_CODINS=
+NVL(TRIM(SABP_CODINS),SABP_CODINS),SABP_CEP=NVL(TRIM(SABP_CEP),SABP_CEP),SABP_TPLOG=NVL(TRIM(SABP_TPLOG),SABP_TPLOG),SABP_LOGRADOURO=NVL(TRIM(SABP_LOG
+RADOURO),SABP_LOGRADOURO),SABP_NUM=NVL(TRIM(SABP_NUM),SABP_NUM),SABP_COMPL=NVL(TRIM(SABP_COMPL),SABP_COMPL),SABP_BAIRRO=NVL(TRIM(SABP_BAIRRO),SABP_BAI
+RRO),SABP_CIDADE=NVL(TRIM(SABP_CIDADE),SABP_CIDADE),SABP_ESTADO=NVL(TRIM(SABP_ESTADO),SABP_ESTADO),SABP_TELEFONE1=NVL(TRIM(SABP_TELEFONE1),SABP_TELEFO
+NE1),SABP_TELEFONE2=NVL(TRIM(SABP_TELEFONE2),SABP_TELEFONE2),SABP_TELEFONE3=NVL(TRIM(SABP_TELEFONE3),SABP_TELEFONE3),SABP_EMAIL=NVL(TRIM(SABP_EMAIL),S
+ABP_EMAIL),SABP_DTNASC=NVL(TRIM(SABP_DTNASC),SABP_DTNASC),SABP_NATURAL=NVL(TRIM(SABP_NATURAL),SABP_NATURAL),SABP_NACIONAL=NVL(TRIM(SABP_NACIONAL),SABP
+_NACIONAL),SABP_ESTADOC=NVL(TRIM(SABP_ESTADOC),SABP_ESTADOC),SABP_PAI=NVL(TRIM(SABP_PAI),SABP_PAI),SABP_MAE=NVL(TRIM(SABP_MAE),SABP_MAE),SABP_SEXO=NVL
+(TRIM(SABP_SEXO),SABP_SEXO),SABP_DTMAT1=NVL(TRIM(SABP_DTMAT1),SABP_DTMAT1),SABP_CODESC=NVL(TRIM(SABP_CODESC),SABP_CODESC),SABP_ANOCONCL=NVL(TRIM(SABP_
+ANOCONCL),SABP_ANOCONCL),SABP_TPCPF=NVL(TRIM(SABP_TPCPF),SABP_TPCPF),SABP_CPF=NVL(TRIM(SABP_CPF),SABP_CPF),SABP_RG=NVL(TRIM(SABP_RG),SABP_RG),SABP_DTR
+G=NVL(TRIM(SABP_DTRG),SABP_DTRG),SABP_ESTRG=NVL(TRIM(SABP_ESTRG),SABP_ESTRG),SABP_TITULO=NVL(TRIM(SABP_TITULO),SABP_TITULO),SABP_CIDTIT=NVL(TRIM(SABP_
+CIDTIT),SABP_CIDTIT),SABP_ESTTIT=NVL(TRIM(SABP_ESTTIT),SABP_ESTTIT),SABP_ZONA=NVL(TRIM(SABP_ZONA),SABP_ZONA),SABP_CERTMIL=NVL(TRIM(SABP_CERTMIL),SABP_
+CERTMIL),SABP_PROFISSAO=NVL(TRIM(SABP_PROFISSAO),SABP_PROFISSAO),SABP_VIACARTAO=NVL(TRIM(SABP_VIACARTAO),SABP_VIACARTAO),SABP_PRONTUARIO=NVL(TRIM(SABP
+_PRONTUARIO),SABP_PRONTUARIO),SABP_PASTADOC=NVL(TRIM(SABP_PASTADOC),SABP_PASTADOC),SABP_ARQMORTO=NVL(TRIM(SABP_ARQMORTO),SABP_ARQMORTO),SABP_PASS=NVL(
+TRIM(SABP_PASS),SABP_PASS),SABP_ESPFIS=NVL(TRIM(SABP_ESPFIS),SABP_ESPFIS),SABP_ESPVIS=NVL(TRIM(SABP_ESPVIS),SABP_ESPVIS),SABP_ESPAUD=NVL(TRIM(SABP_ESP
+AUD),SABP_ESPAUD)                                                                                                                                     
+ALTER TRIGGER SEU.TRG_SEUABQ_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABQ SET                                                                                                                                 
+SABQ_NUMRA=NVL(TRIM(SABQ_NUMRA),SABQ_NUMRA),SABQ_CODCUR=NVL(TRIM(SABQ_CODCUR),SABQ_CODCUR),SABQ_CODDOC=NVL(TRIM(SABQ_CODDOC),SABQ_CODDOC),SABQ_SITDOC=
+NVL(TRIM(SABQ_SITDOC),SABQ_SITDOC),SABQ_VERSAO=NVL(TRIM(SABQ_VERSAO),SABQ_VERSAO)                                                                     
+ALTER TRIGGER SEU.TRG_SEUABR_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABR SET                                                                                                                                 
+SABR_NUMRA=NVL(TRIM(SABR_NUMRA),SABR_NUMRA),SABR_CODCUR=NVL(TRIM(SABR_CODCUR),SABR_CODCUR),SABR_CODBOL=NVL(TRIM(SABR_CODBOL),SABR_CODBOL),SABR_PERDE=N
+VL(TRIM(SABR_PERDE),SABR_PERDE),SABR_MATRICULA=NVL(TRIM(SABR_MATRICULA),SABR_MATRICULA),SABR_NUMBOL=NVL(TRIM(SABR_NUMBOL),SABR_NUMBOL),SABR_DATA1=NVL(
+TRIM(SABR_DATA1),SABR_DATA1),SABR_DATA2=NVL(TRIM(SABR_DATA2),SABR_DATA2)                                                                              
+ALTER TRIGGER SEU.TRG_SEUABS_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABS SET                                                                                                                                 
+SABS_CODIGO=NVL(TRIM(SABS_CODIGO),SABS_CODIGO),SABS_DESC=NVL(TRIM(SABS_DESC),SABS_DESC),SABS_LIQBRU=NVL(TRIM(SABS_LIQBRU),SABS_LIQBRU),SABS_TIPO=NVL(T
+RIM(SABS_TIPO),SABS_TIPO)                                                                                                                             
+ALTER TRIGGER SEU.TRG_SEUABT_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABT SET                                                                                                                                 
+SABT_NUMRA=NVL(TRIM(SABT_NUMRA),SABT_NUMRA),SABT_CID=NVL(TRIM(SABT_CID),SABT_CID),SABT_OBS=NVL(TRIM(SABT_OBS),SABT_OBS),SABT_DATA1=NVL(TRIM(SABT_DATA1
+),SABT_DATA1),SABT_DATA2=NVL(TRIM(SABT_DATA2),SABT_DATA2),SABT_STATUS=NVL(TRIM(SABT_STATUS),SABT_STATUS),SABT_DISLEGAL=NVL(TRIM(SABT_DISLEGAL),SABT_DI
+SLEGAL)                                                                                                                                               
+ALTER TRIGGER SEU.TRG_SEUABU_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABU SET                                                                                                                                 
+SABU_NUMRA=NVL(TRIM(SABU_NUMRA),SABU_NUMRA),SABU_CODCUR=NVL(TRIM(SABU_CODCUR),SABU_CODCUR),SABU_VERSAO=NVL(TRIM(SABU_VERSAO),SABU_VERSAO),SABU_ANOLET=
+NVL(TRIM(SABU_ANOLET),SABU_ANOLET),SABU_PERIODO=NVL(TRIM(SABU_PERIODO),SABU_PERIODO),SABU_SERIE=NVL(TRIM(SABU_SERIE),SABU_SERIE),SABU_CODDIS=NVL(TRIM(
+SABU_CODDIS),SABU_CODDIS),SABU_REGIME=NVL(TRIM(SABU_REGIME),SABU_REGIME),SABU_SITDIS=NVL(TRIM(SABU_SITDIS),SABU_SITDIS),SABU_TITULO=NVL(TRIM(SABU_TITU
+LO),SABU_TITULO),SABU_CURNOVO=NVL(TRIM(SABU_CURNOVO),SABU_CURNOVO),SABU_VERNOVO=NVL(TRIM(SABU_VERNOVO),SABU_VERNOVO),SABU_ANONOVO=NVL(TRIM(SABU_ANONOV
+O),SABU_ANONOVO),SABU_PERNOVO=NVL(TRIM(SABU_PERNOVO),SABU_PERNOVO),SABU_TURNOVO=NVL(TRIM(SABU_TURNOVO),SABU_TURNOVO),SABU_UNDNOVO=NVL(TRIM(SABU_UNDNOV
+O),SABU_UNDNOVO),SABU_SERNOVO=NVL(TRIM(SABU_SERNOVO),SABU_SERNOVO),SABU_TRMNOVO=NVL(TRIM(SABU_TRMNOVO),SABU_TRMNOVO),SABU_DISNOVO=NVL(TRIM(SABU_DISNOV
+O),SABU_DISNOVO),SABU_DTMAT=NVL(TRIM(SABU_DTMAT),SABU_DTMAT)                                                                                          
+ALTER TRIGGER SEU.TRG_SEUACB_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUACB SET                                                                                                                                 
+SACB_NUMRA=NVL(TRIM(SACB_NUMRA),SACB_NUMRA),SACB_CODCUR=NVL(TRIM(SACB_CODCUR),SACB_CODCUR),SACB_VERSAO=NVL(TRIM(SACB_VERSAO),SACB_VERSAO),SACB_ANOLET=
+NVL(TRIM(SACB_ANOLET),SACB_ANOLET),SACB_PERIODO=NVL(TRIM(SACB_PERIODO),SACB_PERIODO),SACB_SERIE=NVL(TRIM(SACB_SERIE),SACB_SERIE),SACB_CODDIS=NVL(TRIM(
+SACB_CODDIS),SACB_CODDIS),SACB_ANONOVO=NVL(TRIM(SACB_ANONOVO),SACB_ANONOVO),SACB_PERNOVO=NVL(TRIM(SACB_PERNOVO),SACB_PERNOVO),SACB_CODAVA=NVL(TRIM(SAC
+B_CODAVA),SACB_CODAVA),SACB_CODATV=NVL(TRIM(SACB_CODATV),SACB_CODATV),SACB_DATA=NVL(TRIM(SACB_DATA),SACB_DATA),SACB_CONCEITO=NVL(TRIM(SACB_CONCEITO),S
+ACB_CONCEITO),SACB_COMPARECEU=NVL(TRIM(SACB_COMPARECEU),SACB_COMPARECEU),SACB_SUB=NVL(TRIM(SACB_SUB),SACB_SUB),SACB_BOLSUB=NVL(TRIM(SACB_BOLSUB),SACB_
+BOLSUB)                                                                                                                                               
+ALTER TRIGGER SEU.TRG_SEUACC_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUACC SET                                                                                                                                 
+SACC_NUMRA=NVL(TRIM(SACC_NUMRA),SACC_NUMRA),SACC_CODCUR=NVL(TRIM(SACC_CODCUR),SACC_CODCUR),SACC_VERSAO=NVL(TRIM(SACC_VERSAO),SACC_VERSAO),SACC_ANOLET=
+NVL(TRIM(SACC_ANOLET),SACC_ANOLET),SACC_PERIODO=NVL(TRIM(SACC_PERIODO),SACC_PERIODO),SACC_SERIE=NVL(TRIM(SACC_SERIE),SACC_SERIE),SACC_CODDIS=NVL(TRIM(
+SACC_CODDIS),SACC_CODDIS),SACC_ANONOVO=NVL(TRIM(SACC_ANONOVO),SACC_ANONOVO),SACC_PERNOVO=NVL(TRIM(SACC_PERNOVO),SACC_PERNOVO),SACC_DATA=NVL(TRIM(SACC_
+DATA),SACC_DATA),SACC_DTAPON=NVL(TRIM(SACC_DTAPON),SACC_DTAPON),SACC_REGDOM=NVL(TRIM(SACC_REGDOM),SACC_REGDOM)                                        
+ALTER TRIGGER SEU.TRG_SEUACF_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUACF SET                                                                                                                                 
+SACF_NUMRA=NVL(TRIM(SACF_NUMRA),SACF_NUMRA),SACF_CODCUR=NVL(TRIM(SACF_CODCUR),SACF_CODCUR),SACF_VERSAO=NVL(TRIM(SACF_VERSAO),SACF_VERSAO),SACF_ANOLET=
+NVL(TRIM(SACF_ANOLET),SACF_ANOLET),SACF_PERIODO=NVL(TRIM(SACF_PERIODO),SACF_PERIODO),SACF_SERIE=NVL(TRIM(SACF_SERIE),SACF_SERIE),SACF_CODDIS=NVL(TRIM(
+SACF_CODDIS),SACF_CODDIS),SACF_CONCEITO=NVL(TRIM(SACF_CONCEITO),SACF_CONCEITO),SACF_CODESC=NVL(TRIM(SACF_CODESC),SACF_CODESC),SACF_OBS=NVL(TRIM(SACF_O
+BS),SACF_OBS)                                                                                                                                         
+ALTER TRIGGER SEU.TRG_SEUACG_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUACG SET                                                                                                                                 
+SACG_CODIGO=NVL(TRIM(SACG_CODIGO),SACG_CODIGO),SACG_DESC=NVL(TRIM(SACG_DESC),SACG_DESC),SACG_CEP=NVL(TRIM(SACG_CEP),SACG_CEP),SACG_TPLOG=NVL(TRIM(SACG
+_TPLOG),SACG_TPLOG),SACG_LOGRADOURO=NVL(TRIM(SACG_LOGRADOURO),SACG_LOGRADOURO),SACG_NUM=NVL(TRIM(SACG_NUM),SACG_NUM),SACG_COMPL=NVL(TRIM(SACG_COMPL),S
+ACG_COMPL),SACG_BAIRRO=NVL(TRIM(SACG_BAIRRO),SACG_BAIRRO),SACG_CIDADE=NVL(TRIM(SACG_CIDADE),SACG_CIDADE),SACG_ESTADO=NVL(TRIM(SACG_ESTADO),SACG_ESTADO
+),SACG_TELEFONE=NVL(TRIM(SACG_TELEFONE),SACG_TELEFONE),SACG_STATUS=NVL(TRIM(SACG_STATUS),SACG_STATUS),SACG_TIPO=NVL(TRIM(SACG_TIPO),SACG_TIPO)        
+ALTER TRIGGER SEU.TRG_SEUACQ_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUACQ SET SACQ_CID=NVL(TRIM(SACQ_CID),SACQ_CID),SACQ_DESCCID=NVL(TRIM(SACQ_DESCCID),SACQ_DESCCID)                                         
+ALTER TRIGGER SEU.TRG_SEUACR_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUACR SET                                                                                                                                 
+SACR_CODIGO=NVL(TRIM(SACR_CODIGO),SACR_CODIGO),SACR_CONCEITO=NVL(TRIM(SACR_CONCEITO),SACR_CONCEITO),SACR_DE=NVL(TRIM(SACR_DE),SACR_DE),SACR_ATE=NVL(TR
+IM(SACR_ATE),SACR_ATE),SACR_DESC=NVL(TRIM(SACR_DESC),SACR_DESC)                                                                                       
+ALTER TRIGGER SEU.TRG_SEUACV_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUACV SET                                                                                                                                 
+SACV_CODCUR=NVL(TRIM(SACV_CODCUR),SACV_CODCUR),SACV_ANOLET=NVL(TRIM(SACV_ANOLET),SACV_ANOLET),SACV_PERIODO=NVL(TRIM(SACV_PERIODO),SACV_PERIODO),SACV_S
+ERIE=NVL(TRIM(SACV_SERIE),SACV_SERIE),SACV_CODUND=NVL(TRIM(SACV_CODUND),SACV_CODUND),SACV_TURNO=NVL(TRIM(SACV_TURNO),SACV_TURNO),SACV_DIAVENC=NVL(TRIM
+(SACV_DIAVENC),SACV_DIAVENC),SACV_DIADESC1=NVL(TRIM(SACV_DIADESC1),SACV_DIADESC1),SACV_DIADESC2=NVL(TRIM(SACV_DIADESC2),SACV_DIADESC2),SACV_DIADESC3=N
+VL(TRIM(SACV_DIADESC3),SACV_DIADESC3),SACV_MESINI=NVL(TRIM(SACV_MESINI),SACV_MESINI),SACV_DIADESC4=NVL(TRIM(SACV_DIADESC4),SACV_DIADESC4),SACV_DIADESC
+5=NVL(TRIM(SACV_DIADESC5),SACV_DIADESC5),SACV_QTDPARC=NVL(TRIM(SACV_QTDPARC),SACV_QTDPARC)                                                            
+ALTER TRIGGER SEU.TRG_SEUACW_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUACW SET SACW_REGIME=NVL(TRIM(SACW_REGIME),SACW_REGIME),SACW_CODCUR=NVL(TRIM(SACW_CODCUR),SACW_CODCUR)                                   
+DECLARE
+*
+ERRO na linha 1:
+ORA-02298: cannot validate (SEU.FK_SEUABB_SEUAAP) - parent keys not found 
+ORA-06512: at line 70 
+
+
+Decorrido: 00:01:35.29
+20:10:53 DB2> delete log_tabela_erro;
+
+14 linhas deletadas.
+
+Decorrido: 00:00:00.04
+20:11:14 DB2> select * from log_tabela;
+
+TABELA                         ATUALIZADOS                                                                                                            
+------------------------------ -----------                                                                                                            
+SEUAAO                                  87                                                                                                            
+SEUAAP                                1247                                                                                                            
+SEUAAQ                                  71                                                                                                            
+SEUAAR                                 407                                                                                                            
+SEUAAT                                 239                                                                                                            
+SEUAAU                                 929                                                                                                            
+SEUAAV                                   0                                                                                                            
+SEUAAW                                3342                                                                                                            
+SEUAAX                                   0                                                                                                            
+SEUAAY                               22815                                                                                                            
+SEUABA                                4433                                                                                                            
+SEUABC                                2734                                                                                                            
+SEUABE                                7970                                                                                                            
+SEUABF                                  81                                                                                                            
+SEUABG                                2474                                                                                                            
+SEUABH                                3224                                                                                                            
+SEUABJ                                   0                                                                                                            
+SEUABN                                 692                                                                                                            
+SEUABO                               44446                                                                                                            
+SEUABT                                 351                                                                                                            
+SEUACB                              720730                                                                                                            
+SEUACQ                               37334                                                                                                            
+SEUACR                                  95                                                                                                            
+SEUACV                               22378                                                                                                            
+SEUACW                                 106                                                                                                            
+SEUAAM                                  52                                                                                                            
+SEUAAO                                  87                                                                                                            
+SEUAAP                                1247                                                                                                            
+SEUAAQ                                  71                                                                                                            
+SEUAAR                                 407                                                                                                            
+SEUAAS                                 795                                                                                                            
+SEUAAT                                 239                                                                                                            
+SEUAAU                                 929                                                                                                            
+SEUAAV                                   0                                                                                                            
+SEUAAW                                3342                                                                                                            
+SEUAAX                                   0                                                                                                            
+SEUAAY                               22815                                                                                                            
+SEUABA                                4433                                                                                                            
+SEUABB                                3833                                                                                                            
+SEUABC                                2734                                                                                                            
+SEUABD                                7984                                                                                                            
+SEUABE                                7970                                                                                                            
+SEUABF                                  81                                                                                                            
+SEUABG                                2474                                                                                                            
+SEUABH                                3224                                                                                                            
+SEUABI                               43736                                                                                                            
+SEUABJ                                   0                                                                                                            
+SEUABK                                 352                                                                                                            
+SEUABN                                 692                                                                                                            
+SEUABO                               44446                                                                                                            
+SEUABP                               62231                                                                                                            
+SEUABQ                               97528                                                                                                            
+SEUABR                              106573                                                                                                            
+SEUABS                                2329                                                                                                            
+SEUABT                                 351                                                                                                            
+SEUABU                              327394                                                                                                            
+SEUACB                              720730                                                                                                            
+SEUACC                              195773                                                                                                            
+SEUACF                               21151                                                                                                            
+SEUACG                              103384                                                                                                            
+SEUACQ                               37334                                                                                                            
+SEUACR                                  95                                                                                                            
+SEUACV                               22378                                                                                                            
+SEUACW                                 106                                                                                                            
+
+64 linhas selecionadas.
+
+Decorrido: 00:00:00.31
+20:11:33 DB2> 
+20:11:39 DB2> 
+20:11:40 DB2> delete log_tabela;
+
+64 linhas deletadas.
+
+Decorrido: 00:00:00.01
+20:11:44 DB2> commit;
+
+Commit concluído.
+
+Decorrido: 00:00:00.01
+20:11:46 DB2> 
+20:11:53 DB2> DECLARE
+20:11:54   2  
+20:11:54   3   CURSOR C1 IS SELECT OWNER, TABLE_NAME FROM DBA_TABLES WHERE OWNER='SEU'
+20:11:54   4                               AND TABLE_NAME IN (SELECT TABELA FROM SEUMIG.MAX_TABLE)
+20:11:54   5                              -- AND TABLE_NAME IN ('SEUZZZ','SEUZZ1')
+20:11:54   6                              ORDER BY TABLE_NAME;
+20:11:54   7   CURSOR C2(TABELA IN VARCHAR2, OWN IN VARCHAR2) IS SELECT COLUMN_NAME, COLUMN_ID
+20:11:54   8                            FROM DBA_TAB_COLUMNS
+20:11:54   9                            WHERE OWNER=OWN
+20:11:54  10                              AND TABLE_NAME=TABELA
+20:11:54  11                              AND DATA_TYPE IN ('VARCHAR2','CHAR')
+20:11:54  12                               ORDER BY COLUMN_ID ASC;
+20:11:54  13   CURSOR C3(TABELA IN VARCHAR2, OWN IN VARCHAR2) IS SELECT TRIGGER_NAME FROM DBA_TRIGGERS
+20:11:54  14                                      WHERE OWNER=OWN
+20:11:54  15                                        AND TABLE_NAME=TABELA
+20:11:54  16                                        AND TRIGGER_NAME LIKE '%AUDIT%';
+20:11:54  17   CURSOR C4(OWN IN VARCHAR2) IS SELECT OWNER, TABLE_NAME, CONSTRAINT_NAME FROM DBA_CONSTRAINTS
+20:11:55  18                                 WHERE OWNER=OWN
+20:11:55  19                                   --AND TABLE_NAME IN ('SEUZZZ','SEUZZ1')
+20:11:55  20                                   AND TABLE_NAME IN (SELECT TABELA FROM SEUMIG.MAX_TABLE)
+20:11:55  21                                   AND CONSTRAINT_TYPE='R';
+20:11:55  22  
+20:11:55  23  
+20:11:55  24   STR VARCHAR2(4000);
+20:11:55  25   ATUALIZADOS NUMBER := 0;
+20:11:55  26   ERRO VARCHAR2(1000);
+20:11:55  27   CONT NUMBER := 0;
+20:11:55  28  
+20:11:55  29  BEGIN
+20:11:55  30    FOR RC4 IN C4('SEU') LOOP
+20:11:55  31     STR := 'ALTER TABLE SEU.'||RC4.TABLE_NAME||' DISABLE CONSTRAINT '||RC4.CONSTRAINT_NAME;
+20:11:55  32     DBMS_OUTPUT.PUT_LINE(STR);
+20:11:55  33     EXECUTE IMMEDIATE STR;
+20:11:55  34    END LOOP;
+20:11:55  35   FOR RC1 IN C1 LOOP
+20:11:55  36    FOR RC3 IN C3(RC1.TABLE_NAME,RC1.OWNER) LOOP
+20:11:55  37     STR := 'ALTER TRIGGER '||RC1.OWNER||'.'||RC3.TRIGGER_NAME||' DISABLE';
+20:11:55  38     DBMS_OUTPUT.PUT_LINE(STR);
+20:11:55  39     EXECUTE IMMEDIATE STR;
+20:11:55  40    END LOOP;
+20:11:55  41     ATUALIZADOS := 0;
+20:11:55  42     STR := 'UPDATE SEU.'||RC1.TABLE_NAME||' SET ';
+20:11:55  43     CONT := 0;
+20:11:55  44     FOR RC2 IN C2(RC1.TABLE_NAME, RC1.OWNER) LOOP
+20:11:55  45     IF CONT = 0 THEN
+20:11:55  46      STR := STR||RC2.COLUMN_NAME||'=NVL(TRIM('||RC2.COLUMN_NAME||'),'||RC2.COLUMN_NAME||')';
+20:11:55  47      CONT := CONT + 1;
+20:11:55  48     ELSE
+20:11:55  49      STR := STR||','||RC2.COLUMN_NAME||'=NVL(TRIM('||RC2.COLUMN_NAME||'),'||RC2.COLUMN_NAME||')';
+20:11:56  50      CONT := CONT + 1;
+20:11:56  51     END IF;
+20:11:56  52    END LOOP;
+20:11:56  53    BEGIN
+20:11:56  54     EXECUTE IMMEDIATE STR;
+20:11:56  55     DBMS_OUTPUT.PUT_LINE(STR);
+20:11:56  56     ATUALIZADOS := SQL%ROWCOUNT;
+20:11:56  57     INSERT INTO LOG_TABELA VALUES (RC1.TABLE_NAME, ATUALIZADOS);
+20:11:56  58     COMMIT;
+20:11:56  59    EXCEPTION WHEN OTHERS THEN
+20:11:56  60     erro := sqlerrm;
+20:11:56  61     INSERT INTO LOG_TABELA_ERRO VALUES (RC1.TABLE_NAME,erro);
+20:11:56  62    END;
+20:11:56  63    FOR RC3 IN C3(RC1.TABLE_NAME,RC1.OWNER) LOOP
+20:11:56  64     STR := 'ALTER TRIGGER '||RC1.OWNER||'.'||RC3.TRIGGER_NAME||' ENABLE';
+20:11:56  65     EXECUTE IMMEDIATE STR;
+20:11:56  66    END LOOP;
+20:11:56  67   END LOOP;
+20:11:56  68   FOR RC4 IN C4('SEU') LOOP
+20:11:56  69     STR := 'ALTER TABLE SEU.'||RC4.TABLE_NAME||' ENABLE CONSTRAINT '||RC4.CONSTRAINT_NAME;
+20:11:56  70     EXECUTE IMMEDIATE STR;
+20:11:56  71    END LOOP;
+20:11:56  72  END;
+20:11:56  73  /
+ALTER TABLE SEU.SEUAAM DISABLE CONSTRAINT FK_SEUAAM_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUAAM DISABLE CONSTRAINT FK_SEUAAM_SEUACK                                                                                            
+ALTER TABLE SEU.SEUAAO DISABLE CONSTRAINT FK_SEUAAO_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUAAP DISABLE CONSTRAINT FK_SEUAAP_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUAAP DISABLE CONSTRAINT FK_SEUAAP_SEUAAO                                                                                            
+ALTER TABLE SEU.SEUAAP DISABLE CONSTRAINT FK_SEUAAP_SEUAAQ                                                                                            
+ALTER TABLE SEU.SEUAAQ DISABLE CONSTRAINT FK_SEUAAQ_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUAAR DISABLE CONSTRAINT FK_SEUAAR_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUAAS DISABLE CONSTRAINT FK_SEUAAS_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUAAS DISABLE CONSTRAINT FK_SEUAAS_SEUAAM                                                                                            
+ALTER TABLE SEU.SEUAAT DISABLE CONSTRAINT FK_SEUAAT_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUAAT DISABLE CONSTRAINT FK_SEUAAT_SEUAAM                                                                                            
+ALTER TABLE SEU.SEUAAU DISABLE CONSTRAINT FK_SEUAAU_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUAAU DISABLE CONSTRAINT FK_SEUAAU_SEUAAM                                                                                            
+ALTER TABLE SEU.SEUAAV DISABLE CONSTRAINT FK_SEUAAV_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUAAW DISABLE CONSTRAINT FK_SEUAAW_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUAAX DISABLE CONSTRAINT FK_SEUAAX_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUAAY DISABLE CONSTRAINT FK_SEUAAY_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUAAY DISABLE CONSTRAINT FK_SEUAAY_SEUAAP                                                                                            
+ALTER TABLE SEU.SEUAAY DISABLE CONSTRAINT FK_SEUAAY_SEUABA                                                                                            
+ALTER TABLE SEU.SEUABA DISABLE CONSTRAINT FK_SEUABA_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABB DISABLE CONSTRAINT FK_SEUABB_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABB DISABLE CONSTRAINT FK_SEUABB_SEUAAP                                                                                            
+ALTER TABLE SEU.SEUABB DISABLE CONSTRAINT FK_SEUABB_SEUABA                                                                                            
+ALTER TABLE SEU.SEUABC DISABLE CONSTRAINT FK_SEUABC_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABD DISABLE CONSTRAINT FK_SEUABD_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABE DISABLE CONSTRAINT FK_SEUABE_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABF DISABLE CONSTRAINT FK_SEUABF_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABF DISABLE CONSTRAINT FK_SEUABF_SEUAAM                                                                                            
+ALTER TABLE SEU.SEUABG DISABLE CONSTRAINT FK_SEUABG_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABH DISABLE CONSTRAINT FK_SEUABH_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABH DISABLE CONSTRAINT FK_SEUABH_SEUAAM                                                                                            
+ALTER TABLE SEU.SEUABH DISABLE CONSTRAINT FK_SEUABH_SEUAAW                                                                                            
+ALTER TABLE SEU.SEUABI DISABLE CONSTRAINT FK_SEUABI_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABJ DISABLE CONSTRAINT FK_SEUABJ_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABK DISABLE CONSTRAINT FK_SEUABK_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABN DISABLE CONSTRAINT FK_SEUABN_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABO DISABLE CONSTRAINT FK_SEUABO_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABP DISABLE CONSTRAINT FK_SEUABP_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABP DISABLE CONSTRAINT FK_SEUABP_SEUACG                                                                                            
+ALTER TABLE SEU.SEUABP DISABLE CONSTRAINT FK_SEUABP_SEUACK                                                                                            
+ALTER TABLE SEU.SEUABQ DISABLE CONSTRAINT FK_SEUABQ_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABR DISABLE CONSTRAINT FK_SEUABR_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABS DISABLE CONSTRAINT FK_SEUABS_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABT DISABLE CONSTRAINT FK_SEUABT_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUABU DISABLE CONSTRAINT FK_SEUABU_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUACB DISABLE CONSTRAINT FK_SEUACB_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUACC DISABLE CONSTRAINT FK_SEUACC_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUACF DISABLE CONSTRAINT FK_SEUACF_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUACG DISABLE CONSTRAINT FK_SEUACG_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUACG DISABLE CONSTRAINT FK_SEUACG_SEUACK                                                                                            
+ALTER TABLE SEU.SEUACQ DISABLE CONSTRAINT FK_SEUACQ_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUACR DISABLE CONSTRAINT FK_SEUACR_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUACV DISABLE CONSTRAINT FK_SEUACV_SEUAAA                                                                                            
+ALTER TABLE SEU.SEUACW DISABLE CONSTRAINT FK_SEUACW_SEUAAA                                                                                            
+ALTER TRIGGER SEU.TRG_SEUAAM_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUAAM SET                                                                                                                                 
+SAAM_CODIGO=NVL(TRIM(SAAM_CODIGO),SAAM_CODIGO),SAAM_DESC=NVL(TRIM(SAAM_DESC),SAAM_DESC),SAAM_CNPJ=NVL(TRIM(SAAM_CNPJ),SAAM_CNPJ),SAAM_CEP=NVL(TRIM(SAA
+M_CEP),SAAM_CEP),SAAM_TPLOG=NVL(TRIM(SAAM_TPLOG),SAAM_TPLOG),SAAM_LOGRADOURO=NVL(TRIM(SAAM_LOGRADOURO),SAAM_LOGRADOURO),SAAM_NUM=NVL(TRIM(SAAM_NUM),SA
+AM_NUM),SAAM_COMPL=NVL(TRIM(SAAM_COMPL),SAAM_COMPL),SAAM_BAIRRO=NVL(TRIM(SAAM_BAIRRO),SAAM_BAIRRO),SAAM_CIDADE=NVL(TRIM(SAAM_CIDADE),SAAM_CIDADE),SAAM
+_ESTADO=NVL(TRIM(SAAM_ESTADO),SAAM_ESTADO),SAAM_TELEFONE=NVL(TRIM(SAAM_TELEFONE),SAAM_TELEFONE)                                                       
+ALTER TRIGGER SEU.TRG_SEUAAO_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUAAO SET SAAO_CODIGO=NVL(TRIM(SAAO_CODIGO),SAAO_CODIGO),SAAO_DESC=NVL(TRIM(SAAO_DESC),SAAO_DESC)                                         
+ALTER TRIGGER SEU.TRG_SEUAAP_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUAAP SET                                                                                                                                 
+SAAP_CODIGO=NVL(TRIM(SAAP_CODIGO),SAAP_CODIGO),SAAP_VERSAO=NVL(TRIM(SAAP_VERSAO),SAAP_VERSAO),SAAP_DESC=NVL(TRIM(SAAP_DESC),SAAP_DESC),SAAP_DESCMEC=NV
+L(TRIM(SAAP_DESCMEC),SAAP_DESCMEC),SAAP_CODAREA=NVL(TRIM(SAAP_CODAREA),SAAP_CODAREA),SAAP_HABILITACAO=NVL(TRIM(SAAP_HABILITACAO),SAAP_HABILITACAO),SAA
+P_TPHORA=NVL(TRIM(SAAP_TPHORA),SAAP_TPHORA),SAAP_GRAU=NVL(TRIM(SAAP_GRAU),SAAP_GRAU),SAAP_TPFORMA=NVL(TRIM(SAAP_TPFORMA),SAAP_TPFORMA),SAAP_TPCURSO=NV
+L(TRIM(SAAP_TPCURSO),SAAP_TPCURSO),SAAP_VALOR=NVL(TRIM(SAAP_VALOR),SAAP_VALOR),SAAP_GRPDOC=NVL(TRIM(SAAP_GRPDOC),SAAP_GRPDOC),SAAP_OBS=NVL(TRIM(SAAP_O
+BS),SAAP_OBS),SAAP_TITULO=NVL(TRIM(SAAP_TITULO),SAAP_TITULO)                                                                                          
+ALTER TRIGGER SEU.TRG_SEUAAQ_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUAAQ SET SAAQ_CODIGO=NVL(TRIM(SAAQ_CODIGO),SAAQ_CODIGO),SAAQ_DESC=NVL(TRIM(SAAQ_DESC),SAAQ_DESC)                                         
+ALTER TRIGGER SEU.TRG_SEUAAR_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUAAR SET                                                                                                                                 
+SAAR_GRPDOC=NVL(TRIM(SAAR_GRPDOC),SAAR_GRPDOC),SAAR_CODDOC=NVL(TRIM(SAAR_CODDOC),SAAR_CODDOC),SAAR_REGRA=NVL(TRIM(SAAR_REGRA),SAAR_REGRA),SAAR_OBRIGAC
+C=NVL(TRIM(SAAR_OBRIGACC),SAAR_OBRIGACC)                                                                                                              
+ALTER TRIGGER SEU.TRG_SEUAAS_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUAAS SET                                                                                                                                 
+SAAS_CODCUR=NVL(TRIM(SAAS_CODCUR),SAAS_CODCUR),SAAS_CODUND=NVL(TRIM(SAAS_CODUND),SAAS_CODUND),SAAS_CCUSTO=NVL(TRIM(SAAS_CCUSTO),SAAS_CCUSTO)          
+ALTER TRIGGER SEU.TRG_SEUAAT_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUAAT SET                                                                                                                                 
+SAAT_CODUND=NVL(TRIM(SAAT_CODUND),SAAT_CODUND),SAAT_ANOLET=NVL(TRIM(SAAT_ANOLET),SAAT_ANOLET),SAAT_PERIODO=NVL(TRIM(SAAT_PERIODO),SAAT_PERIODO),SAAT_F
+AIXA1=NVL(TRIM(SAAT_FAIXA1),SAAT_FAIXA1),SAAT_FAIXA2=NVL(TRIM(SAAT_FAIXA2),SAAT_FAIXA2),SAAT_FAIXAATU=NVL(TRIM(SAAT_FAIXAATU),SAAT_FAIXAATU)          
+ALTER TRIGGER SEU.TRG_SEUAAU_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUAAU SET                                                                                                                                 
+SAAU_CODCUR=NVL(TRIM(SAAU_CODCUR),SAAU_CODCUR),SAAU_CODUND=NVL(TRIM(SAAU_CODUND),SAAU_CODUND),SAAU_DATA1=NVL(TRIM(SAAU_DATA1),SAAU_DATA1),SAAU_DATA2=N
+VL(TRIM(SAAU_DATA2),SAAU_DATA2)                                                                                                                       
+ALTER TRIGGER SEU.TRG_SEUAAV_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUAAV SET                                                                                                                                 
+SAAV_CODCUR=NVL(TRIM(SAAV_CODCUR),SAAV_CODCUR),SAAV_VERSAO=NVL(TRIM(SAAV_VERSAO),SAAV_VERSAO),SAAV_SERIE=NVL(TRIM(SAAV_SERIE),SAAV_SERIE),SAAV_CODDIS=
+NVL(TRIM(SAAV_CODDIS),SAAV_CODDIS)                                                                                                                    
+ALTER TRIGGER SEU.TRG_SEUAAW_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUAAW SET                                                                                                                                 
+SAAW_CODCUR=NVL(TRIM(SAAW_CODCUR),SAAW_CODCUR),SAAW_VERSAO=NVL(TRIM(SAAW_VERSAO),SAAW_VERSAO),SAAW_SERIE=NVL(TRIM(SAAW_SERIE),SAAW_SERIE),SAAW_ANOLET=
+NVL(TRIM(SAAW_ANOLET),SAAW_ANOLET),SAAW_PERIODO=NVL(TRIM(SAAW_PERIODO),SAAW_PERIODO),SAAW_DATA1=NVL(TRIM(SAAW_DATA1),SAAW_DATA1),SAAW_DATA2=NVL(TRIM(S
+AAW_DATA2),SAAW_DATA2),SAAW_DTMAT1=NVL(TRIM(SAAW_DTMAT1),SAAW_DTMAT1),SAAW_DTMAT2=NVL(TRIM(SAAW_DTMAT2),SAAW_DTMAT2),SAAW_REPSERIE=NVL(TRIM(SAAW_REPSE
+RIE),SAAW_REPSERIE),SAAW_TPAPON=NVL(TRIM(SAAW_TPAPON),SAAW_TPAPON),SAAW_GRPAVA=NVL(TRIM(SAAW_GRPAVA),SAAW_GRPAVA),SAAW_COBSUB=NVL(TRIM(SAAW_COBSUB),SA
+AW_COBSUB),SAAW_PROMCUR=NVL(TRIM(SAAW_PROMCUR),SAAW_PROMCUR),SAAW_DIA1=NVL(TRIM(SAAW_DIA1),SAAW_DIA1),SAAW_DIA2=NVL(TRIM(SAAW_DIA2),SAAW_DIA2),SAAW_DI
+A3=NVL(TRIM(SAAW_DIA3),SAAW_DIA3),SAAW_DIA4=NVL(TRIM(SAAW_DIA4),SAAW_DIA4),SAAW_DIA5=NVL(TRIM(SAAW_DIA5),SAAW_DIA5),SAAW_DIA6=NVL(TRIM(SAAW_DIA6),SAAW
+_DIA6),SAAW_DIA7=NVL(TRIM(SAAW_DIA7),SAAW_DIA7),SAAW_ARRED=NVL(TRIM(SAAW_ARRED),SAAW_ARRED),SAAW_GRPARD=NVL(TRIM(SAAW_GRPARD),SAAW_GRPARD),SAAW_REGIME
+=NVL(TRIM(SAAW_REGIME),SAAW_REGIME),SAAW_DIANU=NVL(TRIM(SAAW_DIANU),SAAW_DIANU),SAAW_ANOLETREG=NVL(TRIM(SAAW_ANOLETREG),SAAW_ANOLETREG),SAAW_PERIODORE
+G=NVL(TRIM(SAAW_PERIODOREG),SAAW_PERIODOREG)                                                                                                          
+ALTER TRIGGER SEU.TRG_SEUAAX_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUAAX SET                                                                                                                                 
+SAAX_CODCUR=NVL(TRIM(SAAX_CODCUR),SAAX_CODCUR),SAAX_VERSAO=NVL(TRIM(SAAX_VERSAO),SAAX_VERSAO),SAAX_SERIE=NVL(TRIM(SAAX_SERIE),SAAX_SERIE),SAAX_CODDIS=
+NVL(TRIM(SAAX_CODDIS),SAAX_CODDIS),SAAX_ITEM=NVL(TRIM(SAAX_ITEM),SAAX_ITEM),SAAX_DESC=NVL(TRIM(SAAX_DESC),SAAX_DESC)                                  
+ALTER TRIGGER SEU.TRG_SEUAAY_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUAAY SET                                                                                                                                 
+SAAY_CODCUR=NVL(TRIM(SAAY_CODCUR),SAAY_CODCUR),SAAY_VERSAO=NVL(TRIM(SAAY_VERSAO),SAAY_VERSAO),SAAY_SERIE=NVL(TRIM(SAAY_SERIE),SAAY_SERIE),SAAY_CODDIS=
+NVL(TRIM(SAAY_CODDIS),SAAY_CODDIS),SAAY_TPNOTA=NVL(TRIM(SAAY_TPNOTA),SAAY_TPNOTA),SAAY_PARTAMG=NVL(TRIM(SAAY_PARTAMG),SAAY_PARTAMG),SAAY_TPGRADE=NVL(T
+RIM(SAAY_TPGRADE),SAAY_TPGRADE),SAAY_TPCURSO=NVL(TRIM(SAAY_TPCURSO),SAAY_TPCURSO),SAAY_PARTBLOQ=NVL(TRIM(SAAY_PARTBLOQ),SAAY_PARTBLOQ),SAAY_GRPPRE=NVL
+(TRIM(SAAY_GRPPRE),SAAY_GRPPRE),SAAY_MODALIDADE=NVL(TRIM(SAAY_MODALIDADE),SAAY_MODALIDADE),SAAY_ATIVCOMP=NVL(TRIM(SAAY_ATIVCOMP),SAAY_ATIVCOMP),SAAY_C
+ONCEITO=NVL(TRIM(SAAY_CONCEITO),SAAY_CONCEITO),SAAY_GRPEQV=NVL(TRIM(SAAY_GRPEQV),SAAY_GRPEQV),SAAY_OBRIGACC=NVL(TRIM(SAAY_OBRIGACC),SAAY_OBRIGACC)    
+ALTER TRIGGER SEU.TRG_SEUABA_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABA SET                                                                                                                                 
+SABA_CODIGO=NVL(TRIM(SABA_CODIGO),SABA_CODIGO),SABA_DESC=NVL(TRIM(SABA_DESC),SABA_DESC),SABA_DESCMEC=NVL(TRIM(SABA_DESCMEC),SABA_DESCMEC),SABA_TIPO=NV
+L(TRIM(SABA_TIPO),SABA_TIPO),SABA_DISPAI=NVL(TRIM(SABA_DISPAI),SABA_DISPAI),SABA_CORREQ=NVL(TRIM(SABA_CORREQ),SABA_CORREQ),SABA_MODALID=NVL(TRIM(SABA_
+MODALID),SABA_MODALID)                                                                                                                                
+ALTER TRIGGER SEU.TRG_SEUABB_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABB SET                                                                                                                                 
+SABB_CODCUR=NVL(TRIM(SABB_CODCUR),SABB_CODCUR),SABB_VERSAO=NVL(TRIM(SABB_VERSAO),SABB_VERSAO),SABB_CODDIS1=NVL(TRIM(SABB_CODDIS1),SABB_CODDIS1),SABB_C
+ODDIS2=NVL(TRIM(SABB_CODDIS2),SABB_CODDIS2),SABB_TIPO=NVL(TRIM(SABB_TIPO),SABB_TIPO),SABB_DATA1=NVL(TRIM(SABB_DATA1),SABB_DATA1),SABB_DATA2=NVL(TRIM(S
+ABB_DATA2),SABB_DATA2),SABB_GRPEQV=NVL(TRIM(SABB_GRPEQV),SABB_GRPEQV)                                                                                 
+ALTER TRIGGER SEU.TRG_SEUABC_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABC SET SABC_CODIGO=NVL(TRIM(SABC_CODIGO),SABC_CODIGO),SABC_DESC=NVL(TRIM(SABC_DESC),SABC_DESC)                                         
+ALTER TRIGGER SEU.TRG_SEUABD_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABD SET                                                                                                                                 
+SABD_CODGRP=NVL(TRIM(SABD_CODGRP),SABD_CODGRP),SABD_CODAVA=NVL(TRIM(SABD_CODAVA),SABD_CODAVA),SABD_CODATV=NVL(TRIM(SABD_CODATV),SABD_CODATV),SABD_SUBA
+VA=NVL(TRIM(SABD_SUBAVA),SABD_SUBAVA),SABD_TIPO=NVL(TRIM(SABD_TIPO),SABD_TIPO),SABD_POSATIV=NVL(TRIM(SABD_POSATIV),SABD_POSATIV),SABD_DESC=NVL(TRIM(SA
+BD_DESC),SABD_DESC)                                                                                                                                   
+ALTER TRIGGER SEU.TRG_SEUABE_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABE SET                                                                                                                                 
+SABE_CODCUR=NVL(TRIM(SABE_CODCUR),SABE_CODCUR),SABE_VERSAO=NVL(TRIM(SABE_VERSAO),SABE_VERSAO),SABE_SERIE=NVL(TRIM(SABE_SERIE),SABE_SERIE),SABE_ANOLET=
+NVL(TRIM(SABE_ANOLET),SABE_ANOLET),SABE_PERIODO=NVL(TRIM(SABE_PERIODO),SABE_PERIODO),SABE_GRPAVA=NVL(TRIM(SABE_GRPAVA),SABE_GRPAVA),SABE_CODAVA=NVL(TR
+IM(SABE_CODAVA),SABE_CODAVA),SABE_CODATV=NVL(TRIM(SABE_CODATV),SABE_CODATV),SABE_DATA1=NVL(TRIM(SABE_DATA1),SABE_DATA1),SABE_DATA2=NVL(TRIM(SABE_DATA2
+),SABE_DATA2),SABE_DTAPON1=NVL(TRIM(SABE_DTAPON1),SABE_DTAPON1),SABE_DTAPON2=NVL(TRIM(SABE_DTAPON2),SABE_DTAPON2)                                     
+ALTER TRIGGER SEU.TRG_SEUABF_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABF SET                                                                                                                                 
+SABF_CODIGO=NVL(TRIM(SABF_CODIGO),SABF_CODIGO),SABF_CODUND=NVL(TRIM(SABF_CODUND),SABF_CODUND),SABF_PREDIO=NVL(TRIM(SABF_PREDIO),SABF_PREDIO),SABF_DESC
+=NVL(TRIM(SABF_DESC),SABF_DESC)                                                                                                                       
+ALTER TRIGGER SEU.TRG_SEUABG_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABG SET                                                                                                                                 
+SABG_CODIGO=NVL(TRIM(SABG_CODIGO),SABG_CODIGO),SABG_CODPRE=NVL(TRIM(SABG_CODPRE),SABG_CODPRE),SABG_ANDAR=NVL(TRIM(SABG_ANDAR),SABG_ANDAR),SABG_SALA=NV
+L(TRIM(SABG_SALA),SABG_SALA)                                                                                                                          
+ALTER TRIGGER SEU.TRG_SEUABH_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABH SET                                                                                                                                 
+SABH_CODCUR=NVL(TRIM(SABH_CODCUR),SABH_CODCUR),SABH_VERSAO=NVL(TRIM(SABH_VERSAO),SABH_VERSAO),SABH_ANOLET=NVL(TRIM(SABH_ANOLET),SABH_ANOLET),SABH_PERI
+ODO=NVL(TRIM(SABH_PERIODO),SABH_PERIODO),SABH_CODUND=NVL(TRIM(SABH_CODUND),SABH_CODUND),SABH_TURNO=NVL(TRIM(SABH_TURNO),SABH_TURNO),SABH_SERIE=NVL(TRI
+M(SABH_SERIE),SABH_SERIE),SABH_TURMA=NVL(TRIM(SABH_TURMA),SABH_TURMA),SABH_CODLOC=NVL(TRIM(SABH_CODLOC),SABH_CODLOC)                                  
+ALTER TRIGGER SEU.TRG_SEUABI_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABI SET                                                                                                                                 
+SABI_CODCUR=NVL(TRIM(SABI_CODCUR),SABI_CODCUR),SABI_VERSAO=NVL(TRIM(SABI_VERSAO),SABI_VERSAO),SABI_ANOLET=NVL(TRIM(SABI_ANOLET),SABI_ANOLET),SABI_PERI
+ODO=NVL(TRIM(SABI_PERIODO),SABI_PERIODO),SABI_CODUND=NVL(TRIM(SABI_CODUND),SABI_CODUND),SABI_TURNO=NVL(TRIM(SABI_TURNO),SABI_TURNO),SABI_SERIE=NVL(TRI
+M(SABI_SERIE),SABI_SERIE),SABI_TURMA=NVL(TRIM(SABI_TURMA),SABI_TURMA),SABI_CODDIS=NVL(TRIM(SABI_CODDIS),SABI_CODDIS),SABI_DIASEM=NVL(TRIM(SABI_DIASEM)
+,SABI_DIASEM),SABI_CODHOR=NVL(TRIM(SABI_CODHOR),SABI_CODHOR),SABI_DATA1=NVL(TRIM(SABI_DATA1),SABI_DATA1),SABI_DATA2=NVL(TRIM(SABI_DATA2),SABI_DATA2),S
+ABI_CODMAT=NVL(TRIM(SABI_CODMAT),SABI_CODMAT),SABI_GRPMAT=NVL(TRIM(SABI_GRPMAT),SABI_GRPMAT),SABI_FORMOU=NVL(TRIM(SABI_FORMOU),SABI_FORMOU),SABI_REMUN
+ERA=NVL(TRIM(SABI_REMUNERA),SABI_REMUNERA),SABI_TROCAMAT=NVL(TRIM(SABI_TROCAMAT),SABI_TROCAMAT),SABI_DTESP=NVL(TRIM(SABI_DTESP),SABI_DTESP),SABI_CODLO
+C=NVL(TRIM(SABI_CODLOC),SABI_CODLOC),SABI_QTDEVAG=NVL(TRIM(SABI_QTDEVAG),SABI_QTDEVAG),SABI_ATVCOMP=NVL(TRIM(SABI_ATVCOMP),SABI_ATVCOMP)              
+ALTER TRIGGER SEU.TRG_SEUABJ_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABJ SET                                                                                                                                 
+SABJ_CODIGO=NVL(TRIM(SABJ_CODIGO),SABJ_CODIGO),SABJ_CODMAT=NVL(TRIM(SABJ_CODMAT),SABJ_CODMAT),SABJ_NIVEL=NVL(TRIM(SABJ_NIVEL),SABJ_NIVEL),SABJ_APONTA=
+NVL(TRIM(SABJ_APONTA),SABJ_APONTA)                                                                                                                    
+ALTER TRIGGER SEU.TRG_SEUABK_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABK SET                                                                                                                                 
+SABK_CODIGO=NVL(TRIM(SABK_CODIGO),SABK_CODIGO),SABK_HORA1=NVL(TRIM(SABK_HORA1),SABK_HORA1),SABK_HORA2=NVL(TRIM(SABK_HORA2),SABK_HORA2)                
+ALTER TRIGGER SEU.TRG_SEUABN_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABN SET                                                                                                                                 
+SABN_CODCUR=NVL(TRIM(SABN_CODCUR),SABN_CODCUR),SABN_VERSAO=NVL(TRIM(SABN_VERSAO),SABN_VERSAO),SABN_ANOLET=NVL(TRIM(SABN_ANOLET),SABN_ANOLET),SABN_PERI
+ODO=NVL(TRIM(SABN_PERIODO),SABN_PERIODO),SABN_CODUND=NVL(TRIM(SABN_CODUND),SABN_CODUND),SABN_TURNO=NVL(TRIM(SABN_TURNO),SABN_TURNO),SABN_SERIE=NVL(TRI
+M(SABN_SERIE),SABN_SERIE),SABN_TURMA=NVL(TRIM(SABN_TURMA),SABN_TURMA),SABN_CODDIS=NVL(TRIM(SABN_CODDIS),SABN_CODDIS),SABN_DIASEM=NVL(TRIM(SABN_DIASEM)
+,SABN_DIASEM),SABN_DATA=NVL(TRIM(SABN_DATA),SABN_DATA)                                                                                                
+ALTER TRIGGER SEU.TRG_SEUABO_AUDIT_T DISABLE                                                                                                          
+ALTER TRIGGER SEU.TRG_SEUABO_AUDIT2_T DISABLE                                                                                                         
+UPDATE SEU.SEUABO SET                                                                                                                                 
+SABO_NUMRA=NVL(TRIM(SABO_NUMRA),SABO_NUMRA),SABO_CODCUR=NVL(TRIM(SABO_CODCUR),SABO_CODCUR),SABO_VERSAO=NVL(TRIM(SABO_VERSAO),SABO_VERSAO),SABO_ANOLET=
+NVL(TRIM(SABO_ANOLET),SABO_ANOLET),SABO_PERIODO=NVL(TRIM(SABO_PERIODO),SABO_PERIODO),SABO_CODUND=NVL(TRIM(SABO_CODUND),SABO_CODUND),SABO_TURNO=NVL(TRI
+M(SABO_TURNO),SABO_TURNO),SABO_SERIE=NVL(TRIM(SABO_SERIE),SABO_SERIE),SABO_TURMA=NVL(TRIM(SABO_TURMA),SABO_TURMA),SABO_SITALU=NVL(TRIM(SABO_SITALU),SA
+BO_SITALU),SABO_TPSIT=NVL(TRIM(SABO_TPSIT),SABO_TPSIT),SABO_ATIVO=NVL(TRIM(SABO_ATIVO),SABO_ATIVO),SABO_DATA=NVL(TRIM(SABO_DATA),SABO_DATA),SABO_ORIGE
+M=NVL(TRIM(SABO_ORIGEM),SABO_ORIGEM),SABO_QTDPARC=NVL(TRIM(SABO_QTDPARC),SABO_QTDPARC)                                                                
+ALTER TRIGGER SEU.TRG_SEUABP_AUDIT2_T DISABLE                                                                                                         
+ALTER TRIGGER SEU.TRG_SEUABP_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABP SET                                                                                                                                 
+SABP_NUMRA=NVL(TRIM(SABP_NUMRA),SABP_NUMRA),SABP_DESC=NVL(TRIM(SABP_DESC),SABP_DESC),SABP_CODPRSEL=NVL(TRIM(SABP_CODPRSEL),SABP_CODPRSEL),SABP_CODINS=
+NVL(TRIM(SABP_CODINS),SABP_CODINS),SABP_CEP=NVL(TRIM(SABP_CEP),SABP_CEP),SABP_TPLOG=NVL(TRIM(SABP_TPLOG),SABP_TPLOG),SABP_LOGRADOURO=NVL(TRIM(SABP_LOG
+RADOURO),SABP_LOGRADOURO),SABP_NUM=NVL(TRIM(SABP_NUM),SABP_NUM),SABP_COMPL=NVL(TRIM(SABP_COMPL),SABP_COMPL),SABP_BAIRRO=NVL(TRIM(SABP_BAIRRO),SABP_BAI
+RRO),SABP_CIDADE=NVL(TRIM(SABP_CIDADE),SABP_CIDADE),SABP_ESTADO=NVL(TRIM(SABP_ESTADO),SABP_ESTADO),SABP_TELEFONE1=NVL(TRIM(SABP_TELEFONE1),SABP_TELEFO
+NE1),SABP_TELEFONE2=NVL(TRIM(SABP_TELEFONE2),SABP_TELEFONE2),SABP_TELEFONE3=NVL(TRIM(SABP_TELEFONE3),SABP_TELEFONE3),SABP_EMAIL=NVL(TRIM(SABP_EMAIL),S
+ABP_EMAIL),SABP_DTNASC=NVL(TRIM(SABP_DTNASC),SABP_DTNASC),SABP_NATURAL=NVL(TRIM(SABP_NATURAL),SABP_NATURAL),SABP_NACIONAL=NVL(TRIM(SABP_NACIONAL),SABP
+_NACIONAL),SABP_ESTADOC=NVL(TRIM(SABP_ESTADOC),SABP_ESTADOC),SABP_PAI=NVL(TRIM(SABP_PAI),SABP_PAI),SABP_MAE=NVL(TRIM(SABP_MAE),SABP_MAE),SABP_SEXO=NVL
+(TRIM(SABP_SEXO),SABP_SEXO),SABP_DTMAT1=NVL(TRIM(SABP_DTMAT1),SABP_DTMAT1),SABP_CODESC=NVL(TRIM(SABP_CODESC),SABP_CODESC),SABP_ANOCONCL=NVL(TRIM(SABP_
+ANOCONCL),SABP_ANOCONCL),SABP_TPCPF=NVL(TRIM(SABP_TPCPF),SABP_TPCPF),SABP_CPF=NVL(TRIM(SABP_CPF),SABP_CPF),SABP_RG=NVL(TRIM(SABP_RG),SABP_RG),SABP_DTR
+G=NVL(TRIM(SABP_DTRG),SABP_DTRG),SABP_ESTRG=NVL(TRIM(SABP_ESTRG),SABP_ESTRG),SABP_TITULO=NVL(TRIM(SABP_TITULO),SABP_TITULO),SABP_CIDTIT=NVL(TRIM(SABP_
+CIDTIT),SABP_CIDTIT),SABP_ESTTIT=NVL(TRIM(SABP_ESTTIT),SABP_ESTTIT),SABP_ZONA=NVL(TRIM(SABP_ZONA),SABP_ZONA),SABP_CERTMIL=NVL(TRIM(SABP_CERTMIL),SABP_
+CERTMIL),SABP_PROFISSAO=NVL(TRIM(SABP_PROFISSAO),SABP_PROFISSAO),SABP_VIACARTAO=NVL(TRIM(SABP_VIACARTAO),SABP_VIACARTAO),SABP_PRONTUARIO=NVL(TRIM(SABP
+_PRONTUARIO),SABP_PRONTUARIO),SABP_PASTADOC=NVL(TRIM(SABP_PASTADOC),SABP_PASTADOC),SABP_ARQMORTO=NVL(TRIM(SABP_ARQMORTO),SABP_ARQMORTO),SABP_PASS=NVL(
+TRIM(SABP_PASS),SABP_PASS),SABP_ESPFIS=NVL(TRIM(SABP_ESPFIS),SABP_ESPFIS),SABP_ESPVIS=NVL(TRIM(SABP_ESPVIS),SABP_ESPVIS),SABP_ESPAUD=NVL(TRIM(SABP_ESP
+AUD),SABP_ESPAUD)                                                                                                                                     
+ALTER TRIGGER SEU.TRG_SEUABQ_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABQ SET                                                                                                                                 
+SABQ_NUMRA=NVL(TRIM(SABQ_NUMRA),SABQ_NUMRA),SABQ_CODCUR=NVL(TRIM(SABQ_CODCUR),SABQ_CODCUR),SABQ_CODDOC=NVL(TRIM(SABQ_CODDOC),SABQ_CODDOC),SABQ_SITDOC=
+NVL(TRIM(SABQ_SITDOC),SABQ_SITDOC),SABQ_VERSAO=NVL(TRIM(SABQ_VERSAO),SABQ_VERSAO)                                                                     
+ALTER TRIGGER SEU.TRG_SEUABR_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABR SET                                                                                                                                 
+SABR_NUMRA=NVL(TRIM(SABR_NUMRA),SABR_NUMRA),SABR_CODCUR=NVL(TRIM(SABR_CODCUR),SABR_CODCUR),SABR_CODBOL=NVL(TRIM(SABR_CODBOL),SABR_CODBOL),SABR_PERDE=N
+VL(TRIM(SABR_PERDE),SABR_PERDE),SABR_MATRICULA=NVL(TRIM(SABR_MATRICULA),SABR_MATRICULA),SABR_NUMBOL=NVL(TRIM(SABR_NUMBOL),SABR_NUMBOL),SABR_DATA1=NVL(
+TRIM(SABR_DATA1),SABR_DATA1),SABR_DATA2=NVL(TRIM(SABR_DATA2),SABR_DATA2)                                                                              
+ALTER TRIGGER SEU.TRG_SEUABS_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABS SET                                                                                                                                 
+SABS_CODIGO=NVL(TRIM(SABS_CODIGO),SABS_CODIGO),SABS_DESC=NVL(TRIM(SABS_DESC),SABS_DESC),SABS_LIQBRU=NVL(TRIM(SABS_LIQBRU),SABS_LIQBRU),SABS_TIPO=NVL(T
+RIM(SABS_TIPO),SABS_TIPO)                                                                                                                             
+ALTER TRIGGER SEU.TRG_SEUABT_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABT SET                                                                                                                                 
+SABT_NUMRA=NVL(TRIM(SABT_NUMRA),SABT_NUMRA),SABT_CID=NVL(TRIM(SABT_CID),SABT_CID),SABT_OBS=NVL(TRIM(SABT_OBS),SABT_OBS),SABT_DATA1=NVL(TRIM(SABT_DATA1
+),SABT_DATA1),SABT_DATA2=NVL(TRIM(SABT_DATA2),SABT_DATA2),SABT_STATUS=NVL(TRIM(SABT_STATUS),SABT_STATUS),SABT_DISLEGAL=NVL(TRIM(SABT_DISLEGAL),SABT_DI
+SLEGAL)                                                                                                                                               
+ALTER TRIGGER SEU.TRG_SEUABU_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUABU SET                                                                                                                                 
+SABU_NUMRA=NVL(TRIM(SABU_NUMRA),SABU_NUMRA),SABU_CODCUR=NVL(TRIM(SABU_CODCUR),SABU_CODCUR),SABU_VERSAO=NVL(TRIM(SABU_VERSAO),SABU_VERSAO),SABU_ANOLET=
+NVL(TRIM(SABU_ANOLET),SABU_ANOLET),SABU_PERIODO=NVL(TRIM(SABU_PERIODO),SABU_PERIODO),SABU_SERIE=NVL(TRIM(SABU_SERIE),SABU_SERIE),SABU_CODDIS=NVL(TRIM(
+SABU_CODDIS),SABU_CODDIS),SABU_REGIME=NVL(TRIM(SABU_REGIME),SABU_REGIME),SABU_SITDIS=NVL(TRIM(SABU_SITDIS),SABU_SITDIS),SABU_TITULO=NVL(TRIM(SABU_TITU
+LO),SABU_TITULO),SABU_CURNOVO=NVL(TRIM(SABU_CURNOVO),SABU_CURNOVO),SABU_VERNOVO=NVL(TRIM(SABU_VERNOVO),SABU_VERNOVO),SABU_ANONOVO=NVL(TRIM(SABU_ANONOV
+O),SABU_ANONOVO),SABU_PERNOVO=NVL(TRIM(SABU_PERNOVO),SABU_PERNOVO),SABU_TURNOVO=NVL(TRIM(SABU_TURNOVO),SABU_TURNOVO),SABU_UNDNOVO=NVL(TRIM(SABU_UNDNOV
+O),SABU_UNDNOVO),SABU_SERNOVO=NVL(TRIM(SABU_SERNOVO),SABU_SERNOVO),SABU_TRMNOVO=NVL(TRIM(SABU_TRMNOVO),SABU_TRMNOVO),SABU_DISNOVO=NVL(TRIM(SABU_DISNOV
+O),SABU_DISNOVO),SABU_DTMAT=NVL(TRIM(SABU_DTMAT),SABU_DTMAT)                                                                                          
+ALTER TRIGGER SEU.TRG_SEUACB_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUACB SET                                                                                                                                 
+SACB_NUMRA=NVL(TRIM(SACB_NUMRA),SACB_NUMRA),SACB_CODCUR=NVL(TRIM(SACB_CODCUR),SACB_CODCUR),SACB_VERSAO=NVL(TRIM(SACB_VERSAO),SACB_VERSAO),SACB_ANOLET=
+NVL(TRIM(SACB_ANOLET),SACB_ANOLET),SACB_PERIODO=NVL(TRIM(SACB_PERIODO),SACB_PERIODO),SACB_SERIE=NVL(TRIM(SACB_SERIE),SACB_SERIE),SACB_CODDIS=NVL(TRIM(
+SACB_CODDIS),SACB_CODDIS),SACB_ANONOVO=NVL(TRIM(SACB_ANONOVO),SACB_ANONOVO),SACB_PERNOVO=NVL(TRIM(SACB_PERNOVO),SACB_PERNOVO),SACB_CODAVA=NVL(TRIM(SAC
+B_CODAVA),SACB_CODAVA),SACB_CODATV=NVL(TRIM(SACB_CODATV),SACB_CODATV),SACB_DATA=NVL(TRIM(SACB_DATA),SACB_DATA),SACB_CONCEITO=NVL(TRIM(SACB_CONCEITO),S
+ACB_CONCEITO),SACB_COMPARECEU=NVL(TRIM(SACB_COMPARECEU),SACB_COMPARECEU),SACB_SUB=NVL(TRIM(SACB_SUB),SACB_SUB),SACB_BOLSUB=NVL(TRIM(SACB_BOLSUB),SACB_
+BOLSUB)                                                                                                                                               
+ALTER TRIGGER SEU.TRG_SEUACC_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUACC SET                                                                                                                                 
+SACC_NUMRA=NVL(TRIM(SACC_NUMRA),SACC_NUMRA),SACC_CODCUR=NVL(TRIM(SACC_CODCUR),SACC_CODCUR),SACC_VERSAO=NVL(TRIM(SACC_VERSAO),SACC_VERSAO),SACC_ANOLET=
+NVL(TRIM(SACC_ANOLET),SACC_ANOLET),SACC_PERIODO=NVL(TRIM(SACC_PERIODO),SACC_PERIODO),SACC_SERIE=NVL(TRIM(SACC_SERIE),SACC_SERIE),SACC_CODDIS=NVL(TRIM(
+SACC_CODDIS),SACC_CODDIS),SACC_ANONOVO=NVL(TRIM(SACC_ANONOVO),SACC_ANONOVO),SACC_PERNOVO=NVL(TRIM(SACC_PERNOVO),SACC_PERNOVO),SACC_DATA=NVL(TRIM(SACC_
+DATA),SACC_DATA),SACC_DTAPON=NVL(TRIM(SACC_DTAPON),SACC_DTAPON),SACC_REGDOM=NVL(TRIM(SACC_REGDOM),SACC_REGDOM)                                        
+ALTER TRIGGER SEU.TRG_SEUACF_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUACF SET                                                                                                                                 
+SACF_NUMRA=NVL(TRIM(SACF_NUMRA),SACF_NUMRA),SACF_CODCUR=NVL(TRIM(SACF_CODCUR),SACF_CODCUR),SACF_VERSAO=NVL(TRIM(SACF_VERSAO),SACF_VERSAO),SACF_ANOLET=
+NVL(TRIM(SACF_ANOLET),SACF_ANOLET),SACF_PERIODO=NVL(TRIM(SACF_PERIODO),SACF_PERIODO),SACF_SERIE=NVL(TRIM(SACF_SERIE),SACF_SERIE),SACF_CODDIS=NVL(TRIM(
+SACF_CODDIS),SACF_CODDIS),SACF_CONCEITO=NVL(TRIM(SACF_CONCEITO),SACF_CONCEITO),SACF_CODESC=NVL(TRIM(SACF_CODESC),SACF_CODESC),SACF_OBS=NVL(TRIM(SACF_O
+BS),SACF_OBS)                                                                                                                                         
+ALTER TRIGGER SEU.TRG_SEUACG_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUACG SET                                                                                                                                 
+SACG_CODIGO=NVL(TRIM(SACG_CODIGO),SACG_CODIGO),SACG_DESC=NVL(TRIM(SACG_DESC),SACG_DESC),SACG_CEP=NVL(TRIM(SACG_CEP),SACG_CEP),SACG_TPLOG=NVL(TRIM(SACG
+_TPLOG),SACG_TPLOG),SACG_LOGRADOURO=NVL(TRIM(SACG_LOGRADOURO),SACG_LOGRADOURO),SACG_NUM=NVL(TRIM(SACG_NUM),SACG_NUM),SACG_COMPL=NVL(TRIM(SACG_COMPL),S
+ACG_COMPL),SACG_BAIRRO=NVL(TRIM(SACG_BAIRRO),SACG_BAIRRO),SACG_CIDADE=NVL(TRIM(SACG_CIDADE),SACG_CIDADE),SACG_ESTADO=NVL(TRIM(SACG_ESTADO),SACG_ESTADO
+),SACG_TELEFONE=NVL(TRIM(SACG_TELEFONE),SACG_TELEFONE),SACG_STATUS=NVL(TRIM(SACG_STATUS),SACG_STATUS),SACG_TIPO=NVL(TRIM(SACG_TIPO),SACG_TIPO)        
+ALTER TRIGGER SEU.TRG_SEUACQ_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUACQ SET SACQ_CID=NVL(TRIM(SACQ_CID),SACQ_CID),SACQ_DESCCID=NVL(TRIM(SACQ_DESCCID),SACQ_DESCCID)                                         
+ALTER TRIGGER SEU.TRG_SEUACR_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUACR SET                                                                                                                                 
+SACR_CODIGO=NVL(TRIM(SACR_CODIGO),SACR_CODIGO),SACR_CONCEITO=NVL(TRIM(SACR_CONCEITO),SACR_CONCEITO),SACR_DE=NVL(TRIM(SACR_DE),SACR_DE),SACR_ATE=NVL(TR
+IM(SACR_ATE),SACR_ATE),SACR_DESC=NVL(TRIM(SACR_DESC),SACR_DESC)                                                                                       
+ALTER TRIGGER SEU.TRG_SEUACV_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUACV SET                                                                                                                                 
+SACV_CODCUR=NVL(TRIM(SACV_CODCUR),SACV_CODCUR),SACV_ANOLET=NVL(TRIM(SACV_ANOLET),SACV_ANOLET),SACV_PERIODO=NVL(TRIM(SACV_PERIODO),SACV_PERIODO),SACV_S
+ERIE=NVL(TRIM(SACV_SERIE),SACV_SERIE),SACV_CODUND=NVL(TRIM(SACV_CODUND),SACV_CODUND),SACV_TURNO=NVL(TRIM(SACV_TURNO),SACV_TURNO),SACV_DIAVENC=NVL(TRIM
+(SACV_DIAVENC),SACV_DIAVENC),SACV_DIADESC1=NVL(TRIM(SACV_DIADESC1),SACV_DIADESC1),SACV_DIADESC2=NVL(TRIM(SACV_DIADESC2),SACV_DIADESC2),SACV_DIADESC3=N
+VL(TRIM(SACV_DIADESC3),SACV_DIADESC3),SACV_MESINI=NVL(TRIM(SACV_MESINI),SACV_MESINI),SACV_DIADESC4=NVL(TRIM(SACV_DIADESC4),SACV_DIADESC4),SACV_DIADESC
+5=NVL(TRIM(SACV_DIADESC5),SACV_DIADESC5),SACV_QTDPARC=NVL(TRIM(SACV_QTDPARC),SACV_QTDPARC)                                                            
+ALTER TRIGGER SEU.TRG_SEUACW_AUDIT_T DISABLE                                                                                                          
+UPDATE SEU.SEUACW SET SACW_REGIME=NVL(TRIM(SACW_REGIME),SACW_REGIME),SACW_CODCUR=NVL(TRIM(SACW_CODCUR),SACW_CODCUR)                                   
+DECLARE
+*
+ERRO na linha 1:
+ORA-02298: cannot validate (SEU.FK_SEUABB_SEUAAP) - parent keys not found 
+ORA-06512: at line 70 
+
+
+Decorrido: 00:01:23.28
+20:13:20 DB2> spool off

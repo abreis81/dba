@@ -1,0 +1,139 @@
+rman target / nocatalog 
+
+ 
+
+run {
+
+allocate channel ch00 type disk;
+
+backup format '/u2/oracle/backup/prod/database_%t_%s_%p' database;
+
+sql 'alter system archive log current';
+
+backup format '/u2/oracle/backup/prod/archive_%t_%s_%p' archivelog all; 
+
+release channel ch00;
+
+}
+
+ 
+
+ 
+
+select 
+
+'SET NEWNAME FOR DATAFILE '||FILE#||' TO '''||NAME||''' ;' 
+
+from v$tempfile order by file# ;
+
+ 
+
+ 
+
+ 
+
+rman target sys/vioryh01@pback1 nocatalog 
+
+connect auxiliary /
+
+ 
+
+ 
+
+RUN {
+
+allocate auxiliary channel ch00 device type disk ;
+
+SET NEWNAME FOR DATAFILE 1 TO '+DISC/eback/datafile/system.dbf' ;
+
+SET NEWNAME FOR DATAFILE 2 TO '+DISC/eback/datafile/undotbs1.dbf' ;
+
+SET NEWNAME FOR DATAFILE 3 TO '+DISC/eback/datafile/sysaux.dbf' ;
+
+SET NEWNAME FOR DATAFILE 4 TO '+DISC/eback/datafile/users.dbf' ;
+
+SET NEWNAME FOR DATAFILE 5 TO '+DISC/eback/datafile/undotbs2.dbf' ;
+
+SET NEWNAME FOR DATAFILE 6 TO '+DISC/eback/datafile/dt_au.dbf' ;
+
+SET NEWNAME FOR DATAFILE 7 TO '+DISC/eback/datafile/dt_vm.dbf' ;
+
+SET NEWNAME FOR DATAFILE 8 TO '+DISC/eback/datafile/dt_tx.dbf' ;
+
+SET NEWNAME FOR DATAFILE 9 TO '+DISC/eback/datafile/dt_rq.dbf' ;
+
+SET NEWNAME FOR DATAFILE 10 TO '+DISC/eback/datafile/dt_pr.dbf' ;
+
+SET NEWNAME FOR DATAFILE 11 TO '+DISC/eback/datafile/dt_or.dbf' ;
+
+SET NEWNAME FOR DATAFILE 12 TO '+DISC/eback/datafile/dt_me.dbf' ;
+
+SET NEWNAME FOR DATAFILE 13 TO '+DISC/eback/datafile/dt_lg.dbf' ;
+
+SET NEWNAME FOR DATAFILE 14 TO '+DISC/eback/datafile/dt_gd.dbf' ;
+
+SET NEWNAME FOR DATAFILE 15 TO '+DISC/eback/datafile/dt_fe.dbf' ;
+
+SET NEWNAME FOR DATAFILE 16 TO '+DISC/eback/datafile/dt_fc.dbf' ;
+
+SET NEWNAME FOR DATAFILE 17 TO '+DISC/eback/datafile/dt_ct.dbf' ;
+
+SET NEWNAME FOR DATAFILE 18 TO '+DISC/eback/datafile/dt_cs.dbf' ;
+
+SET NEWNAME FOR DATAFILE 19 TO '+DISC/eback/datafile/dt_cc.dbf' ;
+
+SET NEWNAME FOR DATAFILE 20 TO '+DISC/eback/datafile/dt_bc.dbf' ;
+
+SET NEWNAME FOR DATAFILE 21 TO '+DISC/eback/datafile/tbs_dbspi.dbf' ;
+
+SET NEWNAME FOR DATAFILE 22 TO '+DISC/eback/datafile/dt_at.dbf' ;
+
+SET NEWNAME FOR DATAFILE 23 TO '+DISC/eback/datafile/dt_ai.dbf' ;
+
+SET NEWNAME FOR DATAFILE 24 TO '+DISC/eback/datafile/dt_ac.dbf' ;
+
+SET NEWNAME FOR DATAFILE 25 TO '+DISC/eback/datafile/dt_wf.dbf' ;
+
+SET NEWNAME FOR DATAFILE 26 TO '+DISC/eback/datafile/dt_pu.dbf' ;
+
+SET NEWNAME FOR DATAFILE 27 TO '+DISC/eback/datafile/dt_sm.dbf' ;
+
+SET NEWNAME FOR DATAFILE 28 TO '+DISC/eback/datafile/dt_ad.dbf' ;
+
+SET NEWNAME FOR DATAFILE 29 TO '+DISC/eback/datafile/dt_ep.dbf' ;
+
+SET NEWNAME FOR DATAFILE 30 TO '+DISC/eback/datafile/dt_kz.dbf' ;
+
+SET NEWNAME FOR DATAFILE 31 TO '+DISC/eback/datafile/dt_rp.dbf' ;
+
+SET NEWNAME FOR DATAFILE 32 TO '+DISC/eback/datafile/dt_mg1.dbf' ;
+
+SET NEWNAME FOR DATAFILE 33 TO '+DISC/eback/datafile/dt_fps_cm.dbf' ;
+
+SET NEWNAME FOR DATAFILE 34 TO '+DISC/eback/datafile/dt_tt.dbf' ;
+
+SET NEWNAME FOR TEMPFILE 1 TO '+DISC/eback/tempfile/temp.dbf';
+
+DUPLICATE TARGET DATABASE TO eback 
+
+  LOGFILE
+
+  GROUP 1 ('+DISC/eback/onlinelog/group_1.430.671304977','+DISC/eback/onlinelog/group_2.424.671304977') SIZE 50M REUSE,
+
+  GROUP 2 ('+DISC/eback/onlinelog/group_3.428.671304977','+DISC/eback/onlinelog/group_4.425.671304977') SIZE 50M REUSE,
+
+  GROUP 3 ('+DISC/eback/onlinelog/group_5.426.671304979','+DISC/eback/onlinelog/group_6.417.671304979') SIZE 50M REUSE,
+
+  GROUP 4 ('+DISC/eback/onlinelog/group_7.478.671304979','+DISC/eback/onlinelog/group_8.485.671304979') SIZE 50M REUSE;
+
+}
+
+ 
+
+ 
+
+sqlplus "/as sysdba"
+
+ 
+
+orapwd file=/u/oracle/product/10.2.0/db_1/dbs/orapwtsback password=oracle force=y

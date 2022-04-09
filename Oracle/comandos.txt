@@ -1,0 +1,165 @@
+Verificacoes - 
+22. Postinstallation Tasks for Oracle Grid Infrastructure for a Cluster
+verificar o SCAN
+   cluvfy comp scan -verbose
+
+Check CRS Status 
+   crsctl check crs  
+
+Check Clusterware Resources
+   crs_stat -t -v  ( command is deprecated in in Oracle Clusterware 11g release 2 (11.2))
+
+Check Cluster Nodes
+   olsnodes -n
+   
+Check Oracle TNS Listener Process on Both Nodes   
+   ps -ef | grep lsnr | grep -v 'grep' | grep -v 'ocfs' | awk '{print $9}'   
+
+
+Confirming Oracle ASM Function for Oracle Clusterware Files
+   srvctl status asm -a
+
+
+Check Oracle Cluster Registry (OCR)
+   ocrcheck
+
+Check Voting Disk
+   crsctl query css votedisk
+
+Back Up the root.sh Script
+   -- root
+   cd /orabin/app/11.2.0/grid
+   cp root.sh root.sh.fcespracd001.AFTER_INSTALL
+   -- no racr2
+   cp root.sh root.sh.fcespracd002.AFTER_INSTALL
+   
+Verify Clustered Database is Open
+   crsctl status resource -w 'TYPE co ora' -t
+   su - grid -c "crsctl status resource -w \"TYPE co 'ora'\" -t"
+   
+
+   
+--
+29. Verify Oracle Grid Infrastructure and Database Configuration
+Checking the health of the cluster
+   crsctl check cluster
+
+All Oracle Instances - (Database Status)   
+   srvctl status database -d racdev
+   
+Single Oracle Instance - (Status of Specific Instance)   
+   srvctl status instance -d racdev -i RACDEV1
+   srvctl status instance -d racdev -i RACDEV2
+
+Node Applications - (Status)
+   srvctl status nodeapps
+
+Node Applications - (Configuration)
+   srvctl config nodeapps
+
+List all Configured Databases
+   srvctl config database
+
+Database - (Configuration)
+   srvctl config database -d racdev -a
+   
+ASM - (Status)
+   srvctl status asm
+
+ASM - (Configuration)
+   srvctl config asm -a
+
+TNS listener - (Status)
+   srvctl status listener
+   srvctl status scan_listener
+   
+   srvctl start listener
+   srvctl start scan_listener
+   
+
+TNS listener - (Configuration)
+   srvctl config listener -a
+
+SCAN - (Status)
+   srvctl status scan
+
+SCAN - (Configuration)
+   srvctl config scan
+
+VIP - (Status of Specific Node)
+   srvctl status vip -n fcespracd001
+   srvctl status vip -n fcespracd002
+
+
+VIP - (Configuration of Specific Node)
+   srvctl config vip -n fcespracd001
+   srvctl config vip -n fcespracd002
+   
+Configuration for Node Applications - (VIP, GSD, ONS, Listener)
+   srvctl config nodeapps -a -g -s -l
+
+Verifying Clock Synchronization across the Cluster Nodes
+   cluvfy comp clocksync -verbose
+
+All running instances in the cluster - (SQL)
+  SELECT
+      inst_id
+    , instance_number inst_no
+    , instance_name inst_name
+    , parallel
+    , status
+    , database_status db_status
+    , active_state state
+    , host_name host
+  FROM gv$instance
+  ORDER BY inst_id;
+  
+
+ All database files and the ASM disk group they reside in - (SQL)
+    select name from v$datafile
+    union
+    select member from v$logfile
+    union
+    select name from v$controlfile
+    union
+    select name from v$tempfile;
+    
+ASM Disk Volumes - (SQL)
+   SELECT path
+   FROM   v$asm_disk;
+   
+30. Starting / Stopping the Cluster
+  Stopping the Oracle Clusterware Stack on the Local Server
+  -- root
+  /orabin/grid/app/11.2.0/bin/crsctl stop cluster  
+  
+  Stopping the Oracle Clusterware Stack on All Servers
+  -- root 
+  /orabin/grid/app/11.2.0/bin/crsctl stop cluster -all
+  
+  Starting the Oracle Clusterware Stack on the Local Server
+  -- root
+  /orabin/grid/app/11.2.0/bin/crsctl start cluster 
+  
+  ALL Servers
+  -- root
+  /orabin/grid/app/11.2.0/bin/crsctl start cluster -all
+  
+  /orabin/grid/app/11.2.0/bin/crsctl start cluster -n fcespracd001 fcespracd002
+  
+  Start/Stop All Instances with SRVCTL
+    srvctl stop  database -d racdev	
+    srvctl start database -d racdev
+
+root 
+/orabin/grid/app/11.2.0/bin/crsctl stop has -- stop no has
+
+/orabin/app/grid/11.2.0/bin/crsctl start has -- start no has e em todos os componentes do grid
+
+--------------------------------------------------------------------------------------------------------------------
+
+pesquisar o ip do interconnect
+-- conn grid
+grid@fcespracd001:> $ORACLE_HOME/bin/oifcfg getif
+eth0  10.190.20.0  global  public
+eth1  192.1.1.0  global  cluster_interconnect

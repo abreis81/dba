@@ -1,0 +1,502 @@
+alter session set optimizer_mode=rule;
+
+DECLARE
+
+CURSOR C1 IS
+SELECT SAET_IDEMPRESA AS SADA_IDEMPRESA
+      ,E1_PREFIXO AS SADA_PREFIXO
+      ,E1_NUM     AS SADA_NUM
+      ,E1_PARCELA AS SADA_PARCELA
+      ,E1_TIPO    AS SADA_TIPO
+      ,E1_NATUREZ AS SADA_NATUREZA
+      ,E1_PORTADO AS SADA_PORTADO
+      ,E1_AGEDEP  AS SADA_AGEDEP
+      ,TRIM(E1_NUMRA)   AS SADA_NUMRA
+      ,E1_LOJA    AS SADA_LOJA
+      ,E1_NOMCLI  AS SADA_NOMCLI
+      ,E1_CC      AS SADA_CC
+      ,E1_EMISSAO AS SADA_EMISSAO
+      ,E1_VENCTO  AS SADA_VENCTO
+      ,E1_VENCREA AS SADA_VENCREA
+      ,E1_VALOR   AS SADA_VALOR
+      ,E1_IRRF    AS SADA_IRRF
+      ,E1_ISS     AS SADA_ISS
+      ,E1_NUMBCO  AS SADA_NUMBCO
+      ,E1_INDICE  AS SADA_INDICE
+      ,E1_BAIXA   AS SADA_BAIXA
+      ,E1_NUMBOR  AS SADA_NUMBOR
+      ,E1_DATABOR AS SADA_DATABOR
+      ,E1_EMIS1   AS SADA_EMIS1
+      ,E1_HIST    AS SADA_HIST
+      ,E1_LA      AS SADA_LA
+      ,E1_LOTE    AS SADA_LOTE
+      ,E1_MOTIVO  AS SADA_MOTIVO
+      ,E1_MOVIMEN AS SADA_MOVIMEN
+      ,E1_OP      AS SADA_OP
+      ,E1_SITUACA AS SADA_SITUACA
+      ,E1_CONTRAT AS SADA_CONTRAT
+      ,E1_SALDO   AS SADA_SALDO
+      ,E1_SUPERVI AS SADA_SUPERVI
+      ,E1_VEND1   AS SADA_VEND1
+      ,E1_VEND2   AS SADA_VEND2
+      ,E1_VEND3   AS SADA_VEND3
+      ,E1_VEND4   AS SADA_VEND4
+      ,E1_VEND5   AS SADA_VEND5
+      ,E1_COMIS1  AS SADA_COMIS1
+      ,E1_COMIS2  AS SADA_COMIS2
+      ,E1_COMIS3  AS SADA_COMIS3
+      ,E1_COMIS4  AS SADA_COMIS4
+      ,E1_COMIS5  AS SADA_COMIS5
+      ,E1_DESCONT AS SADA_DESCONT
+      ,E1_MULTA   AS SADA_MULTA
+      ,E1_JUROS   AS SADA_JUROS
+      ,E1_CORREC  AS SADA_CORREC
+      ,E1_VALLIQ  AS SADA_VALLIQ
+      ,E1_VENCORI AS SADA_VENCORI
+      ,E1_CONTA   AS SADA_CONTA
+      ,E1_VALJUR  AS SADA_VALJUR
+      ,E1_PORCJUR AS SADA_PORCJUR
+      ,E1_MOEDA   AS SADA_MOEDA
+      ,E1_BASCOM1 AS SADA_BASCOM1
+      ,E1_BASCOM2 AS SADA_BASCOM2
+      ,E1_BASCOM3 AS SADA_BASCOM3
+      ,E1_BASCOM4 AS SADA_BASCOM4
+      ,E1_BASCOM5 AS SADA_BASCOM5
+      ,E1_FATPREF AS SADA_FATPREF
+      ,E1_FATURA  AS SADA_FATURA
+      ,E1_OK      AS SADA_OK
+      ,E1_PROJETO AS SADA_PROJETO
+      ,E1_CLASCON AS SADA_CLASCON
+      ,E1_VALCOM1 AS SADA_VALCOM1
+      ,E1_VALCOM2 AS SADA_VALCOM2
+      ,E1_VALCOM3 AS SADA_VALCOM3
+      ,E1_VALCOM4 AS SADA_VALCOM4
+      ,E1_VALCOM5 AS SADA_VALCOM5
+      ,E1_OCORREN AS SADA_OCORREN
+      ,E1_INSTR1  AS SADA_INSTR1
+      ,E1_INSTR2  AS SADA_INSTR2
+      ,E1_PEDIDO  AS SADA_PEDIDO
+      ,E1_DTVARIA AS SADA_DTVARIA
+      ,E1_VARURV  AS SADA_VARURV
+      ,E1_VLCRUZ  AS SADA_VLCRUZ
+      ,E1_DTFATUR AS SADA_DTFATUR
+      ,E1_NUMNOTA AS SADA_NUMNOTA
+      ,E1_SERIE   AS SADA_SERIE
+      ,E1_STATUS  AS SADA_STATUS
+      ,E1_ORIGEM  AS SADA_ORIGEM
+      ,E1_IDENTEE AS SADA_IDENTEE
+      ,E1_NUMCART AS SADA_NUMCART
+      ,E1_FLUXO   AS SADA_FLUXO
+      ,E1_DESCFIN AS SADA_DESCFIN
+      ,E1_DIADESC AS SADA_DIADESC
+      ,E1_CARTAO  AS SADA_CARTAO
+      ,E1_CARTVAL AS SADA_CARTVAL
+      ,E1_CARTAUT AS SADA_CARTAUT
+      ,E1_ADM     AS SADA_ADM
+      ,E1_VLRREAL AS SADA_VLRREAL
+      ,E1_TRANSF  AS SADA_TRANSF
+      ,E1_BCOCHQ  AS SADA_BCOCHQ
+      ,E1_AGECHQ  AS SADA_AGECHQ
+      ,E1_CTACHQ  AS SADA_CTACHQ
+      ,E1_NUMLIQ  AS SADA_NUMLIQ
+      ,E1_FLSERV  AS SADA_FLSERV
+      ,E1_ORDPAGO AS SADA_ORDPAGO
+      ,E1_INSS    AS SADA_INSS
+      ,E1_NUMTIA  AS SADA_NUMTIA
+      ,E1_NNUMERO AS SADA_NNUMERO
+      ,E1_CURSO   AS SADA_CURSO
+      ,E1_DTIMPRE AS SADA_DTIMPRE
+      ,E1_DTREIMP AS SADA_DTREIMP
+      ,E1_VLBOLSA AS SADA_VLBOLSA
+      ,E1_CLIENTE AS SADA_CLIENTE
+      ,E1_USERLGI AS SADA_USERLGI
+      ,E1_USERLGA AS SADA_USERLGA
+      ,E1_NUMREGT AS SADA_NUMREGT
+      ,E1_TIPOBX  AS SADA_TIPOBX
+      ,E1_DESCON1 AS SADA_DESCON1
+      ,E1_DESCON2 AS SADA_DESCON2
+      ,E1_ANOMESD AS SADA_ANOMESD
+      ,E1_VLACUM  AS SADA_VLACUM
+      ,E1_NHISTIA AS SADA_NHISTIA
+      ,E1_NHISTSI AS SADA_NHISTSI
+      ,E1_COFINS  AS SADA_COFINS
+      ,E1_CSLL    AS SADA_CSLL
+      ,E1_FILORIG AS SADA_FILORIG
+      ,E1_FLAGFAT AS SADA_FLAGFAT
+      ,E1_PIS     AS SADA_PIS
+      ,E1_TIPOFAT AS SADA_TIPOFAT
+      ,E1_TIPOLIQ AS SADA_TIPOLIQ
+      ,E1_MESBASE AS SADA_MESBASE
+      ,E1_ANOBASE AS SADA_ANOBASE
+      ,E1_PLNUCOB AS SADA_PLNUCOB
+      ,E1_CODINT  AS SADA_CODINT
+      ,E1_CODEMP  AS SADA_CODEMP
+      ,E1_MATRIC  AS SADA_MATRIC
+      ,E1_ACRESC  AS SADA_ACRESC
+      ,E1_SDACRES AS SADA_SDACRES
+      ,E1_DECRESC AS SADA_DECRESC
+      ,E1_SDDECRE AS SADA_SDDECRE
+      ,E1_MULTNAT AS SADA_MULTNAT
+      ,E1_MSFIL   AS SADA_MSFIL
+      ,E1_MSEMP   AS SADA_MSEMP
+      ,E1_PROJPMS AS SADA_PROJPMS
+      ,E1_CODVES  AS SADA_CODVES
+      ,E1_CONFERE AS SADA_CONFERE
+      ,E1_MODSPB  AS SADA_MODSPB
+      ,E1_NUMHIST AS SADA_NUMHIST
+      ,E1_CODBAR  AS SADA_CODBAR
+      ,E1_CODDIG  AS SADA_CODDIG
+      ,E1_DESCON3 AS SADA_DESCON3
+      ,null AS SADA_DMOTNEG
+      ,E1_DTDESC1 AS SADA_DTDESC1
+      ,E1_DTDESC2 AS SADA_DTDESC2
+      ,E1_DTDESC3 AS SADA_DTDESC3
+      ,E1_INSCRIC AS SADA_INSCRIC
+      ,E1_MOTNEG  AS SADA_MOTNEG
+      ,null AS SADA_NOMEALU
+      ,E1_NRDOC   AS SADA_NRDOC
+      ,E1_VLFIES  AS SADA_VLFIES
+      ,E1_VLMULTA AS SADA_VLMULTA
+      ,null AS SADA_SABTPIS
+      ,E1_VLREEMB AS  SADA_VLREEMB
+      ,E1_DTDESC4 AS SADA_DTDESC4
+      ,E1_DESCON4 AS SADA_DESCON4
+      ,R_E_C_N_O_ AS  SADA_NREG
+  FROM SIGA.SE1040 E1,
+       SEU.SEUAET AET
+ WHERE E1_FILIAL = ' '
+   AND E1_NUMRA = RPAD(SAET_NUMRA,15, ' ')
+   AND SAET_IDEMPRESA = 4
+   AND D_E_L_E_T_ <> '*';
+
+AUX NUMBER := 0;
+
+BEGIN
+	FOR RC1 IN C1 LOOP
+		INSERT INTO SEUTESTE.SEUADA (SADA_IDEMPRESA
+,SADA_PREFIXO   
+,SADA_NUM       
+,SADA_PARCELA   
+,SADA_TIPO      
+,SADA_NATUREZA  
+,SADA_PORTADO   
+,SADA_AGEDEP    
+,SADA_NUMRA     
+,SADA_LOJA      
+,SADA_NOMCLI    
+,SADA_CC        
+,SADA_EMISSAO   
+,SADA_VENCTO    
+,SADA_VENCREA   
+,SADA_VALOR     
+,SADA_IRRF      
+,SADA_ISS       
+,SADA_NUMBCO    
+,SADA_INDICE    
+,SADA_BAIXA     
+,SADA_NUMBOR    
+,SADA_DATABOR   
+,SADA_EMIS1     
+,SADA_HIST      
+,SADA_LA        
+,SADA_LOTE      
+,SADA_MOTIVO    
+,SADA_MOVIMEN   
+,SADA_OP        
+,SADA_SITUACA   
+,SADA_CONTRAT   
+,SADA_SALDO     
+,SADA_SUPERVI   
+,SADA_VEND1     
+,SADA_VEND2     
+,SADA_VEND3     
+,SADA_VEND4     
+,SADA_VEND5     
+,SADA_COMIS1    
+,SADA_COMIS2    
+,SADA_COMIS3    
+,SADA_COMIS4    
+,SADA_COMIS5    
+,SADA_DESCONT   
+,SADA_MULTA     
+,SADA_JUROS     
+,SADA_CORREC    
+,SADA_VALLIQ    
+,SADA_VENCORI   
+,SADA_CONTA     
+,SADA_VALJUR    
+,SADA_PORCJUR   
+,SADA_MOEDA     
+,SADA_BASCOM1   
+,SADA_BASCOM2   
+,SADA_BASCOM3   
+,SADA_BASCOM4   
+,SADA_BASCOM5   
+,SADA_FATPREF   
+,SADA_FATURA    
+,SADA_OK        
+,SADA_PROJETO   
+,SADA_CLASCON   
+,SADA_VALCOM1   
+,SADA_VALCOM2   
+,SADA_VALCOM3   
+,SADA_VALCOM4   
+,SADA_VALCOM5   
+,SADA_OCORREN   
+,SADA_INSTR1    
+,SADA_INSTR2    
+,SADA_PEDIDO    
+,SADA_DTVARIA   
+,SADA_VARURV    
+,SADA_VLCRUZ    
+,SADA_DTFATUR   
+,SADA_NUMNOTA   
+,SADA_SERIE     
+,SADA_STATUS    
+,SADA_ORIGEM    
+,SADA_IDENTEE   
+,SADA_NUMCART   
+,SADA_FLUXO     
+,SADA_DESCFIN   
+,SADA_DIADESC   
+,SADA_CARTAO    
+,SADA_CARTVAL   
+,SADA_CARTAUT   
+,SADA_ADM       
+,SADA_VLRREAL   
+,SADA_TRANSF    
+,SADA_BCOCHQ    
+,SADA_AGECHQ    
+,SADA_CTACHQ    
+,SADA_NUMLIQ    
+,SADA_FLSERV    
+,SADA_ORDPAGO   
+,SADA_INSS      
+,SADA_NUMTIA    
+,SADA_NNUMERO   
+,SADA_CURSO     
+,SADA_DTIMPRE   
+,SADA_DTREIMP   
+,SADA_VLBOLSA   
+,SADA_CLIENTE   
+,SADA_USERLGI   
+,SADA_USERLGA   
+,SADA_NUMREGT   
+,SADA_TIPOBX    
+,SADA_DESCON1   
+,SADA_DESCON2   
+,SADA_ANOMESD   
+,SADA_VLACUM    
+,SADA_NHISTIA   
+,SADA_NHISTSI   
+,SADA_COFINS    
+,SADA_CSLL      
+,SADA_FILORIG   
+,SADA_FLAGFAT   
+,SADA_PIS       
+,SADA_TIPOFAT   
+,SADA_TIPOLIQ   
+,SADA_MESBASE   
+,SADA_ANOBASE   
+,SADA_PLNUCOB   
+,SADA_CODINT    
+,SADA_CODEMP    
+,SADA_MATRIC    
+,SADA_ACRESC    
+,SADA_SDACRES   
+,SADA_DECRESC   
+,SADA_SDDECRE   
+,SADA_MULTNAT   
+,SADA_MSFIL     
+,SADA_MSEMP     
+,SADA_PROJPMS   
+,SADA_CODVES    
+,SADA_CONFERE   
+,SADA_MODSPB    
+,SADA_NUMHIST   
+,SADA_CODBAR    
+,SADA_CODDIG    
+,SADA_DESCON3   
+,SADA_DMOTNEG   
+,SADA_DTDESC1   
+,SADA_DTDESC2   
+,SADA_DTDESC3   
+,SADA_INSCRIC   
+,SADA_MOTNEG    
+,SADA_NOMEALU   
+,SADA_NRDOC     
+,SADA_VLFIES    
+,SADA_VLMULTA   
+,SADA_SABTPIS   
+,SADA_VLREEMB   
+,SADA_DTDESC4   
+,SADA_DESCON4   
+,SADA_NREG
+) VALUES (					TRIM(RC1.SADA_IDEMPRESA)      
+                   ,TRIM(RC1.SADA_PREFIXO  ) 
+                   ,TRIM(RC1.SADA_NUM      ) 
+                   ,TRIM(RC1.SADA_PARCELA  ) 
+                   ,TRIM(RC1.SADA_TIPO     ) 
+                   ,TRIM(RC1.SADA_NATUREZA ) 
+                   ,TRIM(RC1.SADA_PORTADO  ) 
+                   ,TRIM(RC1.SADA_AGEDEP   ) 
+                   ,TRIM(RC1.SADA_NUMRA    ) 
+                   ,TRIM(RC1.SADA_LOJA     ) 
+                   ,TRIM(RC1.SADA_NOMCLI   ) 
+                   ,TRIM(RC1.SADA_CC       ) 
+                   ,TRIM(RC1.SADA_EMISSAO  ) 
+                   ,TRIM(RC1.SADA_VENCTO   ) 
+                   ,TRIM(RC1.SADA_VENCREA  ) 
+                   ,RC1.SADA_VALOR     
+                   ,RC1.SADA_IRRF      
+                   ,RC1.SADA_ISS       
+                   ,TRIM(RC1.SADA_NUMBCO )   
+                   ,TRIM(RC1.SADA_INDICE )   
+                   ,TRIM(RC1.SADA_BAIXA  )   
+                   ,TRIM(RC1.SADA_NUMBOR )   
+                   ,TRIM(RC1.SADA_DATABOR)   
+                   ,TRIM(RC1.SADA_EMIS1  )   
+                   ,TRIM(RC1.SADA_HIST   )   
+                   ,TRIM(RC1.SADA_LA     )   
+                   ,TRIM(RC1.SADA_LOTE   )   
+                   ,TRIM(RC1.SADA_MOTIVO )   
+                   ,TRIM(RC1.SADA_MOVIMEN)   
+                   ,TRIM(RC1.SADA_OP     )   
+                   ,TRIM(RC1.SADA_SITUACA)   
+                   ,TRIM(RC1.SADA_CONTRAT)   
+                   ,RC1.SADA_SALDO     
+                   ,TRIM(RC1.SADA_SUPERVI)   
+                   ,TRIM(RC1.SADA_VEND1  )   
+                   ,TRIM(RC1.SADA_VEND2  )   
+                   ,TRIM(RC1.SADA_VEND3  )   
+                   ,TRIM(RC1.SADA_VEND4  )   
+                   ,TRIM(RC1.SADA_VEND5  )   
+                   ,RC1.SADA_COMIS1    
+                   ,RC1.SADA_COMIS2    
+                   ,RC1.SADA_COMIS3    
+                   ,RC1.SADA_COMIS4    
+                   ,RC1.SADA_COMIS5    
+                   ,RC1.SADA_DESCONT   
+                   ,RC1.SADA_MULTA     
+                   ,RC1.SADA_JUROS     
+                   ,RC1.SADA_CORREC    
+                   ,RC1.SADA_VALLIQ    
+                   ,TRIM(RC1.SADA_VENCORI)   
+                   ,TRIM(RC1.SADA_CONTA  )   
+                   ,RC1.SADA_VALJUR    
+                   ,RC1.SADA_PORCJUR   
+                   ,RC1.SADA_MOEDA     
+                   ,RC1.SADA_BASCOM1   
+                   ,RC1.SADA_BASCOM2   
+                   ,RC1.SADA_BASCOM3   
+                   ,RC1.SADA_BASCOM4   
+                   ,RC1.SADA_BASCOM5   
+                   ,TRIM(RC1.SADA_FATPREF )  
+                   ,TRIM(RC1.SADA_FATURA  )  
+                   ,TRIM(RC1.SADA_OK      )  
+                   ,TRIM(RC1.SADA_PROJETO )  
+                   ,TRIM(RC1.SADA_CLASCON )  
+                   ,RC1.SADA_VALCOM1   
+                   ,RC1.SADA_VALCOM2   
+                   ,RC1.SADA_VALCOM3   
+                   ,RC1.SADA_VALCOM4   
+                   ,RC1.SADA_VALCOM5   
+                   ,TRIM(RC1.SADA_OCORREN )  
+                   ,TRIM(RC1.SADA_INSTR1  )  
+                   ,TRIM(RC1.SADA_INSTR2  )  
+                   ,TRIM(RC1.SADA_PEDIDO  )  
+                   ,TRIM(RC1.SADA_DTVARIA )  
+                   ,RC1.SADA_VARURV    
+                   ,RC1.SADA_VLCRUZ    
+                   ,TRIM(RC1.SADA_DTFATUR )  
+                   ,TRIM(RC1.SADA_NUMNOTA )  
+                   ,TRIM(RC1.SADA_SERIE   )  
+                   ,TRIM(RC1.SADA_STATUS  )  
+                   ,TRIM(RC1.SADA_ORIGEM  )  
+                   ,TRIM(RC1.SADA_IDENTEE )  
+                   ,TRIM(RC1.SADA_NUMCART )  
+                   ,TRIM(RC1.SADA_FLUXO   )  
+                   ,RC1.SADA_DESCFIN   
+                   ,RC1.SADA_DIADESC   
+                   ,TRIM(RC1.SADA_CARTAO  )  
+                   ,TRIM(RC1.SADA_CARTVAL )  
+                   ,TRIM(RC1.SADA_CARTAUT )  
+                   ,TRIM(RC1.SADA_ADM     )  
+                   ,RC1.SADA_VLRREAL   
+                   ,TRIM(RC1.SADA_TRANSF  )  
+                   ,TRIM(RC1.SADA_BCOCHQ  )  
+                   ,TRIM(RC1.SADA_AGECHQ  )  
+                   ,TRIM(RC1.SADA_CTACHQ  )  
+                   ,TRIM(RC1.SADA_NUMLIQ  )  
+                   ,TRIM(RC1.SADA_FLSERV  )  
+                   ,TRIM(RC1.SADA_ORDPAGO )  
+                   ,RC1.SADA_INSS      
+                   ,TRIM(RC1.SADA_NUMTIA  )  
+                   ,TRIM(RC1.SADA_NNUMERO )  
+                   ,TRIM(RC1.SADA_CURSO   )  
+                   ,TRIM(RC1.SADA_DTIMPRE )  
+                   ,TRIM(RC1.SADA_DTREIMP )  
+                   ,RC1.SADA_VLBOLSA   
+                   ,TRIM(RC1.SADA_CLIENTE)   
+                   ,TRIM(RC1.SADA_USERLGI)   
+                   ,TRIM(RC1.SADA_USERLGA)   
+                   ,RC1.SADA_NUMREGT   
+                   ,TRIM(RC1.SADA_TIPOBX)   
+                   ,RC1.SADA_DESCON1   
+                   ,RC1.SADA_DESCON2   
+                   ,TRIM(RC1.SADA_ANOMESD )
+                   ,RC1.SADA_VLACUM    
+                   ,TRIM(RC1.SADA_NHISTIA )  
+                   ,TRIM(RC1.SADA_NHISTSI )  
+                   ,RC1.SADA_COFINS    
+                   ,RC1.SADA_CSLL      
+                   ,TRIM(RC1.SADA_FILORIG)   
+                   ,TRIM(RC1.SADA_FLAGFAT)   
+                   ,RC1.SADA_PIS       
+                   ,TRIM(RC1.SADA_TIPOFAT)   
+                   ,TRIM(RC1.SADA_TIPOLIQ)   
+                   ,TRIM(RC1.SADA_MESBASE)   
+                   ,TRIM(RC1.SADA_ANOBASE)   
+                   ,TRIM(RC1.SADA_PLNUCOB)   
+                   ,TRIM(RC1.SADA_CODINT )   
+                   ,TRIM(RC1.SADA_CODEMP )   
+                   ,TRIM(RC1.SADA_MATRIC )   
+                   ,RC1.SADA_ACRESC    
+                   ,RC1.SADA_SDACRES   
+                   ,RC1.SADA_DECRESC   
+                   ,RC1.SADA_SDDECRE   
+                   ,TRIM(RC1.SADA_MULTNAT)   
+                   ,TRIM(RC1.SADA_MSFIL  )   
+                   ,TRIM(RC1.SADA_MSEMP  )   
+                   ,TRIM(RC1.SADA_PROJPMS)   
+                   ,TRIM(RC1.SADA_CODVES )   
+                   ,TRIM(RC1.SADA_CONFERE)   
+                   ,TRIM(RC1.SADA_MODSPB )   
+                   ,TRIM(RC1.SADA_NUMHIST)   
+                   ,TRIM(RC1.SADA_CODBAR )   
+                   ,TRIM(RC1.SADA_CODDIG )   
+                   ,RC1.SADA_DESCON3   
+                   ,TRIM(RC1.SADA_DMOTNEG )  
+                   ,TRIM(RC1.SADA_DTDESC1 )  
+                   ,TRIM(RC1.SADA_DTDESC2 )  
+                   ,TRIM(RC1.SADA_DTDESC3 )  
+                   ,TRIM(RC1.SADA_INSCRIC )  
+                   ,TRIM(RC1.SADA_MOTNEG  )  
+                   ,TRIM(RC1.SADA_NOMEALU )  
+                   ,TRIM(RC1.SADA_NRDOC   )  
+                   ,RC1.SADA_VLFIES    
+                   ,RC1.SADA_VLMULTA   
+                   ,RC1.SADA_SABTPIS   
+                   ,RC1.SADA_VLREEMB   
+                   ,TRIM(RC1.SADA_DTDESC4)   
+                   ,RC1.SADA_DESCON4   
+                   ,RC1.SADA_NREG);
+                   AUX := AUX + 1;
+                   IF AUX >= 2000 THEN
+                   	COMMIT;
+                   	AUX := 0;
+                   END IF;
+END LOOP;
+COMMIT;
+END;   
+/  

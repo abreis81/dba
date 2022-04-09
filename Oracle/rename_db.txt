@@ -1,0 +1,61 @@
+ Renaming an Oracle database 
+  The following log shows how a database name was renamed from ORA9 to CAT. 
+SQL> select name from v$database;
+
+NAME
+---------
+ORA9
+SQL> alter system switch logfile;
+SQL> alter database backup controlfile to trace;
+The instance needs to be shut down. SYSDBA privileges will be needed. 
+SQL> shutdown
+Modify (and optionally rename) the created trace file: 
+Find the line reading # Set #2. RESETLOGS case 
+Remove all lines above this line. 
+Change the line containing the database name from CREATE CONTROLFILE REUSE DATABASE "ORA9" RESETLOGS NOARCHIVELOG
+to
+CREATE CONTROLFILE SET DATABASE "CAT" RESETLOGS NOARCHIVELOG
+Note, in my case, the database is running in noarchive log mode. The corresponding line reads ARCHIVELOG otherwise. 
+Remove the line reading RECOVER DATABASE USING BACKUP CONTROLFILE. 
+Remove lines starting with #. 
+It looks then something like: 
+STARTUP NOMOUNT
+CREATE CONTROLFILE SET DATABASE "CAT" RESETLOGS  NOARCHIVELOG
+--  SET STANDBY TO MAXIMIZE PERFORMANCE
+    MAXLOGFILES 16
+    MAXLOGMEMBERS 2
+    MAXDATAFILES 30
+    MAXINSTANCES 1
+    MAXLOGHISTORY 454
+LOGFILE
+  GROUP 1 '/home/oracle/databases/cat/redo1.ora'  SIZE 100M,
+  GROUP 2 '/home/oracle/databases/cat/redo2.ora'  SIZE 100M,
+  GROUP 3 '/home/oracle/databases/cat/redo3.ora'  SIZE 100M
+-- STANDBY LOGFILE
+DATAFILE
+  '/home/oracle/databases/cat/system.dbf',
+  '/home/oracle/databases/cat/undo.dbf',
+  '/home/oracle/databases/cat/data.dbf'
+CHARACTER SET WE8ISO8859P1
+;
+ALTER DATABASE OPEN RESETLOGS;
+ALTER TABLESPACE TEMP ADD TEMPFILE '/home/oracle/OraHome1/databases/ora9/temp.dbf'
+     SIZE 104857600  REUSE AUTOEXTEND OFF;
+In my case, I renamed the file to /tmp/rename_db.sql. Move the controlfiles away so that they can be re-created.. 
+$ mv ctl_1.ora ctl_1.ora.moved
+$ mv ctl_2.ora ctl_2.ora.moved
+$ mv ctl_3.ora ctl_3.ora.moved
+The database name must be entered (changed) in the initSID.ora: 
+initXXX.ora
+db_name = CAT
+sqlplus "/ as sysdba"
+SQL> @/tmp/rename_db
+SQL> select name from v$database;
+
+NAME
+---------
+CAT
+ 
+
+ 
+ link http://www.adp-gmbh.ch/ora/admin/rename_db.html

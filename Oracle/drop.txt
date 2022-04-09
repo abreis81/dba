@@ -1,0 +1,25 @@
+SELECT 'DROP '||decode(object_type,'PACKAGE BODY','Package',object_type)||
+   decode(OBJECT_TYPE,'PACKAGE BODY',' '||owner||'.'||OBJECT_NAME||' cascade constraint;',
+   ' '||owner||'.'||'"'||OBJECT_NAME||'"'||' cascade constraint; ') Linha_de_Alteracao
+FROM   DBA_OBJECTS
+WHERE  OWNER in ('ESERVICES', 'ESERVICES_ADM' )
+--and object_type='TABLE'
+order by 1
+/
+
+
+in ('ESERVICES', 'ES_COMMONS', 'ESERVICES_ADM', 'ES_COMMONS_ADM')
+
+in ('ESERVICES', 'ESERVICES_ADM' )
+
+
+SELECT 'DROP '||decode(object_type,'PACKAGE BODY','Package',object_type)||
+   decode(OBJECT_TYPE,'PACKAGE BODY',' '||owner||'.'||OBJECT_NAME||' ;',
+   ' '||owner||'.'||'"'||OBJECT_NAME||'"'||' ; ') Linha_de_Alteracao
+FROM   DBA_OBJECTS
+WHERE  OWNER in ('ESERVICES', 'ES_COMMONS', 'ESERVICES_ADM', 'ES_COMMONS_ADM')
+order by 1
+/
+
+
+PURGE DBA_RECYCLEBIN;

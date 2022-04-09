@@ -1,0 +1,75 @@
+-- adicionar job
+
+declare
+job_num number;
+begin
+dbms_job.submit(job_num,'BEGIN A_PRESEU_1; END;', SYSDATE, NULL);
+COMMIT;
+END;
+/
+
+
+-- para remover o job
+-- retirar o job (logar com usuário preseu )
+
+BEGIN
+  FOR RC1 IN (SELECT JOB FROM USER_JOBS) LOOP
+   DBMS_JOB.REMOVE(RC1.JOB);
+   COMMIT;
+  END LOOP;
+END;
+
+
+-- matar o job rodando ( logar com dbaalanbr)
+
+BEGIN
+ FOR RC1 IN (SELECT /*+ RULE */ A.SID, B.SERIAL# FROM DBA_JOBS_RUNNING A,V$SESSION B WHERE A.SID=B.SID) LOOP
+  EXECUTE IMMEDIATE 'ALTER SYSTEM KILL SESSION '||''''||RC1.SID||','||RC1.SERIAL#||'''';
+ END LOOP;
+END;
+/
+
+
+TRUNC(SYSDATE ) +23.5/24
+sysdate+5/1440
+
+Programar o comando abaixo para rodar todos os dias a cada 5 minutos:
+
+declare
+job_num number;
+begin
+dbms_job.submit(job_num,'BEGIN SAP.SAP_LOAD_MDM_CODE_PKG.CONTROLE; END;', sysdate+5/1440, 'sysdate+5/1440');
+COMMIT;
+END;
+/
+
+Programar o comando abaixo para rodar todo dia às 23:30:
+
+declare
+job_num number;
+begin
+dbms_job.submit(job_num,'BEGIN SAP.SEND_CRM_SAP_PKG.controle; END;', TRUNC(SYSDATE ) +23.5/24, 'TRUNC(SYSDATE + 1) +23.5/24');
+COMMIT;
+END;
+/
+
+Programar o comando abaixo para rodar todo dia às 05:00:
+
+declare
+job_num number;
+begin
+dbms_job.submit(job_num,'BEGIN SAP.SEND_SAP_BW_PCK.CONTROLE; END;', TRUNC(SYSDATE +1) +5/24, 'TRUNC(SYSDATE + 1) +5/24');
+COMMIT;
+END;
+/
+
+Programar o comando abaixo para rodar todos dia às 21:30:
+
+declare
+job_num number;
+begin
+dbms_job.submit(job_num,'BEGIN SAP.SAP_INTERFACE_PKG.CONTROLE(''A''); END;', TRUNC(SYSDATE ) +21.5/24, 'TRUNC(SYSDATE + 1) +21.5/24');
+COMMIT;
+END;
+/
+

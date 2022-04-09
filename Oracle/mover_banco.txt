@@ -1,0 +1,221 @@
+
+Movendo arquivos de controle (control files)
+
+Alterar o arquivo de inicialização spfile com a nova localização do control file (ALTER SYSTEM).
+Realizar shutdown do banco de dados.
+Mover o control file para a nova localização.
+Iniciar a instância e abrir o banco de dados (STARTUP).
+Neste cenário irei abordar os arquivos de controle (control files). Abaixo podemos ver que os control files estão localizados em /oradata/BD01 conforme demonstrado tanto pelo resultado da view dinâmica de desempenho V$CONTROLFILE quanto pela infomação do arquivo de parâmetro de inicialização spfile. O objetivo será mover os control files para a nova localização em /oradata2/BD01.
+
+$ sqlplus / as sysdba
+
+SQL*Plus: Release 11.2.0.3.0 Production on Seg Ago 5 19:32:35 2013
+
+Copyright (c) 1982, 2011, Oracle.  All rights reserved.
+
+Conectado a:
+Oracle Database 11g Enterprise Edition Release 11.2.0.3.0 - Production
+With the Partitioning option
+
+SQL> select * from v$controlfile;
+
+STATUS  NAME                           IS_  BLOCK_SIZE FILE_SIZE_BLKS
+------- ------------------------------ ---- ---------- --------------
+        /oradata/BD01/control01.ctl    NO       16384            594
+        /oradata/BD01/control02.ctl    NO       16384            594
+
+SQL> show parameter control_files;
+
+NAME                TYPE       VALUE
+------------------- ---------- ----------------------------
+control_files       string     /oradata/BD01/control01.ctl,
+                               /oradata/BD01/control02.ctl
+
+SQL> alter system set control_files = '/oradata2/BD01/control01.ctl',
+                                      '/oradata2/BD01/control02.ctl' scope=SPFILE;
+
+Sistema alterado.
+
+SQL> shutdown immediate
+Banco de dados fechado.
+Banco de dados desmontado.
+Instância ORACLE desativada.
+
+[oracle@linux1 /]$ mv /oradata/BD01/control*.ctl /oradata2/BD01/
+
+SQL> startup
+Instância ORACLE iniciada.
+
+Total System Global Area  313860096 bytes
+Fixed Size                  1344652 bytes
+Variable Size             109054836 bytes
+Database Buffers          197132288 bytes
+Redo Buffers                6328320 bytes
+Banco de dados montado.
+Banco de dados aberto.
+
+SQL> select * from v$controlfile;
+
+STATUS  NAME                           IS_  BLOCK_SIZE FILE_SIZE_BLKS
+------- ------------------------------ ---- ---------- --------------
+        /oradata2/BD01/control01.ctl    NO       16384            594
+        /oradata2/BD01/control02.ctl    NO       16384            594  
+
+
+Movendo arquivos de dados (data files) com o banco de dados fechado
+
+Realizar shutdown do banco de dados.
+Iniciar a instância e montar o banco de dados (STARTUP MOUNT).
+Copiar ou renomear o arquivo de dados para a nova localização.
+Atualizar o control file com a nova localização do arquivo de dados (ALTER DATABASE RENAME).
+Abrir o banco de dados (ALTER DATABASE OPEN).
+Deletar o arquivo de dados da localização antiga.
+
+Neste cenário abordarei a movimentação dos arquivos de dados (data files). Abaixo podemos ver que o data file users01.dbf pertencente à tablespace USERS encontra-se localizado em /oradata/BD01 conforme demonstrado pela view de dicionário de dados DBA_DATA_FILES. O objetivo será mover o data file users01.dbf para a nova localização em /oradata2/BD01.
+
+SQL> select file_id,file_name,tablespace_name
+  2    from dba_data_files
+  3   where tablespace_name='USERS';
+
+   FILE_ID FILE_NAME                          TABLESPACE_NAME
+---------- ---------------------------------- ------------------
+         4 /oradata/BD01/users01.dbf          USERS
+
+SQL> shutdown immediate
+Banco de dados fechado.
+Banco de dados desmontado.
+Instância ORACLE desativada.
+
+SQL> startup mount
+Instância ORACLE iniciada.
+
+Total System Global Area  313860096 bytes
+Fixed Size                  1344652 bytes
+Variable Size             109054836 bytes
+Database Buffers          197132288 bytes
+Redo Buffers                6328320 bytes
+Banco de dados montado.
+
+SQL> !cp -a  /oradata/BD01/users01.dbf /oradata2/BD01/users01.dbf
+
+SQL> alter database rename file 
+  2  '/oradata/BD01/users01.dbf'
+  3  to
+  4  '/oradata2/BD01/users01.dbf';
+
+Banco de dados alterado.
+
+SQL> alter database open;
+
+Banco de dados alterado.
+
+SQL> !rm /oradata/BD01/users01.dbf
+
+SQL> select file_id,file_name,tablespace_name
+  2    from dba_data_files
+  3   where tablespace_name='USERS';
+
+   FILE_ID FILE_NAME                          TABLESPACE_NAME
+---------- ---------------------------------- ------------------
+         4 /oradata2/BD01/users01.dbf          USERS
+
+Vale a pena salientar que neste cenário foi utilizado o comando ALTER DATABASE para mover o arquivo de dados. Esse método é útil quando precisamos mover arquivos de dados de tablespaces de sistema como as tablespaces SYSTEM, SYSAUX, UNDO e TEMP, pois essas tablespaces e seus data files não podem ser colocados OFFLINE enquanto o banco de dados estiver aberto.
+
+
+Movendo arquivos de dados (data files) com o banco de dados aberto
+
+Colocar a tablespace do arquivo de dados no estado OFFLINE.
+Copiar ou renomear o arquivo de dados para a nova localização.
+Atualizar o control file com a nova localização do arquivo de dados (ALTER TABLESPACE RENAME).
+Colocar a tablespace do arquivo de dados no estado ONLINE.
+Deletar o arquivo de dados da localização antiga.
+
+Neste cenário abordarei a movimentação dos arquivos de dados usando o comando ALTER TABLESPACE RENAME. Como já foi mencionado anteriormente, se o arquivo de dados que desejamos mover faz parte de uma outra tablespace alé da SYSTEM, SYSAUX, UNDO e TEMP, é preferível usar o método ALTER TABLESPACE para mover os data files por um motivo crucial: O banco de dados, exceto pela tablespace cujo arquivo de dados será movido, permanecerá disponível para acesso durante toda a operação.
+
+SQL> alter tablespace users offline;
+
+Tablespace alterado.
+
+SQL> !cp -a /oradata/BD01/users01.dbf /oradata2/BD01/users01.dbf
+
+SQL> alter tablespace users rename datafile
+  2  '/oradata/BD01/users01.dbf'
+  3  to
+  4  '/oradata2/BD01/users01.dbf';
+
+Tablespace alterado.
+
+SQL> alter tablespace users online;
+
+Tablespace alterado.
+
+SQL> !rm /oradata/BD01/users01.dbf
+
+SQL> select file_id,file_name,tablespace_name
+  2    from dba_data_files
+  3   where tablespace_name='USERS';
+
+   FILE_ID FILE_NAME                          TABLESPACE_NAME
+---------- ---------------------------------- ------------------
+         4 /oradata2/BD01/users01.dbf          USERS 
+
+Movendo arquivos de redo log online (redo log files)
+
+Realizar shutdown do banco de dados.
+Copiar ou renomear o arquivo de redo log online para a nova localização.
+Iniciar a instância e montar o banco de dados (STARTUP MOUNT).
+Atualizar o control file com a nova localização do arquivo de redo log online (ALTER DATABASE RENAME).
+Abrir o banco de dados (ALTER DATABASE OPEN).
+Deletar o arquivo da localização antiga.
+
+Neste cenário abordarei a movimentação de redo log files usando o comando ALTER DATABASE RENAME. Embora seja possível mover indiretamente arquivos de redo log online descartando grupos de redo log inteiros e adicionando-os novamente em um local diferente, essa solução poderá não ser bem sucedida caso o redo log file a ser descartado insistir em ficar com o status ACTIVE. Com esse status, o arquivo de redo log online não poderá ser excluído. No mais, o método usado abaixo é similar ao método usado para mover os arquivos de dados (data files). Abaixo podemos ver que os arquivos de redo log online encontram-se localizados em /oradata/BD01 conforme demonstrado pela view dinâmica de desempenho V$LOGFILE. O objetivo será mover o arquivo de redo log online redo01.log para a nova localização em /oradata2/BD01.
+
+SQL> select * from v$logfile;
+
+    GROUP# STATUS  TYPE    MEMBER                   IS_
+---------- ------- ------- ------------------------ ---
+         1         ONLINE  /oradata/BD01/redo01.log NO
+         2         ONLINE  /oradata/BD01/redo02.log NO
+         3         ONLINE  /oradata/BD01/redo03.log NO
+
+
+SQL> shutdown immediate
+Banco de dados fechado.
+Banco de dados desmontado.
+Instância ORACLE desativada. 
+SQL> startup mount
+Instância ORACLE iniciada.
+
+Total System Global Area  313860096 bytes
+Fixed Size                  1344652 bytes
+Variable Size             109054836 bytes
+Database Buffers          197132288 bytes
+Redo Buffers                6328320 bytes
+Banco de dados montado.
+
+SQL> !cp -a /oradata/BD01/redo01.log /oradata2/BD01/redo01.log
+
+SQL> alter database rename file
+  2  '/oradata/BD01/redo01.log'
+  3  to
+  4  '/oradata2/BD01/redo01.log';
+
+Banco de dados alterado.
+
+SQL> alter database open;
+
+Banco de dados alterado.
+
+SQL> !rm /oradata/BD01/redo01.log
+
+SQL> select * from v$logfile;
+
+    GROUP# STATUS  TYPE    MEMBER                    IS_
+---------- ------- ------- ------------------------- ---
+         1         ONLINE  /oradata2/BD01/redo01.log NO
+         2         ONLINE  /oradata/BD01/redo02.log  NO
+         3         ONLINE  /oradata/BD01/redo03.log  NO 
+
+
+Leia mais: http://eduardolegatti.blogspot.com/2013/08/movendo-ou-renomeando-arquivos-de.html#ixzz40QI5QVVT 
+Under Creative Commons License: Attribution Non-Commercial

@@ -1,0 +1,407 @@
+
+-- Create table
+create table OWN_PLUSOFTCRM.CS_ASTB_MANIFARQUIVO_MAAR
+(
+  ID_CHAM_CD_CHAMADO         NUMBER(15) not null,
+  MANI_NR_SEQUENCIA          NUMBER(15) not null,
+  ID_ASN1_CD_ASSUNTONIVEL1   NUMBER(10) not null,
+  ID_ASN2_CD_ASSUNTONIVEL2   NUMBER(10) not null,
+  ID_MAAR_CD_MANIFARQUIVO    NUMBER(15) not null,
+  MAAR_DS_MANIFARQUIVO       VARCHAR2(100),
+  MAAR_DS_PATH               VARCHAR2(1000),
+  MAAR_DS_ARQUIVO            BLOB,
+  ID_EXPU_CD_EXPURGO         NUMBER(15),
+  ID_REAR_CD_RESPOSITORIOARQ NUMBER(15),
+  MAAR_DH_GRAVACAO           DATE
+)
+tablespace TS_PLUSOFTCRM_DT_01
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 128K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table OWN_PLUSOFTCRM.CS_ASTB_MANIFARQUIVO_MAAR
+  add primary key (ID_CHAM_CD_CHAMADO, MANI_NR_SEQUENCIA, ID_ASN1_CD_ASSUNTONIVEL1, ID_ASN2_CD_ASSUNTONIVEL2, ID_MAAR_CD_MANIFARQUIVO)
+  using index 
+  tablespace TS_PLUSOFTCRM_IX_01
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+  
+  
+  -- Create table
+create table OWN_PLUSOFTCRM.CS_CDTB_ANEXOCORRESP_ANCO
+(
+  ID_CORR_CD_CORRESPONDENCI  NUMBER(10) not null,
+  ANCO_NR_SEQUENCIA          NUMBER(10) not null,
+  ANCO_DH_UPLOAD             DATE,
+  ANCO_DS_CAMINHO            VARCHAR2(255),
+  ANCO_DS_ARQUIVO            VARCHAR2(255),
+  ANCO_TX_ANEXO              BLOB,
+  ANCO_IN_CORPOCORR          CHAR(1),
+  ID_EXPU_CD_EXPURGO         NUMBER(15),
+  ID_REAR_CD_RESPOSITORIOARQ NUMBER(15)
+)
+tablespace TS_PLUSOFTCRM_DT_01
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 128K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table OWN_PLUSOFTCRM.CS_CDTB_ANEXOCORRESP_ANCO
+  add primary key (ID_CORR_CD_CORRESPONDENCI, ANCO_NR_SEQUENCIA)
+  using index 
+  tablespace TS_PLUSOFTCRM_IX_01
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+  
+  
+ -- Create table
+create table OWN_PLUSOFTCRM.CS_NGTB_ANEXOSMANIFTEMP_ANMT
+(
+  ANMT_NR_SEQUENCIA          NUMBER(10) not null,
+  ID_MATM_CD_MANIFTEMP       NUMBER(10) not null,
+  ANMT_DS_RECEBIDO           VARCHAR2(100),
+  ANMT_DS_ATUAL              VARCHAR2(100),
+  ANMT_BL_ANEXO              BLOB,
+  ID_EXPU_CD_EXPURGO         NUMBER(15),
+  ID_REAR_CD_RESPOSITORIOARQ NUMBER(15),
+  ANMT_DS_CONTENTID          VARCHAR2(255)
+)
+tablespace TS_PLUSOFTCRM_DT_01
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table OWN_PLUSOFTCRM.CS_NGTB_ANEXOSMANIFTEMP_ANMT
+  add primary key (ANMT_NR_SEQUENCIA, ID_MATM_CD_MANIFTEMP)
+  using index 
+  tablespace TS_PLUSOFTCRM_IX_01
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+  
+  
+  
+  -- Create table
+create table OWN_PLUSOFTCRM.CS_NGTB_ARQUIVOSERV_ARSE
+(
+  ID_ARSE_CD_ARQUIVOSERV NUMBER(10) not null,
+  ARSE_DS_ARQUIVOSERV    VARCHAR2(1000),
+  ARSE_DS_MODULO         CHAR(1),
+  ARSE_BL_ARQUIVO        BLOB,
+  ARSE_DS_IDENTIFICADOR  VARCHAR2(4),
+  ARSE_DH_CADASTRO       DATE
+)
+tablespace TS_PLUSOFTCRM_DT_01
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 128K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table OWN_PLUSOFTCRM.CS_NGTB_ARQUIVOSERV_ARSE
+  add primary key (ID_ARSE_CD_ARQUIVOSERV)
+  using index 
+  tablespace TS_PLUSOFTCRM_IX_01
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+
+  ------------------------------------------------------------------------------------------------------------
+  
+  Insert dos dados, sem os campos lob
+
+insert into OWN_PLUSOFTCRM.CS_ASTB_MANIFARQUIVO_MAAR
+(
+ID_CHAM_CD_CHAMADO        ,
+MANI_NR_SEQUENCIA         ,
+ID_ASN1_CD_ASSUNTONIVEL1  ,
+ID_ASN2_CD_ASSUNTONIVEL2  ,
+ID_MAAR_CD_MANIFARQUIVO   ,
+MAAR_DS_MANIFARQUIVO      ,
+MAAR_DS_PATH              ,
+ID_EXPU_CD_EXPURGO        ,
+ID_REAR_CD_RESPOSITORIOARQ,
+MAAR_DH_GRAVACAO
+)
+select ID_CHAM_CD_CHAMADO, 
+MANI_NR_SEQUENCIA, 
+ID_ASN1_CD_ASSUNTONIVEL1, 
+ID_ASN2_CD_ASSUNTONIVEL2, 
+ID_MAAR_CD_MANIFARQUIVO, 
+MAAR_DS_MANIFARQUIVO, 
+MAAR_DS_PATH, 
+ID_EXPU_CD_EXPURGO,
+ID_REAR_CD_RESPOSITORIOARQ,
+MAAR_DH_GRAVACAO 
+from OWN_PLUSOFTCRM.CS_ASTB_MANIFARQUIVO_MAAR@prod.world
+;
+
+
+
+insert into OWN_PLUSOFTCRM.CS_NGTB_ANEXOSMANIFTEMP_ANMT
+(
+ANMT_NR_SEQUENCIA          ,
+ID_MATM_CD_MANIFTEMP       ,
+ANMT_DS_RECEBIDO           ,
+ANMT_DS_ATUAL               ,           
+ ID_EXPU_CD_EXPURGO         ,
+ID_REAR_CD_RESPOSITORIOARQ  ,
+ANMT_DS_CONTENTID
+ )
+select 
+ ANMT_NR_SEQUENCIA          ,
+ID_MATM_CD_MANIFTEMP       ,
+ANMT_DS_RECEBIDO           ,
+ANMT_DS_ATUAL               ,           
+ ID_EXPU_CD_EXPURGO         ,
+ID_REAR_CD_RESPOSITORIOARQ  ,
+ANMT_DS_CONTENTID
+ from OWN_PLUSOFTCRM.CS_NGTB_ANEXOSMANIFTEMP_ANMT@prod.world;
+  
+  
+insert into OWN_PLUSOFTCRM.CS_CDTB_ANEXOCORRESP_ANCO
+(
+  ID_CORR_CD_CORRESPONDENCI  , 
+  ANCO_NR_SEQUENCIA          ,
+  ANCO_DH_UPLOAD             ,
+  ANCO_DS_CAMINHO            ,
+  ANCO_DS_ARQUIVO            ,
+  ANCO_IN_CORPOCORR          ,
+  ID_EXPU_CD_EXPURGO         ,
+  ID_REAR_CD_RESPOSITORIOARQ 
+ )
+select  
+  ID_CORR_CD_CORRESPONDENCI  , 
+  ANCO_NR_SEQUENCIA          ,
+  ANCO_DH_UPLOAD             ,
+  ANCO_DS_CAMINHO            ,
+  ANCO_DS_ARQUIVO            ,
+  ANCO_IN_CORPOCORR          ,
+  ID_EXPU_CD_EXPURGO         ,
+  ID_REAR_CD_RESPOSITORIOARQ 
+from OWN_PLUSOFTCRM.CS_CDTB_ANEXOCORRESP_ANCO@prod.world;
+
+
+insert into OWN_PLUSOFTCRM.CS_NGTB_ARQUIVOSERV_ARSE
+(
+  ID_ARSE_CD_ARQUIVOSERV ,
+  ARSE_DS_ARQUIVOSERV    ,
+  ARSE_DS_MODULO         ,
+  ARSE_DS_IDENTIFICADOR  ,
+  ARSE_DH_CADASTRO       
+)
+select 
+  ID_ARSE_CD_ARQUIVOSERV ,
+  ARSE_DS_ARQUIVOSERV    ,
+  ARSE_DS_MODULO         ,
+  ARSE_DS_IDENTIFICADOR  ,
+  ARSE_DH_CADASTRO       
+from   OWN_PLUSOFTCRM.CS_NGTB_ARQUIVOSERV_ARSE@prod.world;
+
+------------------------------------------------------------------------------------------------------------ 
+  
+
+  grant select   on OWN_PLUSOFTCRM.CS_NGTB_ANEXOSMANIFTEMP_ANMT         to RPLUSOFTCRM_SELECT;     
+  grant delete,insert,update   on OWN_PLUSOFTCRM.CS_NGTB_ANEXOSMANIFTEMP_ANMT         to RPLUSOFTCRM_UPDATE;   
+  
+  grant select   on OWN_PLUSOFTCRM.CS_ASTB_MANIFARQUIVO_MAAR         to RPLUSOFTCRM_SELECT;
+  grant delete,insert,update   on OWN_PLUSOFTCRM. CS_ASTB_MANIFARQUIVO_MAAR         to RPLUSOFTCRM_UPDATE;
+  
+  grant select   on OWN_PLUSOFTCRM.CS_CDTB_ANEXOCORRESP_ANCO         to RPLUSOFTCRM_SELECT;
+  grant delete,insert,update   on OWN_PLUSOFTCRM. CS_CDTB_ANEXOCORRESP_ANCO         to RPLUSOFTCRM_UPDATE;
+  
+  grant select   on OWN_PLUSOFTCRM.CS_NGTB_ARQUIVOSERV_ARSE         to RPLUSOFTCRM_SELECT;
+  grant delete,insert,update   on OWN_PLUSOFTCRM. CS_NGTB_ARQUIVOSERV_ARSE         to RPLUSOFTCRM_UPDATE;
+------------------------------------------------------------------------------------------------------------  
+
+•	Realizar o exp data pump
+expdp areis@prod.world  schemas=OWN_PLUSOFTCRM,SYS_PLUSOFTCRM,OWN_PLUSINFO,SYS_PLUSINFO  directory=EXPORT  dumpfile=expdpPLUSOFTCRM_PROD_20161107.dmp  logfile=expdpPLUSOFTCRM_PROD_20161107.log  exclude=TABLE:\"in \(\'CS_ASTB_MANIFARQUIVO_MAAR\', \'CS_NGTB_ANEXOSMANIFTEMP_ANMT\', \'CS_CDTB_ANEXOCORRESP_ANCO\', \'CS_NGTB_ARQUIVOSERV_ARSE\'\)\" flashback_time=systimestamp
+
+•	Realizar o imp data pump
+impdp areis@newdev schemas=OWN_PLUSOFTCRM,SYS_PLUSOFTCRM,OWN_PLUSINFO,SYS_PLUSINFO directory=NAUX dumpfile=expdpPLUSOFTCRM_PROD_20161107.dmp logfile=IMPdpPLUSOFTCRM_NEWDEV_20161107.log exclude=TABLE:\"in \(\'CS_ASTB_MANIFARQUIVO_MAAR\',\'CS_NGTB_ANEXOSMANIFTEMP_ANMT\',\'CS_CDTB_ANEXOCORRESP_ANCO\', \'CS_NGTB_ARQUIVOSERV_ARSE\'\)\"
+
+  
+  
+------------------------------------------------------------------------------------------------------------  
+  -- Create/Recreate indexes 
+create index OWN_PLUSOFTCRM.IEARSE_DS_IDENTIFICADOR on OWN_PLUSOFTCRM.CS_NGTB_ARQUIVOSERV_ARSE (ARSE_DS_IDENTIFICADOR)
+  tablespace TS_PLUSOFTCRM_IX_01
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+
+  
+  
+alter table OWN_PLUSOFTCRM.CS_NGTB_ANEXOSMANIFTEMP_ANMT
+  add constraint FK_ANMT_EXPURGO foreign key (ID_EXPU_CD_EXPURGO)
+  references OWN_PLUSOFTCRM.CS_LGTB_EXPURGO_EXPU (ID_EXPU_CD_EXPURGO);
+alter table OWN_PLUSOFTCRM.CS_NGTB_ANEXOSMANIFTEMP_ANMT
+  add foreign key (ID_MATM_CD_MANIFTEMP)
+  references OWN_PLUSOFTCRM.CS_NGTB_MANIFTEMP_MATM (ID_MATM_CD_MANIFTEMP);
+alter table OWN_PLUSOFTCRM.CS_NGTB_ANEXOSMANIFTEMP_ANMT
+  add foreign key (ID_REAR_CD_RESPOSITORIOARQ)
+  references OWN_PLUSOFTCRM.CS_CDTB_REPOSITORIOARQ_REAR (ID_REAR_CD_RESPOSITORIOARQ);
+-- Create/Recreate indexes 
+create index OWN_PLUSOFTCRM.XIF754CS_NGTB_ANEXOSMANIFTEMP_ on OWN_PLUSOFTCRM.CS_NGTB_ANEXOSMANIFTEMP_ANMT (ID_MATM_CD_MANIFTEMP)
+  tablespace TS_PLUSOFTCRM_IX_01
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+ 
+    
+alter table OWN_PLUSOFTCRM.CS_CDTB_ANEXOCORRESP_ANCO
+  add constraint FK_ANCO_EXPURGO foreign key (ID_EXPU_CD_EXPURGO)
+  references OWN_PLUSOFTCRM.CS_LGTB_EXPURGO_EXPU (ID_EXPU_CD_EXPURGO);
+alter table OWN_PLUSOFTCRM.CS_CDTB_ANEXOCORRESP_ANCO
+  add foreign key (ID_CORR_CD_CORRESPONDENCI)
+  references OWN_PLUSOFTCRM.CS_NGTB_CORRESPONDENCI_CORR (ID_CORR_CD_CORRESPONDENCI);
+alter table OWN_PLUSOFTCRM.CS_CDTB_ANEXOCORRESP_ANCO
+  add foreign key (ID_REAR_CD_RESPOSITORIOARQ)
+  references OWN_PLUSOFTCRM.CS_CDTB_REPOSITORIOARQ_REAR (ID_REAR_CD_RESPOSITORIOARQ);
+-- Create/Recreate indexes 
+create index OWN_PLUSOFTCRM.XIF1903CS_CDTB_ANEXOCORRESP on OWN_PLUSOFTCRM.CS_CDTB_ANEXOCORRESP_ANCO (ID_CORR_CD_CORRESPONDENCI)
+  tablespace TS_PLUSOFTCRM_IX_01
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+
+    
+alter table OWN_PLUSOFTCRM.CS_ASTB_MANIFARQUIVO_MAAR
+  add constraint FK_MAAR_EXPURGO foreign key (ID_EXPU_CD_EXPURGO)
+  references OWN_PLUSOFTCRM.CS_LGTB_EXPURGO_EXPU (ID_EXPU_CD_EXPURGO);
+alter table OWN_PLUSOFTCRM.CS_ASTB_MANIFARQUIVO_MAAR
+  add foreign key (ID_CHAM_CD_CHAMADO, MANI_NR_SEQUENCIA, ID_ASN1_CD_ASSUNTONIVEL1, ID_ASN2_CD_ASSUNTONIVEL2)
+  references OWN_PLUSOFTCRM.CS_NGTB_MANIFESPEC_MAES (ID_CHAM_CD_CHAMADO, MANI_NR_SEQUENCIA, ID_ASN1_CD_ASSUNTONIVEL1, ID_ASN2_CD_ASSUNTONIVEL2);
+alter table OWN_PLUSOFTCRM.CS_ASTB_MANIFARQUIVO_MAAR
+  add foreign key (ID_REAR_CD_RESPOSITORIOARQ)
+  references OWN_PLUSOFTCRM.CS_CDTB_REPOSITORIOARQ_REAR (ID_REAR_CD_RESPOSITORIOARQ);
+-- Create/Recreate indexes 
+create index OWN_PLUSOFTCRM.XIF1CS_ASTB_MANIFARQUIVO_MAAR on OWN_PLUSOFTCRM.CS_ASTB_MANIFARQUIVO_MAAR (ID_CHAM_CD_CHAMADO, MANI_NR_SEQUENCIA, ID_ASN1_CD_ASSUNTONIVEL1, ID_ASN2_CD_ASSUNTONIVEL2)
+  tablespace TS_PLUSOFTCRM_IX_01
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+  
+ INSERIR 'HML' NO E-MAIL DAS PESSOAS CADASTRADAS NA BASE DE DADOS
+UPDATE CS_CDTB_PESSOACOMUNIC_PCOM  
+SET PCOM_DS_COMPLEMENTO = SUBSTR(PCOM_DS_COMPLEMENTO,1,INSTR(PCOM_DS_COMPLEMENTO,'@')-1) || '_hml_' || ID_PCOM_CD_PESSOACOMUNIC || SUBSTR(PCOM_DS_COMPLEMENTO,INSTR(PCOM_DS_COMPLEMENTO,'@'))
+WHERE 
+ID_TPCO_CD_TPCOMUNICACAO =5 AND PCOM_DS_COMPLEMENTO IS NOT NULL and PCOM_DS_COMPLEMENTO <> ' '; 
+
+-- INSERIR 'HML' NO E-MAIL DOS FUNCION?RIOS CADASTRADOS NA BASE DE DADOS
+UPDATE CS_CDTB_FUNCIONARIO_FUNC
+SET FUNC_DS_MAIL = SUBSTR(FUNC_DS_MAIL,1,INSTR(FUNC_DS_MAIL,'@')-1) || '_hml_' || ID_FUNC_CD_FUNCIONARIO || SUBSTR(FUNC_DS_MAIL,INSTR(FUNC_DS_MAIL,'@'))
+WHERE FUNC_DS_MAIL IS NOT NULL AND FUNC_DS_MAIL <> ' ';
+
+-- RETIRAR TODOS AS PEND?NCIA A SEREM ENVIADAS, PELO SERVI?O 'ENVIO DE PEND?NCIA'
+UPDATE CS_ASTB_MANIFESTACAODEST_MADS SET MADS_IN_MAIL = 'N' WHERE MADS_IN_MAIL = 'S';
+
+-- RETIRAR TODOS AS PEND?NCIA A SEREM ENVIADAS, PELO SERVI?O 'ENVIO DE CARTA'
+UPDATE CS_NGTB_CORRESPONDENCI_CORR SET CORR_IN_ENVIAEMAIL = 'N' WHERE CORR_IN_ENVIAEMAIL = 'S';
+
+-- INSERIR 'HML' NO CAMPO 'PARA' DOS E-MAILS PENDENTES DE ENVIO DE CORREPOND?NCIA
+UPDATE CS_NGTB_CORRESPONDENCI_CORR 
+SET CORR_DS_EMAILPARA = SUBSTR(CORR_DS_EMAILPARA,1,INSTR(CORR_DS_EMAILPARA,'@')-1) || '_hml_' || ID_CORR_CD_CORRESPONDENCI || SUBSTR(CORR_DS_EMAILPARA,INSTR(CORR_DS_EMAILPARA,'@'))
+WHERE
+CORR_DS_EMAILPARA IS NOT NULL AND CORR_DS_EMAILPARA <> ' ';
+
+--INSERIR 'HML' NO CAMPO 'C/C' DOS E-MAILS PENDENTES DE ENVIO DE CORREPOND?NCIA
+UPDATE CS_NGTB_CORRESPONDENCI_CORR 
+SET CORR_DS_EMAILCC = SUBSTR(CORR_DS_EMAILCC,1,INSTR(CORR_DS_EMAILCC,'@')-1) || '_hml_' || ID_CORR_CD_CORRESPONDENCI || SUBSTR(CORR_DS_EMAILCC,INSTR(CORR_DS_EMAILCC,'@'))
+WHERE
+CORR_DS_EMAILCC IS NOT NULL AND CORR_DS_EMAILCC <> ' ';
+
+--INSERIR O VALOR '<LINK_PLUGIN>' NO CAMPO 'LINK PLUGIN' DO M?DULO CADASTRO > EMPRESA - AP?S, ALTERAR MANUALMENTE PARA A URL CORRETA.
+UPDATE CS_CDTB_EMPRESA_EMPR SET EMPR_DS_LINKPLUGIN = '<LINK_PLUGIN>';
+
+-- INATIVAR TODAS AS CAIXAS POSTAIS. AP?S, CRIAR A DE HOMOLOGA??O.
+UPDATE CS_CDTB_CAIXAPOSTAL_CAPO
+SET CAPO_DH_INATIVO = SYSDATE;
+
+-- PARAR OS SERVI?OS DO M?DULO GERENTE
+UPDATE CS_CDTB_SERVICO_SERV SET SERV_NR_TEMPO = 0;
+
+COMMIT;

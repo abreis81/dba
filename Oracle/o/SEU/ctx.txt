@@ -1,0 +1,27 @@
+GRANT CTXAPP TO SEU;
+
+
+GRANT EXECUTE ON CTXSYS.CTX_CLS TO SEU;
+GRANT EXECUTE ON CTXSYS.CTX_DDL TO SEU;
+GRANT EXECUTE ON CTXSYS.CTX_DOC TO SEU;
+GRANT EXECUTE ON CTXSYS.CTX_OUTPUT TO SEU;
+GRANT EXECUTE ON CTXSYS.CTX_QUERY TO SEU;
+GRANT EXECUTE ON CTXSYS.CTX_REPORT TO SEU;
+GRANT EXECUTE ON CTXSYS.CTX_THES TO SEU;
+GRANT EXECUTE ON CTXSYS.CTX_ULEXER TO SEU;
+
+
+
+create table teste_ctx(c1 number, c2 varchar2(20));
+
+create index ix_teste_ctx on teste_ctx(c2)indextype is ctxsys.context parameters ('sync (on commit)');
+
+select count(*) from teste_ctx where contains(c2, '%SEV%')>0
+
+select * from teste_ctx where upper(c2) like UPPER('%sev%')
+
+select count(1) from seu.seuack where contains(sack_logradouro, '%jose%')>0;
+
+select count(1) from seu.seuack where upper(sack_logradouro) like upper('%jose%');
+
+create index ctx_seuack_01 on seuack(sack_logradouro)indextype is ctxsys.context parameters ('sync (on commit)');

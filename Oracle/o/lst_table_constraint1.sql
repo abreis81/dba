@@ -1,0 +1,42 @@
+/*
+  SCRIPT:   LST_TABLE_CONSTRAINT.SQL
+  OBJETIVO: SCRIPT PARA RELACIONAR AS CONSTRAINTS DE UMA TABELA
+  AUTOR:    JOSIVAN
+  DATA:     2000.01.26
+*/
+--
+COLUMN TABLE_NAME FORMAT A12
+--
+BREAK ON TABLE_NAME SKIP 1
+--
+  SELECT CO.TABLE_NAME
+        ,CC.CONSTRAINT_NAME
+        ,DECODE(CO.CONSTRAINT_TYPE,'P','PRIMARY KEY (PK)'
+                                  ,'C','CHECK       (CK)'
+                                  ,'R','FOREING KEY (FK)'
+                                  ,'U','UNIQUE KEY  (UK)'
+                                  ,'V','VISAO       (VI)'
+                                  ,    'OUTROS          ')   TIPO
+        ,SUBSTR(CC.COLUMN_NAME,1,20)
+        ,CC.POSITION
+    FROM ALL_CONSTRAINTS CO
+        ,ALL_CONS_COLUMNS CC
+   WHERE CO.TABLE_NAME      = CC.TABLE_NAME
+     AND CO.CONSTRAINT_NAME = CC.CONSTRAINT_NAME
+     AND CO.TABLE_NAME      = '&PAR1'
+ORDER BY CC.CONSTRAINT_NAME
+        ,CC.POSITION
+/
+
+
+SELECT CONSTRAINT_NAME
+      ,CONSTRAINT_TYPE
+      ,SEARCH_CONDITION
+      ,DELETE_RULE
+      ,STATUS
+      ,VALIDATED
+      ,LAST_CHANGE
+  FROM DBA_CONSTRAINTS
+ WHERE OWNER      = '&DONO'
+   AND TABLE_NAME = '&TABELA'
+/

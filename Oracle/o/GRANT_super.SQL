@@ -1,0 +1,28 @@
+SET LINES 1000
+
+
+col loc new_value loc noprint
+ 
+select substr(user,1,3) loc from global_name;
+
+
+--
+spool C:\TEMP\grant.&&loc
+SELECT 'GRANT SELECT,UPDATE,DELETE,INSERT ON '||OBJECT_NAME||' TO FPW_CENTRAL;'
+FROM    USER_OBJECTS
+WHERE   (TRUNC(LAST_DDL_TIME) = TRUNC(SYSDATE) or trunc(created) = TRUNC(SYSDATE))
+AND     OBJECT_TYPE IN  ('TABLE','VIEW')
+UNION
+SELECT 'GRANT SELECT ON '||OBJECT_NAME||' TO FPW_READ;'
+FROM    USER_OBJECTS
+WHERE   (TRUNC(LAST_DDL_TIME) = TRUNC(SYSDATE) or trunc(created) = TRUNC(SYSDATE))
+AND     OBJECT_TYPE IN ('TABLE','VIEW')
+UNION
+SELECT 'GRANT SELECT,UPDATE,DELETE,INSERT ON '||OBJECT_NAME||' TO FPW_OPER;'
+FROM    USER_OBJECTS
+WHERE   (TRUNC(LAST_DDL_TIME) = TRUNC(SYSDATE) or trunc(created) = TRUNC(SYSDATE))
+AND     OBJECT_TYPE IN  ('TABLE','VIEW');
+SPOOL OFF
+@C:\TEMP\grant.&&loc
+
+-------------------------------------------------

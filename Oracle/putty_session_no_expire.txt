@@ -1,0 +1,6 @@
+while true 
+do
+ls -ltr
+sleep 10
+clear
+done

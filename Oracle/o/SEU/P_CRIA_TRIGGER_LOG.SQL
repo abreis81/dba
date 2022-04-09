@@ -1,0 +1,57 @@
+CREATE OR REPLACE PROCEDURE SEU.P_CRIA_LOG (TABELA IN VARCHAR2)
+IS
+
+STR VARCHAR2(4000);
+
+CURSOR C1 IS SELECT TABLE_NAME FROM USER_TABLES WHERE TABLE_NAME NOT LIKE '%LOG%' 
+																								AND TABLE_NAME LIKE 'SEU%' AND TABLE_NAME NOT LIKE '%TMP%' and table_name=upper(TABELA);
+
+CURSOR C2(TABELA IN VARCHAR2) IS SELECT COLUMN_ID,COLUMN_NAME, DATA_TYPE, DATA_LENGTH FROM USER_TAB_COLUMNS 
+																 WHERE TABLE_NAME=TABELA AND DATA_TYPE<>'BLOB' AND COLUMN_NAME NOT LIKE '%NREG%' 
+																 AND COLUMN_NAME NOT LIKE '%IDUSUARIO%' ORDER BY COLUMN_ID ;
+
+COL_ID NUMBER;
+
+BEGIN
+	
+	FOR RC1 IN C1 LOOP
+		STR := 'CREATE OR REPLACE TRIGGER SEU.TRG_'||RC1.TABLE_NAME||'_AUDIT_T BEFORE'||CHR(10)
+					 ||'INSERT OR UPDATE OR DELETE ON SEU.'||RC1.TABLE_NAME||' REFERENCING OLD AS OLD NEW AS NEW FOR EACH ROW '||CHR(10)
+					 ||'DECLARE'||CHR(10)
+					 ||'TIPO CHAR(1);'||CHR(10)
+					 ||'NREG INTEGER;'||CHR(10)
+					 ||'BEGIN'||CHR(10)
+					 ||'IF INSERTING THEN'||CHR(10)
+					 ||'   TIPO := '||''''||'I'||''''||';'||CHR(10)
+					 ||'   NREG := :NEW.S'||SUBSTR(RC1.TABLE_NAME,4,3)||'_NREG;'||CHR(10)
+					 ||'END IF;'||CHR(10)
+					 ||'IF UPDATING THEN'||CHR(10)
+					 ||'   TIPO := '||''''||'U'||''''||';'||CHR(10)
+					 ||'   NREG := :OLD.S'||SUBSTR(RC1.TABLE_NAME,4,3)||'_NREG;'||CHR(10)
+					 ||'END IF;'||CHR(10)
+					 ||'IF DELETING THEN'||CHR(10)
+					 ||'   TIPO := '||''''||'D'||''''||';'||CHR(10)
+					 ||'   NREG := :OLD.S'||SUBSTR(RC1.TABLE_NAME,4,3)||'_NREG;'||CHR(10)
+					 ||'END IF;'||CHR(10)
+					 ||'INSERT INTO '||RC1.TABLE_NAME||'_LOG VALUES ('||CHR(10);
+		STR := STR||'NREG, TIPO, SYSDATE, NVL(SYS_CONTEXT('||''''||'ctx_idusuario'||''''||','||''''||'idusuario'||''''||'),'||
+		      'SYS_CONTEXT('||''''||'USERENV'||''''||','||''''||'SESSION_USER'||''''||')),'||CHR(10)||
+		      'NVL(SYS_CONTEXT('||''''||'ctx_idusuario'||''''||','||''''||'origem'||''''||'),'||
+		      'SYS_CONTEXT('||''''||'USERENV'||''''||','||''''||'TERMINAL'||''''||'))'||CHR(10);
+		FOR RC2 IN C2(RC1.TABLE_NAME) LOOP
+			STR := STR||', :OLD.'||RC2.COLUMN_NAME||', :NEW.'||RC2.COLUMN_NAME||CHR(10);
+		END LOOP;
+		STR := STR||');'||CHR(10);
+		STR := STR||'END;';
+		BEGIN
+	  	EXECUTE IMMEDIATE STR;
+	  	--DBMS_OUTPUT.PUT_LINE(STR);
+	  EXCEPTION WHEN OTHERS THEN
+	  	RAISE_APPLICATION_ERROR(-20999,'Erro ao criar trigger de log da tabela '||rc1.table_name||' '||SQLERRM);
+	  END;
+	END LOOP;
+	P_UTL_RECOMP;
+	
+END;
+/
+

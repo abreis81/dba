@@ -1,0 +1,30 @@
+SQL> select tablespace_name,
+  2         contiguous_bytes
+  3  from space_temp
+  4  where contiguous_bytes is not null
+  5  order by tablespace_name,contiguous desc;
+order by tablespace_name,contiguous desc
+                         *
+ERRO na linha 5:
+ORA-00904: nome inválido de coluna 
+
+
+SQL> SELECT tablespace_name,
+  2         count(*)"# OF EXTENTS",
+  3         SUM(contiguous_bytes)"TOTAL BYTES"
+  4  FROM space_temp
+  5  GROUP BY tablespace_name;
+       SUM(contiguous_bytes)"TOTAL BYTES"
+           *
+ERRO na linha 3:
+ORA-00904: nome inválido de coluna 
+
+
+SQL> DROP TABLE space_temp;
+
+Tabela eliminada.
+
+SQL> 
+SQL> 
+SQL> clear screen
+SQL> exit

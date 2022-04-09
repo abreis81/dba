@@ -1,0 +1,23 @@
+ps -ef |grep hsa_prd |grep LOCAL=NO| awk '{print "kill -9 "$2}' 
+ps -ef |grep hsa_prd |grep LOCAL=NO| awk '{print "kill -9 "$2}' > /tmp/killsess.txt
+vi killsess.txt
+chmod 700 /tmp/killsess.txt
+/tmp/killsess.txt
+
+ps -ef | grep LOCAL=NO | grep hsa_prd | wc -l
+
+sqlplus "/as sysdba"
+
+
+************************************************************************* 
+
+ps -ef | grep LOCAL=NO | grep hsa_prd | cut -c10-15 | while read x
+do
+grep $x /tmp/x.txt
+if [ $? == 0 ]
+then
+ echo " tem "
+else
+  kill -9 $x
+fi
+done

@@ -1,0 +1,24 @@
+select S.SID||','||S.SERIAL#, upper(substr(S.OSUSER,1,15)) OSUSER ,
+       S.MACHINE MACHINE,
+       S.USERNAME NAME,STATUS, 
+       S.PROGRAM ,
+       P.spid,
+       s.logon_time
+--       ,p.pga_used_mem, p.pga_alloc_mem, p.pga_freeable_mem,p.pga_max_mem
+from V$SESSION S, V$PROCESS P
+where
+-- machine like '%FCESP\FCESPD1S09%'
+-- SID > 11
+-- (UPPER(S.PROGRAM) not LIKE 'ORACLE%'  or s.program is null)
+-- And
+STATUS in ('ACTIVE','KILLED')
+--  upper(osuser) = 'NL00007'
+-- S.USERNAME = 'IN_RAUL'
+-- UPPER(S.USERNAME) = 'DRLOCK'
+-- UPPER(S.terminal) like '%FCESP_EXP%'
+-- AND UPPER(S.OSUSER) = 'F02229'
+AND  S.paddr  = P.addr
+order by SPId -- upper(OSUSER)
+/
+
+

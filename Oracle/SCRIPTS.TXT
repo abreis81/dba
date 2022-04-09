@@ -1,0 +1,665 @@
+##################################### SCRIPTS #####################################################
+
+############################# DATA FILES, TAMANHO, CAMINHO ################################
+
+col file_name format a50
+col tablespace_name format a25
+col bytes format a20
+col status format a18
+select tablespace_name, file_name, bytes/1024/1024 "TAMANHO EM MB", status from dba_data_files;
+
+
+############################# TEMP FILES, TAMANHO, CAMINHO ################################
+
+col file_name format a60
+col tablespace_name format a25
+col bytes format a20
+col status format a18
+
+select tablespace_name, file_name, bytes/1024/1024, status from dba_temp_files;
+
+
+############################# FAZER O RESIZE DE UM DATA FILE #############################
+
+alter database datafile 'path incluindo o datafile' resize tamanho em K,M,G ou T
+
+
+############################# ADICIONAR UM DATA FILE A UM TABLESPACE ###########################################
+
+alter tablespace tablespace_name add datafile 'path incluindo o novo datafile' size tamanho em K,M,G ou T
+
+
+###################### FREESPACE ORIGINAL ####################################
+
+REM name: freespace.sql
+REM        This script is used to list database freespace, total database
+REM space, largest extent, fragments and percent freespace.
+REM
+REM  Usage sqlplus system/passwd @freespace
+REM
+REM     Date         Create           Description
+REM    30-Oct-96   F. Zhang           Initial creation
+REM
+REM  dba tool key: freespace.sql -- list database freespace, total space and percent free
+REM
+SET HEAD ON
+SET LINES 200
+accept prefix prompt "Prefixo da tablespace: "
+set ver off
+DEF MBYTES_CRITICO=100
+DEF PCT_CRITICO=10
+col tablespace format a20
+col free heading 'Free(Mb)' format 999999.9
+col total heading 'Total(Mb)' format 9999999.9
+col used heading 'Used(Mb)' format 999999.9
+col pct_free heading 'Pct|Free' format 99999.9
+col largest heading 'Largest(Mb)' format 99999.9
+col fragm format 9999
+col status format a7
+compute sum of total on report
+compute sum of free on report
+compute sum of used on report
+break on report
+select substr(a.tablespace_name,1,20) tablespace,
+round(sum(a.total1)/1024/1024, 1) Total,
+round(sum(a.total1)/1024/1024, 1)-round(sum(a.sum1)/1024/1024, 1) used,
+round(sum(a.sum1)/1024/1024, 1) free,
+decode(round(sum(a.total1)/1024/1024, 1),0,0,round(sum(a.sum1)/1024/1024, 1)*100/round(sum(a.total1)/1024/1024, 1)) pct_free,
+round(sum(a.maxb)/1024/1024, 1) largest,
+max(a.cnt) fragm,
+substr(decode(round(sum(a.total1)/1024/1024, 1),0,'ATENCAO')||decode(sign(decode(round(sum(a.total1)/1024/1024, 1),0,0,round(sum(a.sum1)/1024/1024, 1)*100/round(sum(a.total1)/1024/1024, 1))-&pct_critico),-1,decode(sign(round(sum(a.sum1)/1024/1024, 1)-&mbytes_critico),-1,'CRITICO')),1,7) STATUS
+from
+(select tablespace_name, 0 total1, sum(bytes) sum1,
+max(bytes) MAXB,
+count(bytes) cnt
+from dba_free_space
+--where tablespace_name like upper(nvl('&prefix','%'))
+group by tablespace_name
+union
+select tablespace_name, sum(bytes) total1, 0, 0, 0 from dba_data_files
+where tablespace_name like upper(nvl('&prefix','%'))
+group by tablespace_name) a
+where tablespace_name like upper(nvl('&prefix','%'))
+group by a.tablespace_name
+order by 1
+/
+
+
+############################# FREESPACE ###################################################
+
+set pau off
+col free heading 'Free(Mb)' format 999999.9
+col total heading 'Total(Mb)' format 9999999.9
+col used heading 'Used(Mb)' format 999999.9
+col pct_free heading 'Pct|Free' format 999999.9
+col largest heading 'Largest(Mb)' format 999999.9
+compute sum of total on report
+compute sum of free on report
+compute sum of used on report
+break on report
+select substr(a.tablespace_name,1,13) tablespace,
+round(sum(a.total1)/1024/1024, 1) Total,
+round(sum(a.total1)/1024/1024, 1)-round(sum(a.sum1)/1024/1024, 1) used,
+round(sum(a.sum1)/1024/1024, 1) free,
+round(sum(a.sum1)/1024/1024, 1)*100/round(sum(a.total1)/1024/1024, 1) pct_free,
+round(sum(a.maxb)/1024/1024, 1) largest,
+max(a.cnt) fragment
+from
+(select tablespace_name, 0 total1, sum(bytes) sum1, 
+max(bytes) MAXB,
+count(bytes) cnt
+from dba_free_space
+group by tablespace_name
+union
+select tablespace_name, sum(bytes) total1, 0, 0, 0 from dba_data_files
+group by tablespace_name) a
+group by a.tablespace_name;
+
+
+########################### FREESPACE - TEMP ###################################
+
+
+########################## INFORMAÇÃO DO HEADER, ISTO É REFLETE O ESPAÇO QUE FOI ATINGIDO NA TABLESPACE MAS NÃO O VALOR REAL
+
+set head on
+set ver off
+set line 1000
+def mbytes_critico=100
+def pct_critico=10
+col tablespace format a20
+col free heading 'free(mb)' format 999999.9
+col total heading 'total(mb)' format 999999999.9
+col used heading 'used(mb)' format 999999.9
+col pct_free heading 'pct|free' format 99999.9
+col largest heading 'largest(mb)' format 99999.9
+col fragm format 999999
+col status format a7
+compute sum of total on report
+compute sum of free on report
+compute sum of used on report
+break on report
+select tablespace_name tablespace, file_id,
+       round((bytes_free+bytes_used)/1024/1024) total,
+       round(bytes_used/1024/1024) used,
+       round(bytes_free/1024/1024) free
+       from v$temp_space_header
+order by file_id
+/
+
+select * from  V$TEMP_EXTENT_POOL;
+
+select sum(BYTES_USED)/1024/1024 from V$TEMP_EXTENT_POOL; 
+
+
+SELECT TABLESPACE_NAME, CURRENT_USERS, 
+(((TOTAL_BLOCKS*(8*1024))/1024)/1024) "MB Total", 
+(((used_blocks*(8*1024))/1024)/1024) "MB Utilizados", 
+(((FREE_BLOCKS*(8*1024))/1024)/1024) "MB Livres" 
+from v$sort_segment;
+
+
+############################ FREESPACE - TEMP ####################################
+
+SELECT   A.tablespace_name tablespace, D.mb_total,
+         SUM (A.used_blocks * D.block_size) / 1024 / 1024 mb_used,
+         D.mb_total - SUM (A.used_blocks * D.block_size) / 1024 / 1024 mb_free
+FROM     v$sort_segment A,
+         (
+         SELECT   B.name, C.block_size, SUM (C.bytes) / 1024 / 1024 mb_total
+         FROM     v$tablespace B, v$tempfile C
+         WHERE    B.ts#= C.ts#
+         GROUP BY B.name, C.block_size
+         ) D
+WHERE    A.tablespace_name = D.name
+GROUP by A.tablespace_name, D.mb_total;
+
+
+########################## TAMANHO TABLESPACE #######################################
+
+col name for a25
+col "size (m)" for a15
+col "used (m)" for a35
+col "used %" for a15
+set lines 160
+/* Formatted on 2007/04/30 10:36 (Formatter Plus v4.8.7) */
+/* OracleOEM */
+SELECT d.status "Status", d.tablespace_name "Name", d.CONTENTS "Type",
+       d.extent_management "Extent Management",
+       TO_CHAR (NVL (a.BYTES / 1024 / 1024, 0), '999G999G999D99','NLS_NUMERIC_CHARACTERS=,.') "Size (M)",
+          TO_CHAR (NVL (a.BYTES - NVL (f.BYTES, 0), 0) / 1024 / 1024,
+                   '999G999G999D99','NLS_NUMERIC_CHARACTERS=,.'
+                  )
+       || '/'
+       || TO_CHAR (NVL (a.BYTES / 1024 / 1024, 0), '999G999G999D99','NLS_NUMERIC_CHARACTERS=,.') "Used (M)",
+       TO_CHAR (NVL ((a.BYTES - NVL (f.BYTES, 0)) / a.BYTES * 100, 0),
+                '990.00'
+               ) "Used %"
+  FROM SYS.dba_tablespaces d,
+       (SELECT   tablespace_name, SUM (BYTES) BYTES
+            FROM SYS.dba_data_files
+        GROUP BY tablespace_name) a,
+       (SELECT   tablespace_name, SUM (BYTES) BYTES
+            FROM SYS.dba_free_space
+        GROUP BY tablespace_name) f
+ WHERE d.tablespace_name = a.tablespace_name(+)
+   AND d.tablespace_name = f.tablespace_name(+)
+   AND NOT (d.extent_management LIKE 'LOCAL' AND d.CONTENTS LIKE 'TEMPORARY')
+UNION ALL
+SELECT d.status "Status", d.tablespace_name "Name", d.CONTENTS "Type",
+       d.extent_management "Extent Management",
+       TO_CHAR (NVL (a.BYTES / 1024 / 1024, 0), '999G999G999D99','NLS_NUMERIC_CHARACTERS=,.') "Size (M)",
+          TO_CHAR (NVL (t.BYTES, 0) / 1024 / 1024, '999G999G999D99','NLS_NUMERIC_CHARACTERS=,.')
+       || '/'
+       || TO_CHAR (NVL (a.BYTES / 1024 / 1024, 0), '999G999G999D99','NLS_NUMERIC_CHARACTERS=,.') "Used (M)",
+       TO_CHAR (NVL (t.BYTES / a.BYTES * 100, 0), '990.00') "Used %"
+  FROM SYS.dba_tablespaces d,
+       (SELECT   tablespace_name, SUM (BYTES) BYTES
+            FROM SYS.dba_temp_files
+        GROUP BY tablespace_name) a,
+       (SELECT   tablespace_name, SUM (bytes_cached) BYTES
+            FROM SYS.v$temp_extent_pool
+        GROUP BY tablespace_name) t
+ WHERE d.tablespace_name = a.tablespace_name(+)
+   AND d.tablespace_name = t.tablespace_name(+)
+   AND d.extent_management LIKE 'LOCAL'
+   AND d.CONTENTS LIKE 'TEMPORARY'
+ order by "Used %" desc
+/
+
+
+########################## TAMANHO TABLESPACE ORACLE 7 #######################################
+
+SELECT 
+	a.tablespace_name "TABLESPACE", c.status, c.contents,
+	to_char(b.total,'999G999G999D99','NLS_NUMERIC_CHARACTERS=,.') "TOTAL (MB)", 
+	to_char(a.utilizado,'999G999G999D99','NLS_NUMERIC_CHARACTERS=,.') "UTILIZADO (MB)", 
+	to_char(b.total-a.utilizado,'999G999G999D99','NLS_NUMERIC_CHARACTERS=,.') "MB LIVRES",
+	to_char(a.utilizado/b.total*100,'999G999G999D99','NLS_NUMERIC_CHARACTERS=,.') pct_utilizado
+FROM 
+	(SELECT tablespace_name, nvl(sum(bytes),0)/1024/1024 utilizado 
+	FROM dba_segments
+	GROUP BY tablespace_name) a,
+	(SELECT tablespace_name, nvl(sum(bytes),0)/1024/1024 total
+	FROM dba_data_files
+	GROUP BY tablespace_name) b,
+	dba_tablespaces c
+WHERE 
+	a.tablespace_name = b.tablespace_name
+AND
+	c.tablespace_name = b.tablespace_name
+ORDER BY pct_utilizado
+/
+
+
+############################# VERIFICA TABELAS QUE ESTÃO TENTANDO FAZER EXTEND #######################
+
+select s.segment_name, s.next_extent, s.tablespace_name, f.max_bytes
+from dba_segments s, (select max(bytes) max_bytes, tablespace_name from dba_free_space group by tablespace_name) f
+where s.tablespace_name=f.tablespace_name
+and s.next_extent > f.max_bytes ;
+
+
+############################# SID DE UM PID ###########################
+
+col S.SID||','||S.SERIAL# for a20
+col program for a20
+
+select S.SID||','||S.SERIAL#, substr(S.OSUSER,1,15) OSUSER ,
+       S.MACHINE MACHINE,
+       S.USERNAME NAME,STATUS, 
+       S.PROGRAM ,
+       P.spid
+--       ,p.pga_used_mem, p.pga_alloc_mem, p.pga_freeable_mem,p.pga_max_mem
+from V$SESSION S, V$PROCESS P
+where
+-- machine like '%FCESP\FCESPD1S09%'
+-- SID > 11
+(UPPER(S.PROGRAM) not LIKE 'ORACLE%'  or s.program is null)
+ and
+STATUS in ('ACTIVE','KILLED')
+--  upper(osuser) = 'NL00007'
+-- S.USERNAME = 'IN_RAUL'
+-- UPPER(S.USERNAME) = 'DRLOCK'
+-- UPPER(S.terminal) like '%FCESP_EXP%'
+AND  S.paddr  = P.addr
+order by SPId -- upper(OSUSER)
+/
+
+
+############################ SQL DE UM SID ##########################################
+
+col "ORACLE USERNAME" for a20
+col sid for a15
+col serial# for a19
+col machine for a25
+col "QUERY SQL" for a125
+set pages 1000
+select 'USERNAME: ' || username as "ORACLE USERNAME", 'SID: ' || sid as "SID", 'SERIAL#: ' || serial# as "SERIAL#", 'MACHINE: ' || machine as "MACHINE",
+'QUERY SQL: ' || sql_text as "QUERY SQL" ,
+'*****************************************************************************************'
+from v$session a , v$sqlarea b
+where a.sql_address = b.address
+and a.sql_hash_value = b.hash_value
+and sid in(&SID)
+/
+
+
+########################## SQL DE UMA SESSÃO ########################################
+
+SELECT DISTINCT s.sql_address, s.sql_hash_value, c.sql_text
+FROM v$session s, v$open_cursor c
+WHERE s.sql_address = c.address
+  AND s.sql_hash_value = c.hash_value
+  AND s.sid = (&SID)
+/
+
+
+########################## MATAR SESSÃO #############################################
+
+alter system kill session '<SID>,<SERIAL#>';
+
+
+########################## USUÁRIOS E RECURSOS ############################################
+
+SET PAGES 150
+SET LINES 200
+
+COL SQL_TEXT FORMAT A60
+COL OSUSER FORMAT A10
+COL PHYSICAL_READS   FORMAT 99999999999
+COL DB_BLOCK_CHANGES FORMAT 99999999999
+COL PHYSICAL_WRITES  FORMAT 99999999999
+
+SELECT OSUSER
+      ,A.SID
+      ,C.TOTAL CURSORS
+      ,STATUS
+      ,TO_CHAR(LOGON_TIME,'DD/MM/YYYY HH24:MI')
+      ,D.DB_BLOCK_GETS
+      ,E.CONSISTENT_GETS
+      ,F.PHYSICAL_READS
+      ,G.DB_BLOCK_CHANGES
+      ,H.PHYSICAL_WRITES
+FROM V$SESSION A
+, (SELECT SID, COUNT(1) TOTAL FROM V$OPEN_CURSOR GROUP BY SID) C
+, (SELECT SID, VALUE DB_BLOCK_GETS FROM V$SESSTAT WHERE STATISTIC#=38) D
+, (SELECT SID, VALUE CONSISTENT_GETS FROM V$SESSTAT WHERE STATISTIC#=39) E
+, (SELECT SID, VALUE PHYSICAL_READS   FROM V$SESSTAT WHERE STATISTIC#=40) F
+, (SELECT SID, VALUE DB_BLOCK_CHANGES FROM V$SESSTAT WHERE STATISTIC#=41) G
+, (SELECT SID, VALUE PHYSICAL_WRITES  FROM V$SESSTAT WHERE STATISTIC#=44) H
+ WHERE A.SID=C.SID
+   AND STATUS='ACTIVE'
+   AND D.SID=A.SID
+   AND E.SID=A.SID
+   AND F.SID=A.SID
+   AND G.SID=A.SID
+   AND H.SID=A.SID
+/
+
+
+######################## LISTA OS OBJETOS INVÁLIDOS E GERA UM NOVO SCRIPT COM OS OBJETOS QUE FICARAM INVÁLIDOS #####
+
+set echo on
+show user
+select * from global_name;
+set echo off
+SET LINES 80
+set serveroutput on size 1000000
+
+DECLARE
+--
+v_OWNER_ANT DBA_OBJECTS.OWNER%TYPE := ' ';
+--
+CURSOR cur_owner_com_obj_invalidos IS
+SELECT o.OWNER, o.OBJECT_NAME
+FROM DBA_OBJECTS o WHERE o.STATUS <> 'VALID' AND
+o.OWNER IN 
+( SELECT U.USERNAME FROM DBA_USERS U
+WHERE
+U.USERNAME NOT LIKE 'F0%' AND
+U.USERNAME NOT LIKE 'NL0%' AND
+U.USERNAME NOT IN ('SYS','SYSTEM','SNAPPROXY') AND
+U.ACCOUNT_STATUS LIKE '%OPEN%' AND
+U.USERNAME IN (SELECT DISTINCT OI.OWNER FROM DBA_OBJECTS OI
+WHERE OI.OBJECT_TYPE NOT IN ('INDEX','DATABASE LINK','TABLE','SYNONYM','SEQUENCE')) )
+ORDER BY O.OWNER , o.OBJECT_NAME, o.OBJECT_TYPE;
+--
+CURSOR cur_owner_so_obj_validos IS SELECT DISTINCT ov.owner FROM dba_objects ov, dba_users u
+WHERE ov.owner not in (SELECT DISTINCT OI.OWNER FROM dba_objects oi
+WHERE
+oi.STATUS = 'INVALID' AND
+oi.OBJECT_TYPE NOT IN ('INDEX','DATABASE LINK','TABLE','SYNONYM','SEQUENCE')) AND
+ov.owner = u.username AND
+U.ACCOUNT_STATUS LIKE '%OPEN%'AND
+ov.OBJECT_TYPE NOT IN ('INDEX','DATABASE LINK','TABLE','SYNONYM','SEQUENCE') AND
+ov.owner NOT LIKE 'F0%' AND
+ov.OWNER NOT LIKE 'NL0%' AND
+ov.OWNER NOT LIKE '%SYS' AND
+ov.OWNER NOT IN ('SYS','SYSTEM','SNAPPROXY') ORDER BY Ov.OWNER;
+--
+BEGIN
+FOR lin in cur_owner_com_obj_invalidos
+LOOP
+--
+-- gera scripts dos owner que ja tem objetos invalidos
+--
+IF v_OWNER_ANT <> lin.OWNER THEN
+IF v_OWNER_ANT <> ' ' THEN
+DBMS_OUTPUT.PUT_LINE ('');
+DBMS_OUTPUT.PUT_LINE (')');
+DBMS_OUTPUT.PUT_LINE ('ORDER BY OBJECT_TYPE');
+DBMS_OUTPUT.PUT_LINE (';');
+DBMS_OUTPUT.PUT_LINE ('------------------------------------------------------------------------');
+END IF;
+DBMS_OUTPUT.PUT_LINE ('SELECT ''ALTER ''||decode(OBJECT_TYPE,''PACKAGE BODY'',''PACKAGE'',OBJECT_TYPE)');
+DBMS_OUTPUT.PUT_LINE (' ||'' ''||OWNER||''.''||OBJECT_NAME||'' COMPILE;''');
+DBMS_OUTPUT.PUT_LINE (' FROM DBA_OBJECTS');
+DBMS_OUTPUT.PUT_LINE (' WHERE STATUS <> ''VALID''');
+DBMS_OUTPUT.PUT_LINE (' AND OWNER = '''||lin.OWNER||'''');
+DBMS_OUTPUT.PUT_LINE (' AND OBJECT_NAME NOT IN');
+DBMS_OUTPUT.PUT_LINE ('(');v_OWNER_ANT := lin.OWNER;
+ELSE
+DBMS_OUTPUT.PUT_LINE(',');
+END IF;
+DBMS_OUTPUT.PUT (''''||lin.OBJECT_NAME||'''');
+END LOOP;
+DBMS_OUTPUT.PUT_LINE ('');
+DBMS_OUTPUT.PUT_LINE (')');
+DBMS_OUTPUT.PUT_LINE ('ORDER BY OBJECT_TYPE');
+DBMS_OUTPUT.PUT_LINE (';');
+DBMS_OUTPUT.PUT_LINE ('------------------------------------------------------------------------');
+--
+-- gera sqls dos owner que nco tem objetos invalidos
+--
+FOR lin in cur_owner_so_obj_validos
+LOOP
+DBMS_OUTPUT.PUT_LINE ('SELECT ''ALTER ''||decode(OBJECT_TYPE,''PACKAGE BODY'',''PACKAGE'',OBJECT_TYPE)');
+DBMS_OUTPUT.PUT_LINE (' ||'' ''||OWNER||''.''||OBJECT_NAME||'' COMPILE;''');
+DBMS_OUTPUT.PUT_LINE (' FROM DBA_OBJECTS');DBMS_OUTPUT.PUT_LINE (' WHERE STATUS <> ''VALID''');
+DBMS_OUTPUT.PUT_LINE (' AND OWNER = '''||lin.OWNER||''';');
+DBMS_OUTPUT.PUT_LINE (' ');
+END LOOP;
+DBMS_OUTPUT.PUT_LINE ('------------------------------------------------------------------------');
+--
+END;
+
+
+########################### LISTA OBJETOS INVÁLIDOS ##############################################
+
+select object_type, count(*) from user_objects where status = 'INVALID' group by object_type;
+
+
+########################### SELECIONA OBJETOS INVÁLIDOS E CRIA SCRIPT PARA COMPILA-LOS ###########
+
+select                                                    
+'alter '||object_type || ' ' || object_name || ' compile;'
+from user_objects where status = 'INVALID';               
+
+
+#################### OBTER A SENHA DO USUÁRIO ##############
+
+select username, password from dba_users where username = 'USUARIO'
+# COLAR A SENHA NUM TXT
+
+
+#################### NOVA SENHA ###################
+
+alter user usuário identifiel by novasenha
+
+
+#################### ALTERA NA SESSÃO CORRENTE O SCHEMA SÓ FUNCIONA ORACLE 9 EM DIANTE ######
+
+alter session set current_schema=NOMEDOSCHEMA;
+
+
+#################### VOLTA A SENHA DO USUÁRIO ##############
+
+alter user usuário identified by values 'SENHA_HASH'
+
+
+#################### SHRINK EM SEGMENTO DE ROLLBACK ORACLE 7 E 8 #########
+
+alter rollback segment nome_do_segmento shrink;
+
+select 'alter rollback segment '|| name || ' shrink;' from v_$rollname;
+
+
+###################### HORA QUE INSTÂNCIA FOI STARTADA ORACLE 7 / 8 #############################
+
+SELECT TO_CHAR(TO_DATE(D.VALUE,'J'),'MM/DD/YYYY')||' '||
+        TO_CHAR(TO_DATE(S.VALUE,'SSSSS'),'HH24:MI:SS') STARTUP_TIME
+ FROM V$INSTANCE D, V$INSTANCE S
+ WHERE D.KEY = 'STARTUP TIME - JULIAN' AND
+       S.KEY = 'STARTUP TIME - SECONDS';
+
+
+###################### INFORMAÇÕES DA INSTANCE ##############################
+
+COL INSTANCE_NAME FOR A25
+COL HOST_NAME FOR A25
+COL STATUS FOR A20
+SELECT INSTANCE_NAME, HOST_NAME, STATUS FROM V$INSTANCE;
+
+
+###################### TAMANHO DA INSTANCE ###################################
+
+SELECT COUNT(BYTES)/1024/1024 FROM USER_SEGMENTS;
+
+SELECT COUNT(BYTES)/1024/1024 FROM DBA_SEGMENTS;
+
+
+########################### DATAFILE DE UMA TABLESPACE ###########################
+
+set lines 200
+col file_name for a50
+select file_name, bytes/1024/1024 from dba_data_files
+where tablespace_name = upper('&tablespace_name');
+
+
+########################### BEGIN / END BACKUP ###################################
+
+select
+'alter tablespace '||name || ' begin backup; '
+from v$tablespace;
+
+select
+'alter tablespace '||name || ' end backup; '
+from v$tablespace;
+
+
+########################### BEGIN / END BACKUP ORACLE7 ###################################
+
+select
+'alter tablespace '||tablespace_name || ' begin backup; '
+from dba_tablespaces;
+
+select                                                   
+'alter tablespace '||tablespace_name || ' end backup; '
+from dba_tablespaces;
+
+
+########################### VERIFICA AS TRANSAÇÕES PENDENTES ################################
+    
+select 'exec DBMS_TRANSACTION.PURGE_LOST_DB_ENTRY ('||''''||LOCAL_TRAN_ID||''''||')
+commit;'
+from dba_2pc_pending
+/
+
+
+########################### OBJETOS QUE ESTÃO NA SGA #########################################
+
+set lines 118
+col name format a50
+col owner format a15
+select name,sharable_mem,type,owner
+from v$db_object_cache
+where sharable_mem > 2000
+and type in('PACKAGE','PACKAGE BODY','FUNCTION','PROCEDURE')
+and kept = 'NO'
+order by 3,2,1
+/
+
+
+########################### DEAD LOCK #############################################
+
+select /*+ RULE */
+       substr(r.name,1,10) rr,
+       substr(nvl(s.username,'no transaction'),1,15) us,
+       substr(s.osuser,1,10) os,
+       SUBSTR(s.program,1,10),
+       substr(s.terminal,1,10) te, s.sid,v$process.spid, l.lmode
+from v$lock l, v$session s, v$rollname r, v$process
+where l.sid = s.sid(+)
+and   trunc(l.id1/65536) = r.usn
+and   l.type = 'TX'
+-- and   l.lmode = 6
+and   s.paddr  = v$process.addr
+order by r.name;
+
+
+########################## ABRIR BANCO COM RECOVER ATÉ UM DETERMINADO PONTO ###############
+
+alter database recover automatic database using backup controlfile until time '2008-01-10:02:25:11';
+
+
+###########################################################################################
+
+ALTER SESSION SET NLS_DATE_FORMAT = 'dd/mm/yyyy hh24:mi:ss';
+
+ALTER SESSION SET NLS_DATE_FORMAT = 'dd/mm/yy hh24:mi:ss';
+
+
+########################## RECREATE PASSWORD FILE #########################################
+
+orapwd file=d:\oracle\ora92\database\PWDdbmrs.ora password=m164r819
+
+
+########################## VERIFICAR O CARACTER SET DO BANCO ###########################
+
+select a.value||'_'||b.value||'.'||c.value
+   from V$NLS_PARAMETERS a,
+        V$NLS_PARAMETERS b,
+        V$NLS_PARAMETERS c
+   where a.parameter='NLS_LANGUAGE'
+   and   b.parameter='NLS_TERRITORY'
+   and   c.parameter='NLS_CHARACTERSET';
+
+
+########################## TRACE DE CONEXÃO ##############################################
+
+col username for a15
+col osuser for a20
+select sid, serial#, username, osuser
+from v$session
+where username is not null
+/
+
+BEGIN
+   SYS.DBMS_SYSTEM.SET_SQL_TRACE_IN_SESSION(15,4567,TRUE);
+END;
+
+BEGIN
+   SYS.DBMS_SYSTEM.SET_SQL_TRACE_IN_SESSION(15,4567,FALSE);
+END;
+
+OU 
+
+EXEC sys.dbms_system.set_sql_trace_in_session(sid,serial#,TRUE);
+EXEC sys.dbms_system.set_sql_trace_in_session(sid,serial#,FALSE);
+
+
+tkprof arquivo_trace.trc arquivo_destino.txt explain=system/senha
+
+
+########################## INFORMAÇÕES SOBRE OS DBLINKS ###################################
+
+col owner          format a15 wrap
+col db_link        format a30 wrap
+COL USERNAME             format a20 wrap
+col password     format a15 wrap
+col host format a25 wrap
+set lines 200 trims on
+select u.name owner, l.name db_link, l.userid username, l.password, l.host, l.ctime created
+from sys.link$ l, sys.user$ u
+where l.owner# = u.user#
+order by owner
+/
+
+
+########################## DBLINK ###########################################
+
+create public database link link_name 
+connect to user identified by password 
+using 'connect_string'
+
+
+Exemplo: create public database link LF.WORLD
+connect to LF identified by LF
+using 'LFQA';
+
+views relacionadas: dba_db_links, all_db_links, user_db_links
+
+
+######################### NLS_PARAMETER ########################################
+
+SELECT * FROM v$NLS_PARAMETERS;

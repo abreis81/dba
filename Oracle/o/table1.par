@@ -1,0 +1,4 @@
+tables=galpdba.trans_plafo_tempo
+buffer=16777216
+compress=y
+file=trans_plafo_tempo_121199

@@ -1,0 +1,112 @@
+Olá,
+
+Vou passar 2 dicas preciosas para quem trabalha no dia-a-dia com o RMAN, e quer monitorar os processos realizados por ele. Segue as dicas.
+
+1° Dica
+
+A primeira dica é monitorar os processos de servidor (Channels) do RMAN ao efetuar um backup ou recover na instância de destino (TARGET), pois, nunca sabemos se irá demorar ou não para realizar o backup, para acabar com esse problema, existe o SELECT abaixo:
+
+SQL> l
+  1  select sid,
+  2         serial#,
+  3         context,
+  4         sofar,
+  5         totalwork,
+  6         round(sofar/totalwork*100,2) “%_complete”
+  7  from
+  8         v$session_longops
+  9  where
+ 10         opname like ‘RMAN%’
+ 11         and opname not like ‘%aggregate%’
+ 12         and totalwork != 0
+ 13*        and sofar <> totalwork
+
+SQL> /
+
+  SID   SERIAL#   CONTEXT     SOFAR   TOTALWORK %_complete
+ ----   -------  --------   ------- ----------- ----------
+  312     54367         1    455672     1044904      43,61
+  295     58222         1    435192     1076910      40,41
+
+ Para cada canal (channel) alocado no banco de dados para realização da tarefa de backup ou recover, representa uma sessão no resultado acima. Para exemplificar, o script de RMAN utilizado para realizar o backup (de archives), segue abaixo:
+
+RMAN> print script bkp_archives_diario;
+
+printing stored script: bkp_archives_diario
+ {
+
+  allocate channel t1 type disk format '/u02/backup/rman/BKP_ARCHIVES_DIARIO_%d_%t_%s.rman';
+  allocate channel t2 type disk format '/u02/backup/rman/BKP_ARCHIVES_DIARIO_%d_%t_%s.rman';
+  sql 'alter system checkpoint global';
+  backup archivelog all tag 'BKP_ARCHIVES_DIARIO';
+  release channel t2;
+  release channel t1;
+}
+
+Como nosso script acima está usando 2 canais (Channel t1 e Channel t2), será exibido o progresso de cada sessão que é o ”%_complete” de cada canal utilizado. Resumindo, com esse simples SELECT feito na instância TARGET, conseguimos monitorar as tarefas básicas do RMAN.
+
+2° Dica
+
+Para acompanhar o status das tarefas realizadas pelo RMAN na sua base target, o SELECT abaixo pode lhe auxiliar, veja:
+
+SQL> l
+  1  select operation as “OPERACAO”,
+  2         object_type as “TIPO”,
+  3         status,
+  4         output_device_type as “MEDIA”,
+  5         to_char(end_time,’DD-MM-RRRR HH24:MI:SS’) as “DATA”,
+  6         round(MBYTES_PROCESSED/1024,2) as “TAMANHO(MB)”
+  7  from
+  8         v$rman_status
+  9  where
+ 10         operation <> ‘CATALOG’
+ 11         and trunc(end_time)>=trunc(sysdate-1)
+ 12  order by
+ 13*        end_time
+SQL> /
+
+OPERACAO                                 TIPO          STATUS          MEDIA             DATA              TAMANHO(MB)
+---------------------------------------- ------------- --------------- ----------------- -------------------- -----------
+CONTROL FILE AND SPFILE AUTOBACK                       COMPLETED       DISK              27-07-2008 20:08:27          ,01
+BACKUP                                   DB FULL       COMPLETED       DISK              27-07-2008 20:08:31        22,21
+RMAN                                                   COMPLETED                         27-07-2008 20:08:31        22,21
+CONTROL FILE AND SPFILE AUTOBACK                       COMPLETED       DISK              27-07-2008 22:00:34          ,01
+BACKUP                                   ARCHIVELOG    COMPLETED       DISK              27-07-2008 22:00:38          ,53
+RMAN                                                   COMPLETED                         27-07-2008 22:00:38          ,54
+CONTROL FILE AND SPFILE AUTOBACK                       COMPLETED       DISK              27-07-2008 23:00:22          ,01
+BACKUP                                   ARCHIVELOG    COMPLETED       DISK              27-07-2008 23:00:22           ,3
+RMAN                                                   COMPLETED                         27-07-2008 23:00:26          ,31
+CONTROL FILE AND SPFILE AUTOBACK                       COMPLETED       DISK              28-07-2008 15:40:08          ,01
+BACKUP                                   ARCHIVELOG    COMPLETED       DISK              28-07-2008 15:40:12         1,02
+RMAN                                                   COMPLETED                         28-07-2008 15:40:12         1,03
+RMAN                                                   COMPLETED WITH                    28-07-2008 16:32:24            0
+                                                       ERRORS
+
+O resultado será todas as atividades feitas pelo RMAN que foram registradas pelo catálogo de recuperação, perceba que para cada atividade, a coluna TIPO nos mostra qual atividade foi feita na instância junto  com o seu respectivo status. Deste modo conseguimos ter mais controle sobre as operações do RMAN em cada banco de dados gerenciado por ele.
+
+A view v$rman_status fornece mais informações importantes que você poderá adaptar a sua necessidade, as outras opções existente estão abaixo, quando realizo o select abaixo, veja:
+
+SQL> select column_name from dba_tab_columns where table_name = 'V_$RMAN_STATUS';
+
+COLUMN_NAME
+------------------------------
+SID
+RECID
+STAMP
+PARENT_RECID
+PARENT_STAMP
+SESSION_RECID
+SESSION_STAMP
+ROW_LEVEL
+ROW_TYPE
+COMMAND_ID
+OPERATION
+STATUS
+MBYTES_PROCESSED
+START_TIME
+END_TIME
+INPUT_BYTES
+OUTPUT_BYTES
+OPTIMIZED
+OBJECT_TYPE
+OUTPUT_DEVICE_TYPE

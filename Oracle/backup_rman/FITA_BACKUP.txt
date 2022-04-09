@@ -1,0 +1,34 @@
+Boa tarde,
+
+                Se um dia vocês precisarem descobrir em qual fita está um determinado backupset gerado pelo RMAN:
+
+1.       Descobrir o nome do backupset.
+list backup of database completed after ‘sysdate-1’;
+ 
+
+2.       Execute a consulta abaixo, será solicitado o nome do backupset:
+
+set linesize 150
+col tag    format a20
+col BkpSet format A30
+col fita   format a12
+col inicio format a20
+col fim    format a20
+col MBytes format 999,999,999.99
+select TAG, 
+       HANDLE BkpSet, 
+        MEDIA Fita, 
+        to_char(START_TIME, 'ddmmyyyy hh24miss') inicio,
+       to_char(COMPLETION_TIME, 'ddmmyyyy hh24miss') fim, 
+        status, 
+        (bytes/1024)/1024 tamanho
+from rc_backup_piece
+where handle='&bp';
+
+
+                Exemplo do Retorno:
+
+     TAG                  BKPSET                         FITA         INICIO               FIM             S  TAMANHO
+-------------------- ------------------------------ ------------ -------------------- -------------------- - ----------
+TAG20090324T232632   bkp_dbf_1837_1_682385193       A01501       24032009 232634      24032009 234749      A   25771.25
+

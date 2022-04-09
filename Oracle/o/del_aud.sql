@@ -1,0 +1,3 @@
+rem Deletando regs. da sys.aud$... 
+delete sys.aud$ where timestamp#<sysdate-7;
+

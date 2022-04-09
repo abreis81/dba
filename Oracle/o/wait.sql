@@ -1,0 +1,9 @@
+SET LINES 300
+SET PAGES 1000
+col EVENT format a40  
+col P1TEXT format a20
+col P2TEXT format a20
+col P3TEXT format a20
+SELECT SID,EVENT,P1TEXT,P1,P2TEXT,P2,P3TEXT,P3,WAIT_TIME,SECONDS_IN_WAIT,STATE FROM V$SESSION_WAIT WHERE STATE='WAITING'
+and event <> 'SQL*Net message from client' order by 1
+/

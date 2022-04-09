@@ -1,0 +1,11 @@
+For the 9i Agent on UNIX, a new Agent control utility called "agentctl" is used. The relevant agentctl commands are: 
+
+agentctl start agent 
+agentctl stop agent 
+agentctl status agent 
+agentctl restart agent (to stop and start the Agent using a single command)
+
+On Windows NT, you can start and stop the Intelligent Agent service from the start menu: Start = Settings = Control Panel = NT Control Panel = Services screen. 
+
+On Windows 2000, you can start and stop the Agent Services:  Go to Start menu = Settings = Control Panel = Administrative Tools = Services. Select the OracleAgent service. Right mouse click and select (start,stop, etc.). To modify the  Startup Type, right mouse click and select Properties and edit the Startup Type as needed. 
+

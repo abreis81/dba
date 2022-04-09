@@ -1,0 +1,50 @@
+
+REM * Set terminal output and command echoing on; log output of this script.
+REM *
+#set termout on
+#set echo on
+spool crdbglppr.log 
+
+REM * Start the <sid> instance (ORACLE_SID here must be set to <sid>).
+REM *
+connect internal
+startup nomount pfile=/oracle/app/8.0.5/dbs/initglpp.ora
+#initsapd.ora
+
+REM * Create the <DSE_DES> database.  
+REM * SYSTEM tablespace configuration guidelines:
+REM *   General-Purpose ORACLE RDBMS		    5Mb
+REM *   Additional dictionary for applications	10-50Mb 
+REM * Redo Log File configuration guidelines:
+REM *   Use 3+ redo log files to relieve ``cannot allocate new log...'' waits.
+REM *   Use ~100Kb per redo log file per connection to reduce checkpoints.
+REM *
+
+create database glpp 
+    CONTROLFILE  REUSE
+    maxinstances 2 
+    maxlogfiles  64 
+    MAXLOGMEMBERS 2 
+    MAXDATAFILES 128
+    MAXLOGHISTORY 1024 
+    character set WE8DEC 
+    logfile
+GROUP 1 ('/db/oradata/glpp/log/glpp1_log1.dbf', '/db/oradata/glpp/log/glpp2_log1.dbf') SIZE 20 M,
+GROUP 2 ('/db/oradata/glpp/log/glpp1_log2.dbf', '/db/oradata/glpp/log/glpp2_log2
+.dbf') SIZE 20 M,
+GROUP 3 ('/db/oradata/glpp/log/glpp1_log3.dbf', '/db/oradata/glpp/log/glpp2_log3
+.dbf') SIZE 20 M,
+GROUP 4 ('/db/oradata/glpp/log/glpp1_log4.dbf', '/db/oradata/glpp/log/glpp2_log4
+.dbf') SIZE 20 M,
+GROUP 5 ('/db/oradata/glpp/log/glpp1_log5.dbf', '/db/oradata/glpp/log/glpp2_log5
+.dbf') SIZE 20 M,
+GROUP 6 ('/db/oradata/glpp/log/glpp1_log6.dbf', '/db/oradata/glpp/log/glpp2_log6
+.dbf') SIZE 20 M,
+GROUP 7 ('/db/oradata/glpp/log/glpp1_log7.dbf', '/db/oradata/glpp/log/glpp2_log7
+.dbf') SIZE 20 M,
+GROUP 8 ('/db/oradata/glpp/log/glpp1_log8.dbf', '/db/oradata/glpp/log/glpp2_log8
+.dbf') SIZE 20 M
+     DATAFILE '/db/oradata/glpp/system/glpp_sys.dbf' SIZE 100M ;
+
+disconnect
+spool off

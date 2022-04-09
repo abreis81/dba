@@ -1,0 +1,7 @@
+USERID      = /
+FILE		= /export/schema.dmp    
+LOG		= /u00/oracle/log/schema.log
+ROWS		= n
+FULL        = y
+CONSISTENT	= y
+BUFFER	= 102400

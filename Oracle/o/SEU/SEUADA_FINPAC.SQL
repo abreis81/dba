@@ -1,0 +1,103 @@
+CREATE OR REPLACE VIEW "SEU"."SEUADA" (
+SADA_IDEMPRESA
+,SADA_IDTIT                 
+,SADA_IDPARCELA                    
+,SADA_IDPESSOA                
+,SADA_FILIAL                
+,SADA_NUMRA                 
+,SADA_NOME                  
+,SADA_EMISSAO               
+,SADA_PREFIXO               
+,SADA_REFERENCIA            
+,SADA_VALOR                 
+,SADA_SALDO                 
+,SADA_VENCIMENTO            
+,SADA_VLRPGTO               
+,SADA_DTPGTO                
+,SADA_VLRDESC               
+,SADA_VLRJUR                
+,SADA_VLRMUL                
+,SADA_STATUS_PARCELA        
+,SADA_DESC_STATUS_PARCELA   
+,SADA_DIAS_ATRASO           
+,SADA_ID_CC_COBRANCA        
+,SADA_NUM_BACEN             
+,SADA_NUM_AGENCIA           
+,SADA_NUM_CC                
+,SADA_NUM_COBRANCA          
+,SADA_NUM_COBRANCA_EDI      
+,SADA_NOSSO_NUMERO          
+,SADA_TAXA_JUROS_COBRANCA   
+,SADA_TXT_JUROS_COBRANCA    
+,SADA_TXT_INSTRUCAO_COBRANCA
+,SADA_IND_EMITIDO           
+,SADA_ID_FILIAL_RATEIO      
+,SADA_APELIDO_FILIAL_RATEIO 
+,SADA_NOME_FILIAL_RATEIO    
+,SADA_ID_CENTRO_CUSTO       
+,SADA_COD_CENTRO_CUSTO      
+,SADA_ID_PESSOA_RESP        
+,SADA_APELIDO_RESP          
+,SADA_NOME_RESP             
+,SADA_ID_EMPRESA            
+,SADA_COD_SITE_EMISSAO      
+,SADA_VLR_JUROS_NEGOCIADO   
+,SADA_VLR_DESC_NEGOCIADO    
+,SADA_VLR_MULTA_NEGOCIADO   
+,SADA_DT_VCTO_NEGOCIADO     
+,SADA_COD_GRUPO_CONTABIL    
+,SADA_USR_SOLIC             
+,SADA_USR_CANCEL )           
+as select
+distinct SAAM_IDEMPRESA         AS SADA_IDEMPRESA
+,ID_TIT                 AS SADA_IDTIT
+,ID_PARCELA             AS SADA_IDPARCELA
+,ID_PESSOA              AS SADA_IDPESSOA
+,FILIAL                 AS SADA_FILIAL 
+,NUMRA                  AS SADA_NUMRA
+,NOME                   AS SADA_NOME
+,EMISSAO                AS SADA_EMISSAO
+,PREFIXO                AS SADA_PREFIXO             
+,REFERENCIA             AS SADA_REFERENCIA
+,VALOR                  AS SADA_VALOR
+,SALDO                  AS SADA_SALDO                    
+,VENCIMENTO             AS SADA_VENCIMENTO               
+,VLRPGTO                AS SADA_VLRPGTO                  
+,DTPGTO                 AS SADA_DTPGTO                   
+,VLRDESC                AS SADA_VLRDESC                  
+,VLRJUR                 AS SADA_VLRJUR                   
+,VLRMUL                 AS SADA_VLRMUL                   
+,STATUS_PARCELA         AS SADA_STATUS_PARCELA           
+,DESC_STATUS_PARCELA    AS SADA_DESC_STATUS_PARCELA      
+,DIAS_ATRASO            AS SADA_DIAS_ATRASO              
+,ID_CC_COBRANCA         AS SADA_ID_CC_COBRANCA           
+,NUM_BACEN              AS SADA_NUM_BACEN                
+,NUM_AGENCIA            AS SADA_NUM_AGENCIA              
+,NUM_CC                 AS SADA_NUM_CC                   
+,NUM_COBRANCA           AS SADA_NUM_COBRANCA             
+,NUM_COBRANCA_EDI       AS SADA_NUM_COBRANCA_EDI         
+,NOSSO_NUMERO           AS SADA_NOSSO_NUMERO             
+,TAXA_JUROS_COBRANCA    AS SADA_TAXA_JUROS_COBRANCA      
+,TXT_JUROS_COBRANCA     AS SADA_TXT_JUROS_COBRANCA       
+,TXT_INSTRUCAO_COBRANCA AS SADA_TXT_INSTRUCAO_COBRANCA   
+,IND_EMITIDO            AS SADA_IND_EMITIDO              
+,ID_FILIAL_RATEIO       AS SADA_ID_FILIAL_RATEIO         
+,APELIDO_FILIAL_RATEIO  AS SADA_APELIDO_FILIAL_RATEIO    
+,NOME_FILIAL_RATEIO     AS SADA_NOME_FILIAL_RATEIO       
+,ID_CENTRO_CUSTO        AS SADA_ID_CENTRO_CUSTO          
+,COD_CENTRO_CUSTO       AS SADA_COD_CENTRO_CUSTO         
+,ID_PESSOA_RESP         AS SADA_ID_PESSOA_RESP           
+,APELIDO_RESP           AS SADA_APELIDO_RESP             
+,NOME_RESP              AS SADA_NOME_RESP                
+,ID_EMPRESA             AS SADA_ID_EMPRESA               
+,COD_SITE_EMISSAO       AS SADA_COD_SITE_EMISSAO         
+,VLR_JUROS_NEGOCIADO    AS SADA_VLR_JUROS_NEGOCIADO      
+,VLR_DESC_NEGOCIADO     AS SADA_VLR_DESC_NEGOCIADO       
+,VLR_MULTA_NEGOCIADO    AS SADA_VLR_MULTA_NEGOCIADO      
+,DT_VCTO_NEGOCIADO      AS SADA_DT_VCTO_NEGOCIADO        
+,COD_GRUPO_CONTABIL     AS SADA_COD_GRUPO_CONTABIL       
+,USR_SOLIC              AS SADA_USR_SOLIC                
+,USR_CANCEL             AS SADA_USR_CANCEL   
+FROM SEU.VCR_CONSULTA_TITULO  A
+,SEU.SEUAAM B
+WHERE A.ID_FILIAL = B.SAAM_FILERP;          

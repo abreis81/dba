@@ -1,0 +1,189 @@
+/*
+
+  replicacao.sql
+
+  a replicacao de dados pode ser feita de varias formas como:
+
+  .CREATE TABLE AS SELECT - criando uma tabela a partir de uma selecao via DB LINK
+  .EXP/IMP   - temos que exportar de um lado e importar do outro
+  .COPY FROM - podemos copiar uma tabela usando um DB LINK
+  .TRIGGERS  - desenvolvendo triggers de INSERT/UPDATE/DELETE nas bases envolvidas
+  .SNAPSHOT  -
+  .ADVANCED REPLICATION -
+
+*/
+
+VISOES DICIONARIO DO ORACLE SERVER
+----------------------------------
+
+DBA_REGISTERED_SNAPSHOTS
+DBA_REGISTERED_SNAPSHOT_GROUPS
+DBA_SNAPSHOTS
+DBA_SNAPSHOT_LOGS
+DBA_SNAPSHOT_LOG_FILTER_COLS
+DBA_SNAPSHOT_REFRESH_TIMES
+DBA_DB_LINKS
+DBA_RGROUP
+DBA_REFRESH
+DBA_REFRESH_CHILDREN
+
+
+-----------------------------------------------------------------------------------------------
+/*-------------------*/
+||                   ||
+|| REPLICACAO BASICA ||
+||                   ||
+/*-------------------*/
+
+/*----------------*/
+|| MASTER SITE    || 
+/*----------------*/
+
+--
+-- CRIAR O SCHEMA 
+--
+CREATE USER VESPER 
+IDENTIFIED BY VESPER
+TABLESPACE DEFAULT PRODUCAO
+TEMPORARY TABLESPACE TEMP
+/
+
+--
+--CRIAR AS TABELAS OU SELECIONE AS TABELAS NECESSARIAS A REPLICACAO
+--
+CREATE TABLE PROJETO
+( CODIGO   NUMBER(10)
+ ,NOME     VARCHAR2(50)
+ ,CONSTRAINT PK_PROJETO PRIMARY KEY(CODIGO) )
+TABLESPACE VP03_DATA01
+/
+
+--
+--CRIAR SNAPSHOT LOG NO MASTER SITE PARA CADA UMA DAS TABELAS SELECIONADAS
+--
+CREATE SNAPSHOT LOG ON
+   VESPER.LIGACAO
+   TABLESPACE VP01_DATA01
+   STORAGE( INITIAL 10K
+               NEXT 10K
+        PCTINCREASE 0 )
+/
+
+DROP SNAPSHOT LOG ON VESPER.LIGACAO
+/
+
+-----------------------------------------------------------------------------------------------
+
+/*----------------*/
+|| SNAPSHOT SITE  || 
+/*----------------*/
+
+-CRIAR UM DATABASE LINK PARA CONEXAO COM O MASTER SITE
+
+CREATE DATABASE LINK VP03
+   CONNECT TO VESPER
+IDENTIFIED BY VESPER
+     USING 'VP03'
+/
+
+OBS: VP03 DEVERA ESTA DENTRO DO TNSNAMES.ORA DO SNAPSHOT SITE, E O SERVIDOR DO SNAPSHOT SITE
+     ESTA ENXERGANDO O MASTER SITE
+
+
+-CRIAR UM SNAPSHOT PARA CADA TABELA SELECIONADA NA MASTER SITE
+
+ CREATE SNAPSHOT VESPER.PROJETO
+ TABLESPACE VP02_DATA01
+ REFRESH FAST
+ START WITH SYSDATE
+ NEXT SYSDATE+1
+ AS 
+ SELECT * 
+   FROM VESPER.PROJETO@VP03
+/
+
+-----------------------------------------------------------------------------------------------
+
+-VER AS TABELAS CRIADAS AUTOMATICAMENTE NO SNAPSHOT SITE
+
+SELECT TABLE_NAME FROM USER_TABLES
+WHERE TABLE_NAME LIKE '%PROJ%'
+/
+
+
+-VER AS VISOES CRIADAS AUTOMATICAMENTE NO SNAPSHOT SITE
+
+SELECT VIEW_NAME FROM USER_VIEWS
+WHERE VIEW_NAME LIKE '%PROJ%'
+/
+
+
+-VER AS TABELAS CRIADAS AUTOMATICAMENTE NO MASTER SITE
+
+SELECT TABLE_NAME FROM USER_TABLES
+WHERE TABLE_NAME LIKE '%PROJ%'
+/
+
+-----------------------------------------------------------------------------------------------
+
+-CRIAR UM GRUPO CONTENDO VARIAS TABELAS
+
+EXECUTE DBMS_REFRESH.MAKE( -
+ NAME => 'VESPER.REFRESH_GROUP1' -
+,LIST => 'VESPER.REPLICAA' -
+,NEXT_DATE => SYSDATE -
+,INTERVAL => 'SYSDATE+1/(60*24)')
+
+--
+-- CRIA UM GRUPO POR NOME DE GRUPO1 PARA REFRESH DAS TABELAS CONTIDAS NESTE GRUPO
+--
+EXECUTE DBMS_REFRESH.MAKE( NAME=>'GRUPO1'
+                          ,LIST=>''
+                          ,NEXT_DATE=>SYSDATE
+                          ,INTERVAL=>'SYSDATE+1/1440'
+                          ,ROLLBACK_SEG => 'RB01' );
+
+OBS: UM GRUPO PODE TER NO MAXIMO 100 MEMBROS ( SNAPSHOTS )
+
+--
+-- ADICIONANDO UM MEMBRO AO GRUPO DE REFRESH
+--
+EXECUTE DBMS_REFRESH.ADD(NAME=>'GRUPO1',LIST=>'VESPER.REPLICAB');
+
+--
+-- REMOVENDO UM GRUPO INTEIRO
+--
+EXECUTE DBMS_REFRESH.DESTROY( NAME=>'GRUPO1' )
+
+--
+-- REFRESH MANUAL DO GRUPO 
+--
+EXECUTE DBMS_REFRESH.REFRESH('VESPER.GRUPO1');
+
+--
+-- REMOVENDO UM MEMBRO DO GRUPO
+--
+EXECUTE DBMS_REFRESH.SUBTRACT( NAME=>'GRUPO1', LIST=>'REPLICAB' );
+
+
+--
+-- ALTERANDO PROPRIEDADE DO GRUPO DE REFRESH
+--
+EXECUTE DBMS_REFRESH.CHANGE( NAME=>'GRUPO1'
+                            ,NEXT_DATE => SYSDATE
+                            ,INTERVAL=>'SYSDATE+1/1440' )
+/
+
+===============================================================================================
+
+/*-------------------*/
+||                   ||
+|| MULTIMASTER       ||
+|| REPLICATION       ||
+||                   ||
+/*-------------------*/
+
+
+
+
+

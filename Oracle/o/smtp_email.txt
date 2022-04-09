@@ -1,0 +1,21 @@
+DECLARE
+  conn utl_smtp.connection;
+BEGIN
+  conn := utl_smtp.open_connection('smtp.uol.com.br');
+  utl_smtp.helo(conn, 'uol.com.br');
+  utl_smtp.command(conn, 'AUTH LOGIN');  
+  utl_smtp.command(conn, demo_base64.encode(utl_raw.cast_to_raw('r.buriola')));  
+  utl_smtp.command(conn, demo_base64.encode(utl_raw.cast_to_raw('rr1928')));
+  utl_smtp.mail(conn, 'r.buriola@uol.com.br');
+  utl_smtp.rcpt(conn, 'rburiola@yahoo.com');
+  utl_smtp.open_data(conn);
+  utl_smtp.write_data(conn, 'From: "sdba" <r.buriola@uol.com.br>' || 
+utl_tcp.CRLF);
+  utl_smtp.write_data(conn, 'To: "sdba" <rburiola@yahoo.com>' || 
+utl_tcp.CRLF);
+  utl_smtp.write_data(conn, 'Subject: Sending e-mail' || utl_tcp.CRLF);
+  utl_smtp.write_raw_data(conn, utl_raw.cast_to_raw(utl_tcp.CRLF || 'message teste'));
+  utl_smtp.close_data(conn);
+  utl_smtp.quit(conn);
+END;
+/

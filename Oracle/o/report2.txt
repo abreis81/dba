@@ -1,0 +1,689 @@
+SVRMGR> 
+SVRMGR> set charwidth 12
+Charwidth                       12
+SVRMGR> set numwidth 10
+Numwidth                        10
+SVRMGR> Rem Select Library cache statistics.  The pin hit rate shoule be high.
+SVRMGR> select namespace library,
+     2>        gets, 
+     3>        round(decode(gethits,0,1,gethits)/decode(gets,0,1,gets),3) 
+     4>           gethitratio,
+     5>        pins, 
+     6>        round(decode(pinhits,0,1,pinhits)/decode(pins,0,1,pins),3) 
+     7>           pinhitratio,
+     8>        reloads, invalidations
+     9>   from stats$lib;
+LIBRARY      GETS       GETHITRATI PINS       PINHITRATI RELOADS    INVALIDATI
+------------ ---------- ---------- ---------- ---------- ---------- ----------
+BODY               6534       .977       6566       .967         31          0
+CLUSTER               0          1          0          1          0          0
+INDEX               409       .188        409       .076         46          0
+OBJECT                0          1          0          1          0          0
+PIPE                 30       .033         30       .033          0          0
+SQL AREA         586305        .98    9740133       .998        629        360
+TABLE/PROCED    1249610       .989    1906275       .994        410          0
+TRIGGER            4411       .989       4411       .982          4          0
+8 rows selected.
+SVRMGR> 
+SVRMGR> set charwidth 27;
+Charwidth                       27
+SVRMGR> set numwidth 12;
+Numwidth                        12
+SVRMGR> Rem The total is the total value of the statistic between the time
+SVRMGR> Rem bstat was run and the time estat was run.  Note that the estat
+SVRMGR> Rem script logs on as "internal" so the per_logon statistics will
+SVRMGR> Rem always be based on at least one logon.
+SVRMGR> select n1.name "Statistic", 
+     2>        n1.change "Total", 
+     3>        round(n1.change/trans.change,2) "Per Transaction",
+     4>        round(n1.change/logs.change,2)  "Per Logon",
+     5>        round(n1.change/(to_number(to_char(end_time,   'J'))*60*60*24 -
+     6>                         to_number(to_char(start_time, 'J'))*60*60*24 +
+     7> 			to_number(to_char(end_time,   'SSSSS')) -
+     8> 			to_number(to_char(start_time, 'SSSSS')))
+     9>              , 2) "Per Second"
+    10>    from stats$stats n1, stats$stats trans, stats$stats logs, stats$dates
+    11>    where trans.name='user commits'
+    12>     and  logs.name='logons cumulative'
+    13>     and  n1.change != 0
+    14>    order by n1.name;
+Statistic                   Total        Per Transact Per Logon    Per Second  
+--------------------------- ------------ ------------ ------------ ------------
+CPU used by this session         8614114        77.13      3724.22        36.11
+CPU used when call started       8613743        77.13      3724.06        36.11
+CR blocks created                  60829          .54         26.3          .25
+Current blocks converted fo            6            0            0            0
+DBWR buffers scanned            13610129       121.87      5884.19        57.05
+DBWR checkpoints                    1297          .01          .56          .01
+DBWR free buffers found          1414727        12.67       611.64         5.93
+DBWR lru scans                     56374           .5        24.37          .24
+DBWR make free requests             5267          .05         2.28          .02
+DBWR summed scan depth          13610603       121.88      5884.39        57.05
+DBWR timeouts                      78287           .7        33.85          .33
+SQL*Net roundtrips to/from       4843048        43.37      2093.84         20.3
+SQL*Net roundtrips to/from        786942         7.05       340.23          3.3
+background checkpoints comp          145            0          .06            0
+background checkpoints star          148            0          .06            0
+background timeouts               241972         2.17       104.61         1.01
+bytes received via SQL*Net     292857361      2622.38    126613.65      1227.61
+bytes received via SQL*Net     121085194      1084.25     52349.85       507.57
+bytes sent via SQL*Net to c    390969083      3500.92    169031.16      1638.88
+bytes sent via SQL*Net to d     38735907       346.86     16747.04       162.38
+calls to get snapshot scn:       7915468        70.88      3422.17        33.18
+calls to kcmgas                   152710         1.37        66.02          .64
+calls to kcmgcs                    96933          .87        41.91          .41
+calls to kcmgrs                 10431389        93.41       4509.9        43.73
+change write time                  15208          .14         6.58          .06
+cleanouts and rollbacks - c         8464          .08         3.66          .04
+cleanouts only - consistent        13913          .12         6.02          .06
+cluster key scan block gets      1221989        10.94       528.31         5.12
+cluster key scans                 587047         5.26        253.8         2.46
+commit cleanout failures: b          109            0          .05            0
+commit cleanout failures: c          384            0          .17            0
+commit cleanout failures: h         2356          .02         1.02          .01
+commit cleanout number succ      1251454        11.21       541.05         5.25
+consistent changes                 88034          .79        38.06          .37
+consistent gets               1482715072     13276.94    641035.48      6215.32
+cursor authentications             40725          .36        17.61          .17
+data blocks consistent read        87289          .78        37.74          .37
+db block changes                 9881546        88.48      4272.18        41.42
+db block gets                   19207987          172      8304.36        80.52
+deferred (CURRENT) block cl       324759         2.91       140.41         1.36
+dirty buffers inspected                2            0            0            0
+enqueue conversions              1640319        14.69       709.17         6.88
+enqueue releases                 2304098        20.63       996.15         9.66
+enqueue requests                 2304720        20.64       996.42         9.66
+enqueue timeouts                     621          .01          .27            0
+enqueue waits                         26            0          .01            0
+execute count                    8370301        74.95      3618.81        35.09
+free buffer inspected                506            0          .22            0
+free buffer requested            2940352        26.33      1271.23        12.33
+immediate (CR) block cleano        22377           .2         9.67          .09
+immediate (CURRENT) block c       511097         4.58       220.97         2.14
+logons cumulative                   2313          .02            1          .01
+logons current                        18            0          .01            0
+messages received                 175323         1.57         75.8          .73
+messages sent                     175323         1.57         75.8          .73
+no work - consistent read g   1405870465     12588.83    607812.57       5893.2
+opened cursors cumulative         516634         4.63       223.36         2.17
+opened cursors current               508            0          .22            0
+parse count                       620097         5.55       268.09          2.6
+parse time cpu                     28851          .26        12.47          .12
+parse time elapsed                 49055          .44        21.21          .21
+physical reads                   2897527        25.95      1252.71        12.15
+physical writes                   878242         7.86        379.7         3.68
+process last non-idle time  623718625145   5585073.11 269657857.82   2614536.61
+recursive calls                 13882950       124.31      6002.14         58.2
+recursive cpu usage              5585016        50.01      2414.62        23.41
+redo blocks written              1205401        10.79       521.14         5.05
+redo buffer allocation retr          145            0          .06            0
+redo entries                     5203039        46.59      2249.48        21.81
+redo log space requests              197            0          .09            0
+redo log space wait time            3502          .03         1.51          .01
+redo size                     1145773642      10259.8    495362.58      4802.91
+redo small copies                 788033         7.06        340.7          3.3
+redo synch time                    31178          .28        13.48          .13
+redo synch writes                  79158          .71        34.22          .33
+redo wastage                    67690351       606.13     29265.18       283.75
+redo write time                    57918          .52        25.04          .24
+redo writer latching time            236            0           .1            0
+redo writes                       146337         1.31        63.27          .61
+rollback changes - undo rec       544401         4.87       235.37         2.28
+rollbacks only - consistent        52475          .47        22.69          .22
+session connect time        623712943043   5585022.23 269655401.23   2614512.79
+session logical reads         1501672208     13446.69    649231.39      6294.79
+session pga memory            1659336768     14858.49    717395.92       6955.7
+session pga memory max        1746971296     15643.21    755283.74      7323.05
+session uga memory            4302960180     38530.75    1860337.3     18037.38
+session uga memory max         408092276      3654.25    176434.19      1710.66
+sorts (disk)                           3            0            0            0
+sorts (memory)                    468845          4.2        202.7         1.97
+sorts (rows)                   346424827      3102.05    149772.95      1452.16
+summed dirty queue length              2            0            0            0
+table fetch by rowid          1271950323     11389.65    549913.67      5331.83
+table fetch continued row        1077301         9.65       465.76         4.52
+table scan blocks gotten        51171619       458.22     22123.48        214.5
+table scan rows gotten        1262609410        11306    545875.23      5292.67
+table scans (long tables)           1980          .02          .86          .01
+table scans (short tables)       2735535         24.5      1182.68        11.47
+total number commit cleanou      1268664        11.36       548.49         5.32
+transaction rollbacks                890          .01          .38            0
+transaction tables consiste            8            0            0            0
+transaction tables consiste          100            0          .04            0
+user calls                       4786492        42.86      2069.39        20.06
+user commits                      111676            1        48.28          .47
+user rollbacks                     10357          .09         4.48          .04
+write requests                    105642          .95        45.67          .44
+105 rows selected.
+SVRMGR> 
+SVRMGR> 
+SVRMGR> set numwidth 27
+Numwidth                        27
+SVRMGR> Rem Average length of the dirty buffer write queue.  If this is larger 
+SVRMGR> Rem than the value of:
+SVRMGR> Rem  1. (db_files * db_file_simultaneous_writes)/2
+SVRMGR> Rem  or
+SVRMGR> Rem  2. 1/4 of db_block_buffers
+SVRMGR> Rem which ever is smaller and also there is a platform specific limit
+SVRMGR> Rem on the write batch size (normally 1024 or 2048 buffers). If the average 
+SVRMGR> Rem length of the dirty buffer write queue is larger than the value 
+SVRMGR> Rem calculated before, increase db_file_simultaneous_writes or db_files.
+SVRMGR> Rem Also check for disks that are doing many more IOs than other disks.
+SVRMGR> select queue.change/writes.change "Average Write Queue Length"
+     2>   from stats$stats queue, stats$stats writes
+     3>  where queue.name  = 'summed dirty queue length'
+     4>   and  writes.name = 'write requests';
+Average Write Queue Length 
+---------------------------
+.00001893186422066980935613
+1 row selected.
+SVRMGR> 
+SVRMGR> 
+SVRMGR> set charwidth 32;
+Charwidth                       32
+SVRMGR> set numwidth 13;
+Numwidth                        13
+SVRMGR> Rem System wide wait events for non-background processes (PMON, 
+SVRMGR> Rem SMON, etc).  Times are in hundreths of seconds.  Each one of 
+SVRMGR> Rem these is a context switch which costs CPU time.  By looking at
+SVRMGR> Rem the Total Time you can often determine what is the bottleneck 
+SVRMGR> Rem that processes are waiting for.  This shows the total time spent
+SVRMGR> Rem waiting for a specific event and the average time per wait on 
+SVRMGR> Rem that event.
+SVRMGR> select 	n1.event "Event Name", 
+     2>        	n1.event_count "Count",
+     3> 	n1.time_waited "Total Time",
+     4> 	round(n1.time_waited/n1.event_count, 2) "Avg Time"
+     5>    from stats$event n1
+     6>    where n1.event_count > 0
+     7>    order by n1.time_waited desc;
+Event Name                       Count         Total Time    Avg Time     
+-------------------------------- ------------- ------------- -------------
+SQL*Net message from client            4851069     867057236        178.74
+dispatcher timer                       9733476     476798856         48.99
+virtual circuit status                 5248593     474050096         90.32
+rdbms ipc message                         3975      23859826       6002.47
+SQL*Net message from dblink             786942        877259          1.11
+db file sequential read                 878014        441974            .5
+SQL*Net more data from client           102440        207442          2.03
+log file sync                            98122         30936           .32
+SQL*Net break/reset to client            14530         27813          1.91
+rdbms ipc reply                           2491         26206         10.52
+db file scattered read                  169332         19612           .12
+SQL*Net more data from dblink             6180         18095          2.93
+inactive session                           120         12120           101
+SQL*Net message to client              4850851          7823             0
+latch free                                4589          4348           .95
+write complete waits                       539          3606          6.69
+log file switch completion                 195          3380         17.33
+enqueue                                     27          2658         98.44
+SQL*Net more data to client             255292          1634           .01
+SQL*Net message to dblink               786943          1432             0
+control file parallel write               1361           424           .31
+control file sequential read             10606           206           .02
+buffer busy waits                          139           163          1.17
+log file switch (checkpoint inco             2           120            60
+db file single write                      1215           113           .09
+SQL*Net break/reset to dblink               33            83          2.52
+switch logfile command                       4            60            15
+undo segment extension                      24            48             2
+SQL*Net more data to dblink                765             2             0
+library cache pin                           11             1           .09
+control file single write                    4             0             0
+31 rows selected.
+SVRMGR> 
+SVRMGR> 
+SVRMGR> Rem System wide wait events for background processes (PMON, SMON, etc)
+SVRMGR> select 	n1.event "Event Name", 
+     2>        	n1.event_count "Count",
+     3> 	n1.time_waited "Total Time",
+     4> 	round(n1.time_waited/n1.event_count, 2) "Avg Time"
+     5>    from stats$bck_event n1
+     6>    where n1.event_count > 0
+     7>    order by n1.time_waited desc;
+Event Name                       Count         Total Time    Avg Time     
+-------------------------------- ------------- ------------- -------------
+rdbms ipc message                       348071     118860292        341.48
+Null event                             1720301      95106084         55.28
+smon timer                                 805      23859731      29639.42
+pmon timer                               79427      23855649        300.35
+log file parallel write                 146337         57890            .4
+db file parallel write                  105642         54704           .52
+control file parallel write              19804          6090           .31
+log file sync                             3622          5134          1.42
+rdbms ipc reply                            281          3457          12.3
+db file sequential read                  15898          3426           .22
+db file single write                     15703          1762           .11
+enqueue                                      8           231         28.88
+control file sequential read              7557           189           .03
+db file scattered read                     213           182           .85
+latch free                                  73           143          1.96
+log file single write                      592            84           .14
+log file sequential read                   296            53           .18
+process startup                              5            18           3.6
+buffer busy waits                            3             0             0
+19 rows selected.
+SVRMGR> 
+SVRMGR> 
+SVRMGR> set charwidth 18;
+Charwidth                       18
+SVRMGR> set numwidth 11;
+Numwidth                        11
+SVRMGR> Rem Latch statistics. Latch contention will show up as a large value for
+SVRMGR> Rem the 'latch free' event in the wait events above.
+SVRMGR> Rem Sleeps should be low.  The hit_ratio should be high.
+SVRMGR> select name latch_name, gets, misses,
+     2>     round((gets-misses)/decode(gets,0,1,gets),3) 
+     3>       hit_ratio,
+     4>     sleeps,
+     5>     round(sleeps/decode(misses,0,1,misses),3) "SLEEPS/MISS"
+     6>    from stats$latches 
+     7>     where gets != 0
+     8>     order by name;
+LATCH_NAME         GETS        MISSES      HIT_RATIO   SLEEPS      SLEEPS/MISS
+------------------ ----------- ----------- ----------- ----------- -----------
+NLS data objects             1           0           1           0           0
+archive control            148           0           1           0           0
+cache buffer handl       43884           0           1           0           0
+cache buffers chai  2991192707       77070           1         460        .006
+cache buffers lru      3178044        1336           1         245        .183
+dml lock allocatio      836857           4           1           0           0
+enqueue hash chain     6248971          92           1           6        .065
+enqueues               8070694         198           1           5        .025
+global transaction    12812915           0           1           0           0
+global tx free lis       46274           0           1           0           0
+global tx hash map     1692580           2           1           0           0
+ktm global data            819           0           1           0           0
+latch wait list           4942           0           1           0           0
+library cache         31326929       23225        .999        2373        .102
+library cache load       20440           0           1           0           0
+list of block allo      372717           1           1           0           0
+loader state objec         406           0           1           0           0
+messages               1155923        3683        .997          15        .004
+modify parameter v        2313           0           1           0           0
+multiblock read ob      716288           7           1           0           0
+process allocation         152           0           1           0           0
+redo allocation        5846479        4346        .999          43         .01
+redo copy                  428         414        .033          15        .036
+row cache objects      4438530         371           1           0           0
+sequence cache          179400           0           1           0           0
+session allocation      509774           5           1           0           0
+session idle bit       9699373         101           1           5         .05
+session switching         3956           0           1           0           0
+shared pool            4347957        1417           1         127         .09
+sort extent pool           805           0           1           0           0
+system commit numb    13050437         381           1          11        .029
+transaction alloca      466739           1           1           1           1
+undo global data       1577568          25           1           0           0
+user lock                 7253           0           1           0           0
+virtual circuit bu    37470160       19184        .999         239        .012
+virtual circuit qu    32633567       16348        .999        1037        .063
+virtual circuits       8307816        1812           1          77        .042
+37 rows selected.
+SVRMGR> 
+SVRMGR> set numwidth 16
+Numwidth                        16
+SVRMGR> Rem Statistics on no_wait gets of latches.  A no_wait get does not 
+SVRMGR> Rem wait for the latch to become free, it immediately times out.
+SVRMGR> select name latch_name,
+     2>     immed_gets nowait_gets,
+     3>     immed_miss nowait_misses,
+     4>     round((immed_gets/immed_gets+immed_miss), 3)
+     5>       nowait_hit_ratio 
+     6>    from stats$latches 
+     7>     where immed_gets + immed_miss != 0
+     8>     order by name;
+LATCH_NAME         NOWAIT_GETS      NOWAIT_MISSES    NOWAIT_HIT_RATIO
+------------------ ---------------- ---------------- ----------------
+cache buffers chai         53187624              160              161
+cache buffers lru           3521153             3452             3453
+global tx hash map              359                0                1
+library cache                  6509                9               10
+multiblock read ob               17                0                1
+process allocation              152                0                1
+redo copy                   4853548              928              929
+row cache objects               163                0                1
+session idle bit                345                0                1
+9 rows selected.
+SVRMGR> 
+SVRMGR> Rem Buffer busy wait statistics.  If the value for 'buffer busy wait' in 
+SVRMGR> Rem the wait event statistics is high, then this table will identify
+SVRMGR> Rem which class of blocks is having high contention.  If there are high
+SVRMGR> Rem 'undo header' waits then add more rollback segments.  If there are
+SVRMGR> Rem high 'segment header' waits then adding freelists might help.  Check
+SVRMGR> Rem v$session_wait to get the addresses of the actual blocks having
+SVRMGR> Rem contention.
+SVRMGR> select * from stats$waitstat 
+     2>   where count != 0 
+     3>   order by count desc;
+CLASS              COUNT            TIME            
+------------------ ---------------- ----------------
+data block                      127              162
+undo header                      11                1
+undo block                        4                0
+3 rows selected.
+SVRMGR> 
+SVRMGR> 
+SVRMGR> set numwidth 19;
+Numwidth                        19
+SVRMGR> Rem Waits_for_trans_tbl high implies you should add rollback segments.
+SVRMGR> select * from stats$roll;
+UNDO_SEGMENT        TRANS_TBL_GETS      TRANS_TBL_WAITS     UNDO_BYTES_WRITTEN  SEGMENT_SIZE_BYTES  XACTS               SHRINKS             WRAPS              
+------------------- ------------------- ------------------- ------------------- ------------------- ------------------- ------------------- -------------------
+                  0                 840                   0                   0              856064                   0                   0                   0
+                  2              263877                   3            90849539            15724544                   0                   2                  14
+                  3              479800                   1            71960695            15724544                   0                   1                  11
+                  4              113623                   1            59236704            15724544                   0                   0                   9
+                  5              315562                   0            77345632            15724544                   0                   2                  12
+                  6               59376                   1            46540894            15724544                   1                   2                   7
+                  7              219491                   0            93602163            15724544                   0                   2                  14
+7 rows selected.
+SVRMGR> 
+SVRMGR> set charwidth 39
+Charwidth                       39
+SVRMGR> Rem The init.ora parameters currently in effect:
+SVRMGR> select name, value from v$parameter where isdefault = 'FALSE' 
+     2>   order by name;
+NAME                                    VALUE                                  
+--------------------------------------- ---------------------------------------
+always_anti_join                        NESTED_LOOPS                           
+audit_trail                             NONE                                   
+background_dump_dest                    /oracle/app/oracle/product/admin/dbprod
+cache_size_threshold                    6400                                   
+compatible                              7.3.0.0                                
+control_files                           /oradata02/redo/control01.ctl, /oradata
+core_dump_dest                          /oracle/app/oracle/product/admin/dbprod
+cpu_count                               3                                      
+db_block_buffers                        64000                                  
+db_block_lru_latches                    1                                      
+db_block_size                           4096                                   
+db_file_multiblock_read_count           32                                     
+db_files                                200                                    
+db_name                                 dbprod1                                
+db_writers                              4                                      
+distributed_transactions                182                                    
+dml_locks                               2000                                   
+enqueue_resources                       2020                                   
+event                                   10262 trace name context forever, level
+gc_freelist_groups                      50                                     
+gc_releasable_locks                     64000                                  
+global_names                            TRUE                                   
+ifile                                   /oracle/app/oracle/product/admin/dbprod
+job_queue_interval                      600                                    
+job_queue_processes                     1                                      
+log_archive_dest                        /oradata15/arch/lf_                    
+log_archive_format                      T%TS%S.arc                             
+log_archive_start                       TRUE                                   
+log_buffer                              10485760                               
+log_checkpoint_interval                 10000                                  
+log_simultaneous_copies                 3                                      
+max_dump_file_size                      10240                                  
+mts_dispatchers                         (ADDRESS=(PARTIAL=yes)(PROTOCOL=tcp)),2
+mts_listener_address                    (ADDRESS=(PROTOCOL=tcp)(HOST=192.168.1.
+mts_max_dispatchers                     100                                    
+mts_max_servers                         100                                    
+mts_servers                             20                                     
+mts_service                             dbprod1                                
+open_cursors                            300                                    
+optimizer_mode                          CHOOSE                                 
+processes                               600                                    
+remote_login_passwordfile               NONE                                   
+resource_limit                          TRUE                                   
+rollback_segments                       r01, r02, r03, r04, r05, r06           
+sequence_cache_entries                  1000                                   
+sequence_cache_hash_buckets             89                                     
+sessions                                665                                    
+shared_pool_size                        220000000                              
+sort_area_retained_size                 10000000                               
+sort_area_size                          10000000                               
+sort_direct_writes                      TRUE                                   
+temporary_table_locks                   665                                    
+timed_statistics                        TRUE                                   
+transactions                            731                                    
+transactions_per_rollback_segment       34                                     
+user_dump_dest                          /oracle/app/oracle/product/admin/dbprod
+utl_file_dir                            *                                      
+57 rows selected.
+SVRMGR> 
+SVRMGR> set charwidth 15;
+Charwidth                       15
+SVRMGR> set numwidth 8;
+Numwidth                        8
+SVRMGR> Rem get_miss and scan_miss should be very low compared to the requests.
+SVRMGR> Rem cur_usage is the number of entries in the cache that are being used.
+SVRMGR> select * from stats$dc
+     2>  where get_reqs != 0 or scan_reqs != 0 or mod_reqs != 0;
+NAME            GET_REQS GET_MISS SCAN_REQ SCAN_MIS MOD_REQS COUNT    CUR_USAG
+--------------- -------- -------- -------- -------- -------- -------- --------
+dc_tablespaces    569738      167        0        0        6       49       42
+dc_free_extents     9607     3908     1301        0     4110       15        8
+dc_segments        51426     3514        0        0     2158      443      426
+dc_rollback_seg    21034        0        0        0        0       18       14
+dc_used_extents     2239     1455        0        0     2230       33       17
+dc_tablespace_q     3581       94        0        0     1048       22       21
+dc_files           26276      475        0        0        7      121      111
+dc_users          107202      492        0        0       15       33       26
+dc_user_grants     71184      193        0        0        0       48       20
+dc_objects         91704    10020        0        0     1523      666      658
+dc_tables         193567     1872        0        0      237      202      195
+dc_columns        587708    19626    46292     2260     1023     1913     1896
+dc_table_grants    86106     5450        0        0        0      374      332
+dc_indexes         52293     3049    21618     1322      193      367      351
+dc_constraint_d   144843    10945    10861     1043      479     1324     1291
+dc_constraint_d     1614      351     1682      377        2       98       40
+dc_synonyms        21904      814        0        0        2       96       86
+dc_usernames       40114      405        0        0        7       39       36
+dc_object_ids     202871     3378        0        0        0      410      400
+dc_constraints       888      393        0        0      888       20       19
+dc_sequences       22127       52        0        0    21577       24       15
+dc_sequence_gra      730      133        0        0        0      122        7
+dc_tablespaces      2085       19        0        0     2084        9        8
+dc_profiles         1883        2        0        0        0        3        2
+dc_database_lin     8186       35        0        0        0        6        5
+dc_histogram_de    19588     3239        0        0       13      327      320
+dc_truncates          82       82        0        0        5       23        6
+27 rows selected.
+SVRMGR> 
+SVRMGR> 
+SVRMGR> set charwidth 80;
+Charwidth                       80
+SVRMGR> set numwidth 10;
+Numwidth                        10
+SVRMGR> Rem Sum IO operations over tablespaces.
+SVRMGR> select
+     2>   table_space||'                                                 ' 
+     3>      table_space,
+     4>   sum(phys_reads) reads,  sum(phys_blks_rd) blks_read,
+     5>   sum(phys_rd_time) read_time,  sum(phys_writes) writes,
+     6>   sum(phys_blks_wr) blks_wrt,  sum(phys_wrt_tim) write_time,
+     7>   sum(megabytes_size) megabytes
+     8>  from stats$files
+     9>  group by table_space
+    10>  order by table_space;
+TABLE_SPACE                                                                     READS      BLKS_READ  READ_TIME  WRITES     BLKS_WRT   WRITE_TIME MEGABYTES 
+------------------------------------------------------------------------------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+RBS                                                                                     17         17         13     135579     135579     178224        461
+SYSTEM                                                                               25463      30683      15708       5747       5747       4159        315
+TEMP                                                                                  9705     142752       2284      17958     142759       6919       1100
+TOOLS                                                                                    5          5          5          0          0          0         52
+TS_CMB_DADOS01                                                                        2221       2221       1903       5326       5326       3088        315
+TS_CMB_INDEX01                                                                           6          6         10          0          0          0        157
+TS_COR_DADOS01                                                                        2844      10152       2203         71         71         54       2148
+TS_COR_INDEX01                                                                        2698       2698       2092        239        239         65       1100
+TS_ETI_DADOS01                                                                        3091      22441        511       2893       5782       1974        576
+TS_ETI_INDEX01                                                                        2843       2843       1331      27160      30238      29810        576
+TS_PLN_DADOS01                                                                         910       1318        714        331        331        126       1100
+TS_PLN_INDEX01                                                                        1594       1594        718        670        670        302       1624
+TS_REC_DADOS01                                                                      401894    1059931      56647      49550      49550     128301       3196
+TS_REC_DADOS02                                                                       52770     480555      15389      23153      23153      22039       2672
+TS_REC_DADOS03                                                                       77173     279732      48328      46631      46631      72116       2148
+TS_REC_DADOS04                                                                       49358      49406      31986       8914       8914       7177       2148
+TS_REC_DADOS05                                                                       37924     213062      10423       4271       4271       2264       2148
+TS_REC_DADOS06                                                                       20242     232600       6387       2322       2322       2007       2148
+TS_REC_INDEX01                                                                      140045     140045     139206     150761     150761     152643       2148
+TS_REC_INDEX02                                                                       33682      33682      30631      57470      57470      56477       1624
+TS_REC_INDEX03                                                                       36038      36038      28773     125753     125753     165664       2148
+TS_REC_INDEX04                                                                       14242      14242      13578      22823      22823      17477       1624
+TS_REC_INDEX05                                                                        7706       7706       8134      12739      12739       9141       1100
+TS_REC_INDEX06                                                                       98834      98834      37747      30016      30016      19590       1624
+TS_SBD_DADOS01                                                                           0          0          0          0          0          0       1624
+TS_SBD_INDEX01                                                                           0          0          0          0          0          0       1624
+TS_SECPRESS                                                                              0          0          0          0          0          0         10
+TS_SECPRESS_IND                                                                        114        114         73         91         91         18         10
+TS_TAR_DADOS01                                                                       11068      13248       4971       2089       2089       1463       1939
+TS_TAR_INDEX01                                                                        2799       2799       1137         91        846         89       1625
+TS_UNF_DADOS                                                                          5256      13834       1763       3291       3340        794        576
+TS_UNF_INDEX                                                                          4905       4905       2501       5850       5850       2007        576
+USERS                                                                                    0          0          0          0          0          0        157
+33 rows selected.
+SVRMGR> 
+SVRMGR> 
+SVRMGR> set charwidth 48;
+Charwidth                       48
+SVRMGR> set numwidth 10;
+Numwidth                        10
+SVRMGR> Rem I/O should be spread evenly accross drives. A big difference between
+SVRMGR> Rem phys_reads and phys_blks_rd implies table scans are going on.
+SVRMGR> select table_space, file_name,
+     2>        phys_reads reads, phys_blks_rd blks_read, phys_rd_time read_time,
+     3>        phys_writes writes, phys_blks_wr blks_wrt, phys_wrt_tim write_time, 
+     4>        megabytes_size megabytes
+     5>  from stats$files order by table_space, file_name;
+TABLE_SPACE                    FILE_NAME                                        READS      BLKS_READ  READ_TIME  WRITES     BLKS_WRT   WRITE_TIME MEGABYTES 
+------------------------------ ------------------------------------------------ ---------- ---------- ---------- ---------- ---------- ---------- ----------
+RBS                            /oradata08/rollback/rbsdbprod1_1.dbf                     17         17         13     135579     135579     178224        461
+SYSTEM                         /oradata01/system/systdbprod1_1.dbf                   25463      30683      15708       5747       5747       4159        315
+TEMP                           /oradata10/temp/tempdbprod1_1.dbf                         0          0          0          0          0          0        524
+TEMP                           /oradata10/temp/tempdbprod1_2.dbf                      9705     142752       2284      17958     142759       6919        524
+TEMP                           /oradata10/temp/tempdbprod1_3.dbf                         0          0          0          0          0          0         52
+TOOLS                          /oradata09/tools/tools_1.dbf                              5          5          5          0          0          0         52
+TS_CMB_DADOS01                 /oradata03/ts_combu_dados01.dbf                        2221       2221       1903       5326       5326       3088        315
+TS_CMB_INDEX01                 /oradata06/ts_combu_index01.dbf                           6          6         10          0          0          0        157
+TS_COR_DADOS01                 /oradata01/ts_cor_dados01.dbf                          1129       6133        798         16         16         17        524
+TS_COR_DADOS01                 /oradata01/ts_cor_dados02.dbf                             0          0          0          0          0          0        524
+TS_COR_DADOS01                 /oradata01/ts_cor_dados03.dbf                           821       1987        818         33         33         27        524
+TS_COR_DADOS01                 /oradata01/ts_cor_dados04.dbf                             0          0          0          0          0          0        524
+TS_COR_DADOS01                 /oradata01/ts_cor_dados05.dbf                           894       2032        587         22         22         10         52
+TS_COR_INDEX01                 /oradata02/ts_cor_index01.dbf                             0          0          0          0          0          0        524
+TS_COR_INDEX01                 /oradata02/ts_cor_index02.dbf                          2698       2698       2092        239        239         65        524
+TS_COR_INDEX01                 /oradata02/ts_cor_index05.dbf                             0          0          0          0          0          0         52
+TS_ETI_DADOS01                 /oradata01/ts_eti_dados01.dbf                          2809      20591        374       1993       4882       1786        524
+TS_ETI_DADOS01                 /oradata01/ts_eti_dados02.dbf                           282       1850        137        900        900        188         52
+TS_ETI_INDEX01                 /oradata02/ts_eti_index01.dbf                            85         85         83         35         35          4        524
+TS_ETI_INDEX01                 /oradata02/ts_eti_index02.dbf                          2758       2758       1248      27125      30203      29806         52
+TS_PLN_DADOS01                 /oradata02/ts_pln_dados01.dbf                           117        117        103         61         61         29        524
+TS_PLN_DADOS01                 /oradata02/ts_pln_dados02.dbf                           793       1201        611        270        270         97        524
+TS_PLN_DADOS01                 /oradata02/ts_pln_dados03.dbf                             0          0          0          0          0          0         52
+TS_PLN_INDEX01                 /oradata03/ts_pln_index01.dbf                            84         84         47        193        193         69        524
+TS_PLN_INDEX01                 /oradata03/ts_pln_index02.dbf                             0          0          0          0          0          0        524
+TS_PLN_INDEX01                 /oradata03/ts_pln_index03.dbf                          1510       1510        671        477        477        233        524
+TS_PLN_INDEX01                 /oradata03/ts_pln_index04.dbf                             0          0          0          0          0          0         52
+TS_REC_DADOS01                 /oradata05/ts_rec_dados01.dbf                          6081     128549       2714       3056       3056       3504        524
+TS_REC_DADOS01                 /oradata05/ts_rec_dados02.dbf                           866       8847        570        921        921        248        524
+TS_REC_DADOS01                 /oradata05/ts_rec_dados03.dbf                         78711     172838      41381      32953      32953     112335        524
+TS_REC_DADOS01                 /oradata05/ts_rec_dados04.dbf                             0          0          0          0          0          0        524
+TS_REC_DADOS01                 /oradata06/ts_rec_dados05.dbf                          1003      29315        353       3620       3620       5093        524
+TS_REC_DADOS01                 /oradata06/ts_rec_dados06.dbf                        315182     720122      11563       8912       8912       7095        524
+TS_REC_DADOS01                 /oradata06/ts_rec_dados07.dbf                            51        260         66         88         88         26         52
+TS_REC_DADOS02                 /oradata07/ts_rec_dados01.dbf                             0          0          0          0          0          0        524
+TS_REC_DADOS02                 /oradata07/ts_rec_dados02.dbf                             0          0          0          0          0          0        524
+TS_REC_DADOS02                 /oradata07/ts_rec_dados03.dbf                         29486     362273       5332       2333       2333       1548        524
+TS_REC_DADOS02                 /oradata07/ts_rec_dados04.dbf                         23278     118276      10052      20814      20814      20487        524
+TS_REC_DADOS02                 /oradata07/ts_rec_dados05.dbf                             6          6          5          6          6          4        524
+TS_REC_DADOS02                 /oradata07/ts_rec_dados06.dbf                             0          0          0          0          0          0         52
+TS_REC_DADOS03                 /oradata08/ts_rec_dados01.dbf                         19214      19547      12191       2761       2761       2635        524
+TS_REC_DADOS03                 /oradata08/ts_rec_dados02.dbf                           979        979       1031        186        186        228        524
+TS_REC_DADOS03                 /oradata08/ts_rec_dados03.dbf                         56980     259206      35106      43684      43684      69253        524
+TS_REC_DADOS03                 /oradata08/ts_rec_dados04.dbf                             0          0          0          0          0          0        524
+TS_REC_DADOS03                 /oradata08/ts_rec_dados05.dbf                             0          0          0          0          0          0         52
+TS_REC_DADOS04                 /oradata09/ts_rec_dados01.dbf                         36056      36056      16893       3210       3210       2926        524
+TS_REC_DADOS04                 /oradata09/ts_rec_dados02.dbf                             0          0          0          0          0          0        524
+TS_REC_DADOS04                 /oradata09/ts_rec_dados03.dbf                          1048       1096       1062       2510       2510        916        524
+TS_REC_DADOS04                 /oradata09/ts_rec_dados04.dbf                         12254      12254      14031       3194       3194       3335        524
+TS_REC_DADOS04                 /oradata09/ts_rec_dados05.dbf                             0          0          0          0          0          0         52
+TS_REC_DADOS05                 /oradata10/ts_rec_dados01.dbf                         13735     172363       3659        520        520        193        524
+TS_REC_DADOS05                 /oradata10/ts_rec_dados02.dbf                           591        874        682       1650       1650       1357        524
+TS_REC_DADOS05                 /oradata10/ts_rec_dados03.dbf                         23598      39825       6082       2101       2101        714        524
+TS_REC_DADOS05                 /oradata10/ts_rec_dados04.dbf                             0          0          0          0          0          0        524
+TS_REC_DADOS05                 /oradata10/ts_rec_dados05.dbf                             0          0          0          0          0          0         52
+TS_REC_DADOS06                 /oradata11/ts_rec_dados01.dbf                             0          0          0          0          0          0        524
+TS_REC_DADOS06                 /oradata11/ts_rec_dados02.dbf                             0          0          0          0          0          0        524
+TS_REC_DADOS06                 /oradata11/ts_rec_dados03.dbf                          7539     219866       1182        215        215        113        524
+TS_REC_DADOS06                 /oradata11/ts_rec_dados04.dbf                         12703      12734       5205       2107       2107       1894        524
+TS_REC_DADOS06                 /oradata11/ts_rec_dados05.dbf                             0          0          0          0          0          0         52
+TS_REC_INDEX01                 /oradata06/ts_rec_index01.dbf                         30260      30260      33312      24236      24236      20681        524
+TS_REC_INDEX01                 /oradata06/ts_rec_index02.dbf                         53546      53546      54719      38774      38774      36909        524
+TS_REC_INDEX01                 /oradata06/ts_rec_index03.dbf                         23458      23458      18827      12455      12455      20038        524
+TS_REC_INDEX01                 /oradata06/ts_rec_index04.dbf                         32781      32781      32348      75296      75296      75015        524
+TS_REC_INDEX01                 /oradata06/ts_rec_index05.dbf                             0          0          0          0          0          0         52
+TS_REC_INDEX02                 /oradata08/ts_rec_index01.dbf                             0          0          0          0          0          0        524
+TS_REC_INDEX02                 /oradata08/ts_rec_index02.dbf                         26512      26512      21602      42858      42858      39605        524
+TS_REC_INDEX02                 /oradata08/ts_rec_index03.dbf                          7163       7163       9024      14446      14446      16738        524
+TS_REC_INDEX02                 /oradata08/ts_rec_index04.dbf                             7          7          5        166        166        134         52
+TS_REC_INDEX03                 /oradata12/ts_rec_index01.dbf                         11334      11334       8959      68061      68061      94870        524
+TS_REC_INDEX03                 /oradata12/ts_rec_index02.dbf                           185        185        183        740        740        612        524
+TS_REC_INDEX03                 /oradata12/ts_rec_index03.dbf                          9688       9688       8530      10424      10424      11569        524
+TS_REC_INDEX03                 /oradata12/ts_rec_index04.dbf                         14831      14831      11101      46528      46528      58613        524
+TS_REC_INDEX03                 /oradata12/ts_rec_index05.dbf                             0          0          0          0          0          0         52
+TS_REC_INDEX04                 /oradata11/ts_rec_index01.dbf                             0          0          0          0          0          0        524
+TS_REC_INDEX04                 /oradata11/ts_rec_index02.dbf                          3814       3814       3989       5727       5727       8680        524
+TS_REC_INDEX04                 /oradata11/ts_rec_index03.dbf                          9980       9980       9164      15643      15643       8290        524
+TS_REC_INDEX04                 /oradata11/ts_rec_index04.dbf                           448        448        425       1453       1453        507         52
+TS_REC_INDEX05                 /oradata07/ts_rec_index01.dbf                             0          0          0          0          0          0        524
+TS_REC_INDEX05                 /oradata07/ts_rec_index02.dbf                          7706       7706       8134      12739      12739       9141        524
+TS_REC_INDEX05                 /oradata07/ts_rec_index03.dbf                             0          0          0          0          0          0         52
+TS_REC_INDEX06                 /oradata09/ts_rec_index01.dbf                         10193      10193       5826       9961       9961       8109        524
+TS_REC_INDEX06                 /oradata09/ts_rec_index02.dbf                         84700      84700      29807      16572      16572       9298        524
+TS_REC_INDEX06                 /oradata09/ts_rec_index03.dbf                          3371       3371       1937       2545       2545       1599        524
+TS_REC_INDEX06                 /oradata09/ts_rec_index04.dbf                           570        570        177        938        938        584         52
+TS_SBD_DADOS01                 /oradata03/ts_sbd_dados01.dbf                             0          0          0          0          0          0        524
+TS_SBD_DADOS01                 /oradata03/ts_sbd_dados02.dbf                             0          0          0          0          0          0        524
+TS_SBD_DADOS01                 /oradata03/ts_sbd_dados03.dbf                             0          0          0          0          0          0        524
+TS_SBD_DADOS01                 /oradata03/ts_sbd_dados04.dbf                             0          0          0          0          0          0         52
+TS_SBD_INDEX01                 /oradata04/ts_sbd_index01                                 0          0          0          0          0          0        524
+TS_SBD_INDEX01                 /oradata04/ts_sbd_index02                                 0          0          0          0          0          0        524
+TS_SBD_INDEX01                 /oradata04/ts_sbd_index03                                 0          0          0          0          0          0        524
+TS_SBD_INDEX01                 /oradata04/ts_sbd_index04                                 0          0          0          0          0          0         52
+TS_SECPRESS                    /oradata03/ts_secpress01.dbf                              0          0          0          0          0          0         10
+TS_SECPRESS_IND                /oradata12/ts_secpress_ind01.dbf                        114        114         73         91         91         18         10
+TS_TAR_DADOS01                 /oradata04/ts_tar_dados01.dbf                             3          3          6          0          0          0        524
+TS_TAR_DADOS01                 /oradata04/ts_tar_dados02.dbf                             6          9          6          9          9         12        524
+TS_TAR_DADOS01                 /oradata04/ts_tar_dados03.dbf                         11053      13224       4933       2080       2080       1451        524
+TS_TAR_DADOS01                 /oradata04/ts_tar_dados04.dbf                             6         12         26          0          0          0        367
+TS_TAR_INDEX01                 /oradata05/ts_tar_index01.dbf                          1064       1064        258          0          0          0        524
+TS_TAR_INDEX01                 /oradata05/ts_tar_index02.dbf                           803        803        549         14         14          1        524
+TS_TAR_INDEX01                 /oradata05/ts_tar_index03.dbf                           932        932        330         77        832         88        577
+TS_UNF_DADOS                   /oradata04/ts_unf_dados01.dbf                           257        316         76        105        154         38        524
+TS_UNF_DADOS                   /oradata04/ts_unf_dados02.dbf                          4999      13518       1687       3186       3186        756         52
+TS_UNF_INDEX                   /oradata05/ts_unf_index01.dbf                          3772       3772       1890       4231       4231       1389        524
+TS_UNF_INDEX                   /oradata05/ts_unf_index02.dbf                          1133       1133        611       1619       1619        618         52
+USERS                          /oradata09/user/usr_1.dbf                                 0          0          0          0          0          0        157
+107 rows selected.
+SVRMGR> 
+SVRMGR> 
+SVRMGR> set charwidth 25
+Charwidth                       25
+SVRMGR> Rem The times that bstat and estat were run.
+SVRMGR> select to_char(start_time, 'dd-mon-yy hh24:mi:ss') start_time,
+     2>        to_char(end_time,   'dd-mon-yy hh24:mi:ss') end_time
+     3>   from stats$dates;
+START_TIME                END_TIME                 
+------------------------- -------------------------
+05-nov-98 00:24:13        07-nov-98 18:40:11       
+1 row selected.
+SVRMGR> 
+SVRMGR> set charwidth 75
+Charwidth                       75
+SVRMGR> Rem Versions
+SVRMGR> select * from v$version;
+BANNER                                                          
+----------------------------------------------------------------
+Oracle7 Server Release 7.3.4.2.0 - Production                   
+PL/SQL Release 2.3.4.2.0 - Production                           
+CORE Version 3.5.4.0.0 - Production                             
+TNS for HPUX: Version 2.3.4.0.0 - Production                    
+NLSRTL Version 3.2.4.0.0 - Production                           
+5 rows selected.
+SVRMGR> 
+SVRMGR> 
+SVRMGR> spool off;

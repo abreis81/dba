@@ -1,0 +1,1727 @@
+@P_IMP_SCHEMA2.SQL
+
+Procedimento criado.
+
+SQL> desc dbarodrigob.impdp_log
+ Nome                                                                                                              Nulo?    Tipo
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ OSUSER                                                                                                                     VARCHAR2(50)
+ USERNAME                                                                                                                   VARCHAR2(30)
+ TERMINAL                                                                                                                   VARCHAR2(128)
+ OUTPUT                                                                                                                     CLOB
+
+SQL> delete dbarodrigob.impdp_log;
+
+0 linhas deletadas.
+
+SQL> exec P_IMP_SCHEMA2('TESTE_DP');
+BEGIN P_IMP_SCHEMA2('TESTE_DP'); END;
+
+*
+ERRO na linha 1:
+ORA-39001: invalid argument value 
+ORA-06512: at "SYS.DBMS_SYS_ERROR", line 79 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 2926 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 4367 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 19 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 104 
+ORA-06512: at line 1 
+
+
+SQL> @P_IMP_SCHEMA2.SQL
+
+Procedimento criado.
+
+SQL>  exec P_IMP_SCHEMA2('TESTE_DP');
+BEGIN P_IMP_SCHEMA2('TESTE_DP'); END;
+
+*
+ERRO na linha 1:
+ORA-31634: job already exists 
+ORA-06512: at "SYS.DBMS_SYS_ERROR", line 79 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 911 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 4354 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 19 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 104 
+ORA-06512: at line 1 
+
+
+SQL>  exec P_IMP_SCHEMA2('TESTE_DP');
+BEGIN P_IMP_SCHEMA2('TESTE_DP'); END;
+
+*
+ERRO na linha 1:
+ORA-39001: invalid argument value 
+ORA-06512: at "SYS.DBMS_SYS_ERROR", line 79 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 2926 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 4367 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 19 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 104 
+ORA-06512: at line 1 
+
+
+SQL>  @P_IMP_SCHEMA2.SQL
+
+Procedimento criado.
+
+SQL>  exec P_IMP_SCHEMA2('TESTE_DP');
+BEGIN P_IMP_SCHEMA2('TESTE_DP'); END;
+
+*
+ERRO na linha 1:
+ORA-39001: invalid argument value 
+ORA-06512: at "SYS.DBMS_SYS_ERROR", line 79 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 2926 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 4367 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 19 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 101 
+ORA-06512: at line 1 
+
+
+SQL> SELECT TABLE_NAME FROM DBA_TABLES WHERE TABLESPACE_NAME='USERS';
+
+TABLE_NAME                                                                                                                                                                                              
+----------------------------------------                                                                                                                                                                
+LOG_TABELA_ERRO                                                                                                                                                                                         
+LOG_TABELA                                                                                                                                                                                              
+TMP_JC7MIGRACAO                                                                                                                                                                                         
+SYS_IMPORT_SCHEMA_01                                                                                                                                                                                    
+IMPDP_LOG                                                                                                                                                                                               
+REFRESH_TESTE_DP                                                                                                                                                                                        
+PLAN_TABLE                                                                                                                                                                                              
+TEATE_DEF                                                                                                                                                                                               
+SYS_IMPORT_FULL_01                                                                                                                                                                                      
+
+9 linhas selecionadas.
+
+SQL> SELECT TABLE_NAME FROM DBA_TABLES WHERE TABLESPACE_NAME='USERS';
+
+TABLE_NAME                                                                                                                                                                                              
+----------------------------------------                                                                                                                                                                
+LOG_TABELA_ERRO                                                                                                                                                                                         
+LOG_TABELA                                                                                                                                                                                              
+TMP_JC7MIGRACAO                                                                                                                                                                                         
+SYS_IMPORT_SCHEMA_01                                                                                                                                                                                    
+IMPDP_LOG                                                                                                                                                                                               
+REFRESH_TESTE_DP                                                                                                                                                                                        
+PLAN_TABLE                                                                                                                                                                                              
+TEATE_DEF                                                                                                                                                                                               
+SYS_IMPORT_FULL_01                                                                                                                                                                                      
+
+9 linhas selecionadas.
+
+SQL> exec P_IMP_SCHEMA2('TESTE_DP');
+BEGIN P_IMP_SCHEMA2('TESTE_DP'); END;
+
+*
+ERRO na linha 1:
+ORA-31634: job already exists 
+ORA-06512: at "SYS.DBMS_SYS_ERROR", line 79 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 911 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 4354 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 19 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 101 
+ORA-06512: at line 1 
+
+
+SQL>  SELECT TABLE_NAME FROM DBA_TABLES WHERE TABLESPACE_NAME='USERS';
+
+TABLE_NAME                                                                                                                                                                                              
+----------------------------------------                                                                                                                                                                
+LOG_TABELA_ERRO                                                                                                                                                                                         
+LOG_TABELA                                                                                                                                                                                              
+TMP_JC7MIGRACAO                                                                                                                                                                                         
+SYS_IMPORT_SCHEMA_01                                                                                                                                                                                    
+IMPDP_LOG                                                                                                                                                                                               
+REFRESH_TESTE_DP                                                                                                                                                                                        
+PLAN_TABLE                                                                                                                                                                                              
+TEATE_DEF                                                                                                                                                                                               
+SYS_IMPORT_FULL_01                                                                                                                                                                                      
+
+9 linhas selecionadas.
+
+SQL>  SELECT TABLE_NAME FROM DBA_TABLES WHERE TABLESPACE_NAME='USERS';
+
+TABLE_NAME                                                                                                                                                                                              
+----------------------------------------                                                                                                                                                                
+LOG_TABELA_ERRO                                                                                                                                                                                         
+LOG_TABELA                                                                                                                                                                                              
+TMP_JC7MIGRACAO                                                                                                                                                                                         
+SYS_IMPORT_SCHEMA_01                                                                                                                                                                                    
+IMPDP_LOG                                                                                                                                                                                               
+PLAN_TABLE                                                                                                                                                                                              
+TEATE_DEF                                                                                                                                                                                               
+SYS_IMPORT_FULL_01                                                                                                                                                                                      
+
+8 linhas selecionadas.
+
+SQL> @P_IMP_SCHEMA2.SQL
+
+Procedimento criado.
+
+SQL> exec P_IMP_SCHEMA2('TESTE_DP');
+BEGIN P_IMP_SCHEMA2('TESTE_DP'); END;
+
+*
+ERRO na linha 1:
+ORA-39001: invalid argument value 
+ORA-06512: at "SYS.DBMS_SYS_ERROR", line 79 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 2926 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 4367 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 19 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 101 
+ORA-06512: at line 1 
+
+
+SQL> SELECT TABLE_NAME FROM DBA_TABLES WHERE TABLESPACE_NAME='USERS';
+
+TABLE_NAME                                                                                                                                                                                              
+----------------------------------------                                                                                                                                                                
+LOG_TABELA_ERRO                                                                                                                                                                                         
+LOG_TABELA                                                                                                                                                                                              
+TMP_JC7MIGRACAO                                                                                                                                                                                         
+SYS_IMPORT_SCHEMA_01                                                                                                                                                                                    
+IMPDP_LOG                                                                                                                                                                                               
+REFRESH_IMPDP                                                                                                                                                                                           
+PLAN_TABLE                                                                                                                                                                                              
+TEATE_DEF                                                                                                                                                                                               
+SYS_IMPORT_FULL_01                                                                                                                                                                                      
+
+9 linhas selecionadas.
+
+SQL> 
+SQL> SELECT * FROM USER_DB_LINKS;
+
+DB_LINK                                                                                                                          USERNAME                       PASSWORD                                
+-------------------------------------------------------------------------------------------------------------------------------- ------------------------------ ------------------------------          
+HOST                                                                                                                                                                                                    
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATED                                                                                                                                                                                                 
+--------                                                                                                                                                                                                
+DB                                                                                                                               SYSTEM                                                                 
+db                                                                                                                                                                                                      
+02/02/07                                                                                                                                                                                                
+                                                                                                                                                                                                        
+
+SQL> SELECT 'X' FROM DUAL@DB;
+SELECT 'X' FROM DUAL@DB
+                      *
+ERRO na linha 1:
+ORA-01017: invalid username/password; logon denied 
+ORA-02063: preceding line from DB 
+
+
+SQL> DROP DATABASE LINK DB;
+
+Vínculo de banco de dados eliminado.
+
+SQL> CREATE DATABASE LINK DB CONNECT TO SYSTEM IDENTIFIED BY "MAR07*SYSTEM" USING 'DB';
+
+Vínculo de banco de dados criado.
+
+SQL> SELECT * FROM USER_DB_LINKS;
+
+DB_LINK                                                                                                                          USERNAME                       PASSWORD                                
+-------------------------------------------------------------------------------------------------------------------------------- ------------------------------ ------------------------------          
+HOST                                                                                                                                                                                                    
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATED                                                                                                                                                                                                 
+--------                                                                                                                                                                                                
+DB                                                                                                                               SYSTEM                                                                 
+DB                                                                                                                                                                                                      
+30/03/07                                                                                                                                                                                                
+                                                                                                                                                                                                        
+
+SQL> SELECT 'X' FROM DUAL@DB;
+
+'                                                                                                                                                                                                       
+-                                                                                                                                                                                                       
+X                                                                                                                                                                                                       
+
+SQL> @P_IMP_SCHEMA2.SQL
+
+Procedimento criado.
+
+SQL> exec P_IMP_SCHEMA2('TESTE_DP');
+BEGIN P_IMP_SCHEMA2('TESTE_DP'); END;
+
+*
+ERRO na linha 1:
+ORA-39001: invalid argument value 
+ORA-06512: at "SYS.DBMS_SYS_ERROR", line 79 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 2926 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 3958 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 22 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 101 
+ORA-06512: at line 1 
+
+
+SQL> SELECT TABLE_NAME FROM DBA_TABLES WHERE TABLESPACE_NAME='USERS';
+
+TABLE_NAME                                                                                                                                                                                              
+----------------------------------------                                                                                                                                                                
+LOG_TABELA_ERRO                                                                                                                                                                                         
+LOG_TABELA                                                                                                                                                                                              
+TMP_JC7MIGRACAO                                                                                                                                                                                         
+SYS_IMPORT_SCHEMA_01                                                                                                                                                                                    
+IMPDP_LOG                                                                                                                                                                                               
+REFRESH_TESTE_DP                                                                                                                                                                                        
+PLAN_TABLE                                                                                                                                                                                              
+TEATE_DEF                                                                                                                                                                                               
+SYS_IMPORT_FULL_01                                                                                                                                                                                      
+
+9 linhas selecionadas.
+
+SQL> /
+
+TABLE_NAME                                                                                                                                                                                              
+----------------------------------------                                                                                                                                                                
+LOG_TABELA_ERRO                                                                                                                                                                                         
+LOG_TABELA                                                                                                                                                                                              
+TMP_JC7MIGRACAO                                                                                                                                                                                         
+SYS_IMPORT_SCHEMA_01                                                                                                                                                                                    
+IMPDP_LOG                                                                                                                                                                                               
+REFRESH_TESTE_DP                                                                                                                                                                                        
+PLAN_TABLE                                                                                                                                                                                              
+TEATE_DEF                                                                                                                                                                                               
+SYS_IMPORT_FULL_01                                                                                                                                                                                      
+
+9 linhas selecionadas.
+
+SQL> /
+
+TABLE_NAME                                                                                                                                                                                              
+----------------------------------------                                                                                                                                                                
+LOG_TABELA_ERRO                                                                                                                                                                                         
+LOG_TABELA                                                                                                                                                                                              
+TMP_JC7MIGRACAO                                                                                                                                                                                         
+SYS_IMPORT_SCHEMA_01                                                                                                                                                                                    
+IMPDP_LOG                                                                                                                                                                                               
+REFRESH_TESTE_DP                                                                                                                                                                                        
+PLAN_TABLE                                                                                                                                                                                              
+TEATE_DEF                                                                                                                                                                                               
+SYS_IMPORT_FULL_01                                                                                                                                                                                      
+
+9 linhas selecionadas.
+
+SQL> /
+
+TABLE_NAME                                                                                                                                                                                              
+----------------------------------------                                                                                                                                                                
+LOG_TABELA_ERRO                                                                                                                                                                                         
+LOG_TABELA                                                                                                                                                                                              
+TMP_JC7MIGRACAO                                                                                                                                                                                         
+SYS_IMPORT_SCHEMA_01                                                                                                                                                                                    
+IMPDP_LOG                                                                                                                                                                                               
+REFRESH_TESTE_DP                                                                                                                                                                                        
+PLAN_TABLE                                                                                                                                                                                              
+TEATE_DEF                                                                                                                                                                                               
+SYS_IMPORT_FULL_01                                                                                                                                                                                      
+
+9 linhas selecionadas.
+
+SQL> /
+
+TABLE_NAME                                                                                                                                                                                              
+----------------------------------------                                                                                                                                                                
+LOG_TABELA_ERRO                                                                                                                                                                                         
+LOG_TABELA                                                                                                                                                                                              
+TMP_JC7MIGRACAO                                                                                                                                                                                         
+SYS_IMPORT_SCHEMA_01                                                                                                                                                                                    
+IMPDP_LOG                                                                                                                                                                                               
+REFRESH_TESTE_DP                                                                                                                                                                                        
+PLAN_TABLE                                                                                                                                                                                              
+TEATE_DEF                                                                                                                                                                                               
+SYS_IMPORT_FULL_01                                                                                                                                                                                      
+
+9 linhas selecionadas.
+
+SQL> /
+
+TABLE_NAME                                                                                                                                                                                              
+----------------------------------------                                                                                                                                                                
+LOG_TABELA_ERRO                                                                                                                                                                                         
+LOG_TABELA                                                                                                                                                                                              
+TMP_JC7MIGRACAO                                                                                                                                                                                         
+SYS_IMPORT_SCHEMA_01                                                                                                                                                                                    
+IMPDP_LOG                                                                                                                                                                                               
+REFRESH_TESTE_DP                                                                                                                                                                                        
+PLAN_TABLE                                                                                                                                                                                              
+TEATE_DEF                                                                                                                                                                                               
+SYS_IMPORT_FULL_01                                                                                                                                                                                      
+
+9 linhas selecionadas.
+
+SQL> /
+
+TABLE_NAME                                                                                                                                                                                              
+----------------------------------------                                                                                                                                                                
+LOG_TABELA_ERRO                                                                                                                                                                                         
+LOG_TABELA                                                                                                                                                                                              
+TMP_JC7MIGRACAO                                                                                                                                                                                         
+SYS_IMPORT_SCHEMA_01                                                                                                                                                                                    
+IMPDP_LOG                                                                                                                                                                                               
+REFRESH_TESTE_DP                                                                                                                                                                                        
+PLAN_TABLE                                                                                                                                                                                              
+TEATE_DEF                                                                                                                                                                                               
+SYS_IMPORT_FULL_01                                                                                                                                                                                      
+
+9 linhas selecionadas.
+
+SQL> /
+
+TABLE_NAME                                                                                                                                                                                              
+----------------------------------------                                                                                                                                                                
+LOG_TABELA_ERRO                                                                                                                                                                                         
+LOG_TABELA                                                                                                                                                                                              
+TMP_JC7MIGRACAO                                                                                                                                                                                         
+SYS_IMPORT_SCHEMA_01                                                                                                                                                                                    
+IMPDP_LOG                                                                                                                                                                                               
+REFRESH_TESTE_DP                                                                                                                                                                                        
+PLAN_TABLE                                                                                                                                                                                              
+TEATE_DEF                                                                                                                                                                                               
+SYS_IMPORT_FULL_01                                                                                                                                                                                      
+
+9 linhas selecionadas.
+
+SQL> /
+
+TABLE_NAME                                                                                                                                                                                              
+----------------------------------------                                                                                                                                                                
+LOG_TABELA_ERRO                                                                                                                                                                                         
+LOG_TABELA                                                                                                                                                                                              
+TMP_JC7MIGRACAO                                                                                                                                                                                         
+SYS_IMPORT_SCHEMA_01                                                                                                                                                                                    
+IMPDP_LOG                                                                                                                                                                                               
+REFRESH_TESTE_DP                                                                                                                                                                                        
+PLAN_TABLE                                                                                                                                                                                              
+TEATE_DEF                                                                                                                                                                                               
+SYS_IMPORT_FULL_01                                                                                                                                                                                      
+
+9 linhas selecionadas.
+
+SQL> /
+
+TABLE_NAME                                                                                                                                                                                              
+----------------------------------------                                                                                                                                                                
+LOG_TABELA_ERRO                                                                                                                                                                                         
+LOG_TABELA                                                                                                                                                                                              
+TMP_JC7MIGRACAO                                                                                                                                                                                         
+SYS_IMPORT_SCHEMA_01                                                                                                                                                                                    
+IMPDP_LOG                                                                                                                                                                                               
+REFRESH_TESTE_DP                                                                                                                                                                                        
+PLAN_TABLE                                                                                                                                                                                              
+TEATE_DEF                                                                                                                                                                                               
+SYS_IMPORT_FULL_01                                                                                                                                                                                      
+
+9 linhas selecionadas.
+
+SQL> ALTER USER TESTE_DP QUOTA UNLIMITED ON SEUD;
+ALTER USER TESTE_DP QUOTA UNLIMITED ON SEUD
+           *
+ERRO na linha 1:
+ORA-01918: user 'TESTE_DP' does not exist 
+
+
+SQL> ALTER USER TESTE_DP QUOTA UNLIMITED ON SEUD;
+ALTER USER TESTE_DP QUOTA UNLIMITED ON SEUD
+           *
+ERRO na linha 1:
+ORA-01918: user 'TESTE_DP' does not exist 
+
+
+SQL> SELECT * FROM GLOBAL_NAME;
+
+GLOBAL_NAME                                                                                                                                                                                             
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+DB2                                                                                                                                                                                                     
+
+SQL> SELECT TABLE_NAME FROM DBA_TABLES WHERE TABLESPACE_NAME='USERS';
+
+TABLE_NAME                                                                                                                                                                                              
+----------------------------------------                                                                                                                                                                
+LOG_TABELA_ERRO                                                                                                                                                                                         
+LOG_TABELA                                                                                                                                                                                              
+TMP_JC7MIGRACAO                                                                                                                                                                                         
+SYS_IMPORT_SCHEMA_01                                                                                                                                                                                    
+IMPDP_LOG                                                                                                                                                                                               
+REFRESH_TESTE_DP                                                                                                                                                                                        
+PLAN_TABLE                                                                                                                                                                                              
+TEATE_DEF                                                                                                                                                                                               
+SYS_IMPORT_FULL_01                                                                                                                                                                                      
+
+9 linhas selecionadas.
+
+SQL> DROP TABLE REFRESH_TESTE_DP;
+
+Tabela eliminada.
+
+SQL> @P_IMP_SCHEMA2.SQL
+
+Procedimento criado.
+
+SQL>  exec P_IMP_SCHEMA2('TESTE_DP');
+BEGIN P_IMP_SCHEMA2('TESTE_DP'); END;
+
+*
+ERRO na linha 1:
+ORA-31634: job already exists 
+ORA-06512: at "SYS.DBMS_SYS_ERROR", line 79 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 911 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 4354 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 19 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 101 
+ORA-06512: at line 1 
+
+
+SQL>  SELECT TABLE_NAME FROM DBA_TABLES WHERE TABLESPACE_NAME='USERS';
+
+TABLE_NAME                                                                                                                                                                                              
+----------------------------------------                                                                                                                                                                
+LOG_TABELA_ERRO                                                                                                                                                                                         
+LOG_TABELA                                                                                                                                                                                              
+TMP_JC7MIGRACAO                                                                                                                                                                                         
+SYS_IMPORT_SCHEMA_01                                                                                                                                                                                    
+IMPDP_LOG                                                                                                                                                                                               
+PLAN_TABLE                                                                                                                                                                                              
+TEATE_DEF                                                                                                                                                                                               
+SYS_IMPORT_FULL_01                                                                                                                                                                                      
+
+8 linhas selecionadas.
+
+SQL> @USR2
+
+Sessão alterada.
+
+
+OSUSER                 SID    SERIAL# PROGRAM    MACHINE                        LOGON_TIME     BLOCK_GETS CONSISTENT_GETS PHYSICAL_READS BLOCK_CHANGES                                                                                                    
+-------------------- ----- ---------- ---------- ------------------------------ -------------- ---------- --------------- -------------- -------------                                                                                                    
+oradev                 102       8296 oracle@ori orion                          30/03/07 16:50        335            4510            122           325                                                                                                    
+oracle                 122      25558 emagent@or orion                          30/03/07 15:14       3456           26775            334          3639                                                                                                    
+rodrigob               159       3869 sqlplusw.e DOMAIN\WKT-0370                30/03/07 16:42      29329         1526730           2383         32332                                                                                                    
+
+SQL> @TEXT
+digite o sid:102
+antigo   2: 						where sid = &&sid)
+novo   2: 						where sid = 102)
+
+não há linhas selecionadas
+
+SQL> @MATA_LOCK
+Informe o valor para sid: 102
+alter system kill session '102,8296';                                                                                                                                                                   
+
+SQL> alter system kill session '102,8296';
+alter system kill session '102,8296'
+*
+ERRO na linha 1:
+ORA-00031: session marked for kill 
+
+
+SQL> PID
+SP2-0042: comando desconhecido "PID" - restante da linha ignorado.
+SQL> @PID
+Entre com a sid
+102
+
+não há linhas selecionadas
+
+SQL> @USR2
+
+Sessão alterada.
+
+
+OSUSER                 SID    SERIAL# PROGRAM    MACHINE                        LOGON_TIME     BLOCK_GETS CONSISTENT_GETS PHYSICAL_READS BLOCK_CHANGES                                                                                                    
+-------------------- ----- ---------- ---------- ------------------------------ -------------- ---------- --------------- -------------- -------------                                                                                                    
+oracle                 122      25558 emagent@or orion                          30/03/07 15:14       3456           27090            334          3639                                                                                                    
+rodrigob               159       3869 sqlplusw.e DOMAIN\WKT-0370                30/03/07 16:42      29330         1526758           2383         32332                                                                                                    
+
+SQL> exec P_IMP_SCHEMA2('TESTE_DP');
+
+Procedimento PL/SQL concluído com sucesso.
+
+SQL> DESC TESTE_DP.TESTE
+ERROR:
+ORA-04043: object TESTE_DP.TESTE does not exist 
+
+
+SQL> SELECT USERNAME FROM DBA_USERS WHERE USERNAME='TESTE_DP';
+
+não há linhas selecionadas
+
+SQL> SELECT * FROM DBARODRIGOB.IMPDP_LOG;
+
+OSUSER               USERNAME                       TERMINAL                                                                                                                                                                                              
+-------------------- ------------------------------ --------------------------------------------------------------------------------------------------------------------------------                                                                      
+OUTPUT                                                                                                                                                                                                                                                    
+--------------------------------------------------------------------------------                                                                                                                                                                          
+rodrigob             SYS                            WKT-037010                                                                                                                                                                                            
+                                                                                                                                                                                                                                                          
+FLASHBACK automatically enabled to preserve database integrity.                                                                                                                                                                                           
+Starting "SYS".                                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                                          
+
+SQL> 
+SQL> /
+
+OSUSER               USERNAME                       TERMINAL                                                                                                                                                                                              
+-------------------- ------------------------------ --------------------------------------------------------------------------------------------------------------------------------                                                                      
+OUTPUT                                                                                                                                                                                                                                                    
+--------------------------------------------------------------------------------                                                                                                                                                                          
+rodrigob             SYS                            WKT-037010                                                                                                                                                                                            
+                                                                                                                                                                                                                                                          
+FLASHBACK automatically enabled to preserve database integrity.                                                                                                                                                                                           
+Starting "SYS".                                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                                          
+
+SQL> /
+
+OSUSER               USERNAME                       TERMINAL                                                                                                                                                                                              
+-------------------- ------------------------------ --------------------------------------------------------------------------------------------------------------------------------                                                                      
+OUTPUT                                                                                                                                                                                                                                                    
+--------------------------------------------------------------------------------                                                                                                                                                                          
+rodrigob             SYS                            WKT-037010                                                                                                                                                                                            
+                                                                                                                                                                                                                                                          
+FLASHBACK automatically enabled to preserve database integrity.                                                                                                                                                                                           
+Starting "SYS".                                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                                          
+
+SQL> @USR2
+
+Sessão alterada.
+
+
+OSUSER                 SID    SERIAL# PROGRAM    MACHINE                        LOGON_TIME     BLOCK_GETS CONSISTENT_GETS PHYSICAL_READS BLOCK_CHANGES                                                                                                    
+-------------------- ----- ---------- ---------- ------------------------------ -------------- ---------- --------------- -------------- -------------                                                                                                    
+oracle                 122      25558 emagent@or orion                          30/03/07 15:14       3456           27508            335          3639                                                                                                    
+rodrigob               159       3869 sqlplusw.e DOMAIN\WKT-0370                30/03/07 16:42      35708         1543370           2415         39099                                                                                                    
+
+SQL> /
+
+OSUSER                 SID    SERIAL# PROGRAM    MACHINE                        LOGON_TIME     BLOCK_GETS CONSISTENT_GETS PHYSICAL_READS BLOCK_CHANGES                                                                                                    
+-------------------- ----- ---------- ---------- ------------------------------ -------------- ---------- --------------- -------------- -------------                                                                                                    
+oracle                 122      25558 emagent@or orion                          30/03/07 15:14       3456           27583            335          3639                                                                                                    
+rodrigob               159       3869 sqlplusw.e DOMAIN\WKT-0370                30/03/07 16:42      35708         1543370           2415         39099                                                                                                    
+
+SQL> /
+
+OSUSER                 SID    SERIAL# PROGRAM    MACHINE                        LOGON_TIME     BLOCK_GETS CONSISTENT_GETS PHYSICAL_READS BLOCK_CHANGES                                                                                                    
+-------------------- ----- ---------- ---------- ------------------------------ -------------- ---------- --------------- -------------- -------------                                                                                                    
+oracle                 122      25558 emagent@or orion                          30/03/07 15:14       3456           27583            335          3639                                                                                                    
+rodrigob               159       3869 sqlplusw.e DOMAIN\WKT-0370                30/03/07 16:42      35708         1543370           2415         39099                                                                                                    
+
+SQL>  SELECT * FROM DBARODRIGOB.IMPDP_LOG;
+
+OSUSER               USERNAME                       TERMINAL                                                                                                                                                                                              
+-------------------- ------------------------------ --------------------------------------------------------------------------------------------------------------------------------                                                                      
+OUTPUT                                                                                                                                                                                                                                                    
+--------------------------------------------------------------------------------                                                                                                                                                                          
+rodrigob             SYS                            WKT-037010                                                                                                                                                                                            
+                                                                                                                                                                                                                                                          
+FLASHBACK automatically enabled to preserve database integrity.                                                                                                                                                                                           
+Starting "SYS".                                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                                          
+
+SQL> SELECT TABLE_NAME FROM DBA_TABLES WHERE TABLESPACE_NAME='USERS';
+
+TABLE_NAME                                                                                                                                                                                                                                                
+----------------------------------------                                                                                                                                                                                                                  
+LOG_TABELA_ERRO                                                                                                                                                                                                                                           
+LOG_TABELA                                                                                                                                                                                                                                                
+TMP_JC7MIGRACAO                                                                                                                                                                                                                                           
+SYS_IMPORT_SCHEMA_01                                                                                                                                                                                                                                      
+IMPDP_LOG                                                                                                                                                                                                                                                 
+REFRESH_TESTE_DP                                                                                                                                                                                                                                          
+PLAN_TABLE                                                                                                                                                                                                                                                
+TEATE_DEF                                                                                                                                                                                                                                                 
+SYS_IMPORT_FULL_01                                                                                                                                                                                                                                        
+
+9 linhas selecionadas.
+
+SQL> /
+
+TABLE_NAME                                                                                                                                                                                                                                                
+----------------------------------------                                                                                                                                                                                                                  
+LOG_TABELA_ERRO                                                                                                                                                                                                                                           
+LOG_TABELA                                                                                                                                                                                                                                                
+TMP_JC7MIGRACAO                                                                                                                                                                                                                                           
+SYS_IMPORT_SCHEMA_01                                                                                                                                                                                                                                      
+IMPDP_LOG                                                                                                                                                                                                                                                 
+REFRESH_TESTE_DP                                                                                                                                                                                                                                          
+PLAN_TABLE                                                                                                                                                                                                                                                
+TEATE_DEF                                                                                                                                                                                                                                                 
+SYS_IMPORT_FULL_01                                                                                                                                                                                                                                        
+
+9 linhas selecionadas.
+
+SQL> SELECT * FROM DBARODRIGOB.IMPDP_LOG;
+
+OSUSER               USERNAME                       TERMINAL                                                                                                                                                                                              
+-------------------- ------------------------------ --------------------------------------------------------------------------------------------------------------------------------                                                                      
+OUTPUT                                                                                                                                                                                                                                                    
+--------------------------------------------------------------------------------                                                                                                                                                                          
+rodrigob             SYS                            WKT-037010                                                                                                                                                                                            
+                                                                                                                                                                                                                                                          
+FLASHBACK automatically enabled to preserve database integrity.                                                                                                                                                                                           
+Starting "SYS".                                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                                          
+
+SQL> DROP TABLE REFRESH_TESTE_DP;
+
+Tabela eliminada.
+
+SQL> 
+SQL>  @P_IMP_SCHEMA2.SQL
+
+Procedimento criado.
+
+SQL> exec P_IMP_SCHEMA2('TESTE_DP');
+
+Procedimento PL/SQL concluído com sucesso.
+
+SQL>  SELECT * FROM DBARODRIGOB.IMPDP_LOG;
+
+OSUSER               USERNAME                       TERMINAL                                                                                                                                                                                              
+-------------------- ------------------------------ --------------------------------------------------------------------------------------------------------------------------------                                                                      
+OUTPUT                                                                                                                                                                                                                                                    
+--------------------------------------------------------------------------------                                                                                                                                                                          
+rodrigob             SYS                            WKT-037010                                                                                                                                                                                            
+                                                                                                                                                                                                                                                          
+FLASHBACK automatically enabled to preserve database integrity.                                                                                                                                                                                           
+Starting "SYS".                                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                                          
+rodrigob             SYS                            WKT-037010                                                                                                                                                                                            
+                                                                                                                                                                                                                                                          
+FLASHBACK automatically enabled to preserve database integrity.                                                                                                                                                                                           
+Starting "SYS".                                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                                          
+
+SQL> SET LONG 500000
+SQL> /
+
+OSUSER               USERNAME                       TERMINAL                                                                                                                                                                                              
+-------------------- ------------------------------ --------------------------------------------------------------------------------------------------------------------------------                                                                      
+OUTPUT                                                                                                                                                                                                                                                    
+--------------------------------------------------------------------------------                                                                                                                                                                          
+rodrigob             SYS                            WKT-037010                                                                                                                                                                                            
+                                                                                                                                                                                                                                                          
+FLASHBACK automatically enabled to preserve database integrity.                                                                                                                                                                                           
+Starting "SYS"."REFRESH_TESTE_DP":                                                                                                                                                                                                                        
+Estimate in progress using BLOCKS method...                                                                                                                                                                                                               
+Processing object type SCHEMA_EXPORT/TABLE/TABLE_DATA                                                                                                                                                                                                     
+ORA-39125: Worker unexpected fatal error in KUPW$WORKER.CONFIGURE_METADATA_UNLOA                                                                                                                                                                          
+D while calling DBMS_METADATA.SET_FILTER [ESTIMATE_PHASE]                                                                                                                                                                                                 
+ORA-31604: invalid NAME parameter "TABLESPACE_EXPR" for object type SCHEMA_EXPOR                                                                                                                                                                          
+T in function SET_FILTER                                                                                                                                                                                                                                  
+ORA-06512: at "SYS.DBMS_SYS_ERROR", line 116                                                                                                                                                                                                              
+ORA-06512: at "SYS.DBMS_METADATA_INT", line 4676                                                                                                                                                                                                          
+ORA-06512: at "SYS.DBMS_METADATA_INT", line 8552                                                                                                                                                                                                          
+ORA-06512: at "SYS.DBMS_METADATA", line 2881                                                                                                                                                                                                              
+                                                                                                                                                                                                                                                          
+ORA-06512: at "SYS.DBMS_SYS_ERROR", line 105                                                                                                                                                                                                              
+ORA-06512: at "SYS.KUPW$WORKER", line 6241                                                                                                                                                                                                                
+                                                                                                                                                                                                                                                          
+----- PL/SQL Call Stack -----                                                                                                                                                                                                                             
+  object      line  object                                                                                                                                                                                                                                
+  handle    number  name                                                                                                                                                                                                                                  
+0x4005243cec8     14916  package body SYS.KUPW$WORKER                                                                                                                                                                                                     
+0x4005243cec8      6300  package body SYS.KUPW$WORKER                                                                                                                                                                                                     
+0x4005243cec8      5077  package body SYS.KUPW$WORKER                                                                                                                                                                                                     
+0x4005243cec8      8957  package body SYS.KUPW$WORKER                                                                                                                                                                                                     
+0x4005243cec8      3873  package body SYS.KUPW$WORKER                                                                                                                                                                                                     
+0x4005243cec8      6917  package body SYS.KUPW$WORKER                                                                                                                                                                                                     
+0x4005243cec8      1262  package body SYS.KUPW$WORKER                                                                                                                                                                                                     
+0x40047f7a7b8         2  anonymous block                                                                                                                                                                                                                  
+                                                                                                                                                                                                                                                          
+Job "SYS"."REFRESH_TESTE_DP" stopped due to fatal error at 17:00:39                                                                                                                                                                                       
+                                                                                                                                                                                                                                                          
+rodrigob             SYS                            WKT-037010                                                                                                                                                                                            
+                                                                                                                                                                                                                                                          
+FLASHBACK automatically enabled to preserve database integrity.                                                                                                                                                                                           
+Starting "SYS"."REFRESH_TESTE_DP":                                                                                                                                                                                                                        
+Estimate in progress using BLOCKS method...                                                                                                                                                                                                               
+Processing object type SCHEMA_EXPORT/TABLE/TABLE_DATA                                                                                                                                                                                                     
+Total estimation using BLOCKS method: 128 KB                                                                                                                                                                                                              
+Processing object type SCHEMA_EXPORT/USER                                                                                                                                                                                                                 
+Processing object type SCHEMA_EXPORT/SYSTEM_GRANT                                                                                                                                                                                                         
+Processing object type SCHEMA_EXPORT/ROLE_GRANT                                                                                                                                                                                                           
+Processing object type SCHEMA_EXPORT/DEFAULT_ROLE                                                                                                                                                                                                         
+Processing object type SCHEMA_EXPORT/TABLESPACE_QUOTA                                                                                                                                                                                                     
+Processing object type SCHEMA_EXPORT/PRE_SCHEMA/PROCACT_SCHEMA                                                                                                                                                                                            
+Processing object type SCHEMA_EXPORT/SEQUENCE/SEQUENCE                                                                                                                                                                                                    
+Processing object type SCHEMA_EXPORT/SEQUENCE/GRANT/OWNER_GRANT/OBJECT_GRANT                                                                                                                                                                              
+ORA-39083: Object type OBJECT_GRANT failed to create with error:                                                                                                                                                                                          
+ORA-01917: user or role 'R_TESTE_DP' does not exist                                                                                                                                                                                                       
+Failing sql is:                                                                                                                                                                                                                                           
+GRANT SELECT ON "TESTE_DP"."SQ_TESTE" TO "R_TESTE_DP"                                                                                                                                                                                                     
+                                                                                                                                                                                                                                                          
+Processing object type SCHEMA_EXPORT/TABLE/TABLE                                                                                                                                                                                                          
+. . imported "TESTE_DP"."TESTE"                               3 rows                                                                                                                                                                                      
+. . imported "TESTE_DP"."TESTE2"                              1 rows                                                                                                                                                                                      
+. . imported "TESTE_DP"."TESTE_LOG"                           0 rows                                                                                                                                                                                      
+Processing object type SCHEMA_EXPORT/TABLE/GRANT/OWNER_GRANT/OBJECT_GRANT                                                                                                                                                                                 
+ORA-39083: Object type OBJECT_GRANT failed to create with error:                                                                                                                                                                                          
+ORA-01917: user or role 'R_TESTE_DP' does not exist                                                                                                                                                                                                       
+Failing sql is:                                                                                                                                                                                                                                           
+GRANT DELETE ON "TESTE_DP"."TESTE" TO "R_TESTE_DP"                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                          
+ORA-39083: Object type OBJECT_GRANT failed to create with error:                                                                                                                                                                                          
+ORA-01917: user or role 'R_TESTE_DP' does not exist                                                                                                                                                                                                       
+Failing sql is:                                                                                                                                                                                                                                           
+GRANT INSERT ON "TESTE_DP"."TESTE" TO "R_TESTE_DP"                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                          
+ORA-39083: Object type OBJECT_GRANT failed to create with error:                                                                                                                                                                                          
+ORA-01917: user or role 'R_TESTE_DP' does not exist                                                                                                                                                                                                       
+Failing sql is:                                                                                                                                                                                                                                           
+GRANT SELECT ON "TESTE_DP"."TESTE" TO "R_TESTE_DP"                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                          
+ORA-39083: Object type OBJECT_GRANT failed to create with error:                                                                                                                                                                                          
+ORA-01917: user or role 'R_TESTE_DP' does not exist                                                                                                                                                                                                       
+Failing sql is:                                                                                                                                                                                                                                           
+GRANT UPDATE ON "TESTE_DP"."TESTE" TO "R_TESTE_DP"                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                          
+ORA-39083: Object type OBJECT_GRANT failed to create with error:                                                                                                                                                                                          
+ORA-01917: user or role 'R_TESTE_DP' does not exist                                                                                                                                                                                                       
+Failing sql is:                                                                                                                                                                                                                                           
+GRANT DELETE ON "TESTE_DP"."TESTE2" TO "R_TESTE_DP"                                                                                                                                                                                                       
+                                                                                                                                                                                                                                                          
+ORA-39083: Object type OBJECT_GRANT failed to create with error:                                                                                                                                                                                          
+ORA-01917: user or role 'R_TESTE_DP' does not exist                                                                                                                                                                                                       
+Failing sql is:                                                                                                                                                                                                                                           
+GRANT INSERT ON "TESTE_DP"."TESTE2" TO "R_TESTE_DP"                                                                                                                                                                                                       
+                                                                                                                                                                                                                                                          
+ORA-39083: Object type OBJECT_GRANT failed to create with error:                                                                                                                                                                                          
+ORA-01917: user or role 'R_TESTE_DP' does not exist                                                                                                                                                                                                       
+Failing sql is:                                                                                                                                                                                                                                           
+GRANT SELECT ON "TESTE_DP"."TESTE2" TO "R_TESTE_DP"                                                                                                                                                                                                       
+                                                                                                                                                                                                                                                          
+ORA-39083: Object type OBJECT_GRANT failed to create with error:                                                                                                                                                                                          
+ORA-01917: user or role 'R_TESTE_DP' does not exist                                                                                                                                                                                                       
+Failing sql is:                                                                                                                                                                                                                                           
+GRANT UPDATE ON "TESTE_DP"."TESTE2" TO "R_TESTE_DP"                                                                                                                                                                                                       
+                                                                                                                                                                                                                                                          
+Processing object type SCHEMA_EXPORT/TABLE/INDEX/INDEX                                                                                                                                                                                                    
+Processing object type SCHEMA_EXPORT/TABLE/CONSTRAINT/CONSTRAINT                                                                                                                                                                                          
+ORA-39083: Object type CONSTRAINT failed to create with error:                                                                                                                                                                                            
+ORA-14063: Unusable index exists on unique/primary constraint key                                                                                                                                                                                         
+Failing sql is:                                                                                                                                                                                                                                           
+ALTER TABLE "TESTE_DP"."TESTE" ADD CONSTRAINT "PK_TESTE" PRIMARY KEY ("C1") USIN                                                                                                                                                                          
+G INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255  STORAGE(INITIAL 65536 NEXT 1048576 M                                                                                                                                                                          
+INEXTENTS 1 MAXEXTENTS 2147483645 PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BU                                                                                                                                                                          
+FFER_POOL DEFAULT) TABLESPACE "USERS"                                                                                                                                                                                                                     
+Processing object type SCHEMA_EXPORT/TABLE/INDEX/STATISTICS/INDEX_STATISTICS                                                                                                                                                                              
+Processing object type SCHEMA_EXPORT/FUNCTION/FUNCTION                                                                                                                                                                                                    
+Processing object type SCHEMA_EXPORT/PROCEDURE/PROCEDURE                                                                                                                                                                                                  
+Processing object type SCHEMA_EXPORT/FUNCTION/ALTER_FUNCTION                                                                                                                                                                                              
+Processing object type SCHEMA_EXPORT/PROCEDURE/ALTER_PROCEDURE                                                                                                                                                                                            
+Processing object type SCHEMA_EXPORT/TABLE/CONSTRAINT/REF_CONSTRAINT                                                                                                                                                                                      
+ORA-39083: Object type REF_CONSTRAINT failed to create with error:                                                                                                                                                                                        
+ORA-02270: no matching unique or primary key for this column-list                                                                                                                                                                                         
+Failing sql is:                                                                                                                                                                                                                                           
+ALTER TABLE "TESTE_DP"."TESTE2" ADD CONSTRAINT "FK_TESTE2_TESTE" FOREIGN KEY ("C                                                                                                                                                                          
+2") REFERENCES "TESTE_DP"."TESTE" ("C1") ENABLE                                                                                                                                                                                                           
+                                                                                                                                                                                                                                                          
+Processing object type SCHEMA_EXPORT/TABLE/TRIGGER                                                                                                                                                                                                        
+Processing object type SCHEMA_EXPORT/TABLE/STATISTICS/TABLE_STATISTICS                                                                                                                                                                                    
+Job "SYS"."REFRESH_TESTE_DP" completed with 11 error(s) at 17:07:30                                                                                                                                                                                       
+                                                                                                                                                                                                                                                          
+
+SQL> DESC TESTE_DP.TESTE
+ Nome                                                                                                                                            Nulo?    Tipo
+ ----------------------------------------------------------------------------------------------------------------------------------------------- -------- ------------------------------------------------------------------------------------------------
+ C1                                                                                                                                                       NUMBER
+ C2                                                                                                                                                       VARCHAR2(10)
+
+SQL> DESC TESTE_DP.TESTE_LOG;
+ Nome                                                                                                                                            Nulo?    Tipo
+ ----------------------------------------------------------------------------------------------------------------------------------------------- -------- ------------------------------------------------------------------------------------------------
+ C1                                                                                                                                                       NUMBER
+
+SQL> DELETE DBARODRIGOB.IMPDP_LOG
+  2  COMMIT;
+
+2 linhas deletadas.
+
+SQL> 
+SQL> DELETE DBARODRIGOB.IMPDP_LOG;
+
+0 linhas deletadas.
+
+SQL> COMMIT;
+
+Commit concluído.
+
+SQL> SET SERVEROUTPUT ON SIZE 500000
+SQL> ALTER TABLE TESTE_DP.TESTE_LOG ADD C2 VARCHAR2(10);
+
+Tabela alterada.
+
+SQL> @P_IMP_SCHEMA2.SQL
+
+Procedimento criado.
+
+SQL>  exec P_IMP_SCHEMA2('TESTE_DP');
+FLASHBACK automatically enabled to preserve database integrity.                                                                                                                                                                                           
+Starting "SYS"."REFRESH_TESTE_DP":                                                                                                                                                                                                                        
+Estimate in progress using BLOCKS method...                                                                                                                                                                                                               
+Processing object type SCHEMA_EXPORT/TABLE/TABLE_DATA                                                                                                                                                                                                     
+ORA-39125: Worker unexpected fatal error in KUPW$WORKER.CONFIGURE_METADATA_UNLOAD while calling DBMS_METADATA.SET_FILTER [ESTIMATE_PHASE]
+ORA-31604: invalid NAME parameter "TABLESPACE_EXPR" for object type SCHEMA_EXPORT in function                   
+SET_FILTER
+ORA-06512: at "SYS.DBMS_SYS_ERROR", line 116
+ORA-06512: at "SYS.DBMS_METADATA_INT", line 4676
+ORA-06512: at "SYS.DBMS_METADATA_INT", line 8552
+ORA-06512: at "SYS.DBMS_METADATA", line 2881
+                                                   
+ORA-06512: at "SYS.DBMS_SYS_ERROR", line 105
+ORA-06512: at "SYS.KUPW$WORKER", line 6241
+                                                                                                                                                                  
+----- PL/SQL Call Stack -----
+  object      line  object
+  handle    number  name
+0x4005243cec8     14916  package body SYS.KUPW$WORKER
+0x4005243cec8      6300  package body SYS.KUPW$WORKER
+0x4005243cec8      5077  package body                       
+SYS.KUPW$WORKER
+0x4005243cec8      8957  package body SYS.KUPW$WORKER
+0x4005243cec8      3873  package body SYS.KUPW$WORKER
+0x4005243cec8      6917  package body SYS.KUPW$WORKER
+0x4005243cec8      1262  package body SYS.KUPW$WORKER
+0x40047f7a7b8     
+2  anonymous block
+                                                                                                                                                                                                                                       
+Job "SYS"."REFRESH_TESTE_DP" stopped due to fatal error at 17:12:02                                                                                                                                                                                       
+Job has completed                                                                                                                                                                                                                                         
+Final job state = STOPPED                                                                                                                                                                                                                                 
+
+Procedimento PL/SQL concluído com sucesso.
+
+SQL> @P_IMP_SCHEMA2.SQL
+
+Procedimento criado.
+
+SQL> exec P_IMP_SCHEMA2('TESTE_DP');
+BEGIN P_IMP_SCHEMA2('TESTE_DP'); END;
+
+*
+ERRO na linha 1:
+ORA-31626: job does not exist 
+ORA-06512: at "SYS.DBMS_SYS_ERROR", line 79 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 911 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 4356 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 19 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 101 
+ORA-06512: at line 1 
+
+
+SQL> exec P_IMP_SCHEMA2('TESTE_DP');
+BEGIN P_IMP_SCHEMA2('TESTE_DP'); END;
+
+*
+ERRO na linha 1:
+ORA-31626: job does not exist 
+ORA-06512: at "SYS.DBMS_SYS_ERROR", line 79 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 911 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 4356 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 19 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 101 
+ORA-06512: at line 1 
+
+
+SQL> SELECT TABLE_NAME FROM DBA_TABLES WHERE TABLESPACE_NAME='USERS';
+
+TABLE_NAME                                                                                                                                                                                                                                                
+----------------------------------------                                                                                                                                                                                                                  
+LOG_TABELA_ERRO                                                                                                                                                                                                                                           
+LOG_TABELA                                                                                                                                                                                                                                                
+TMP_JC7MIGRACAO                                                                                                                                                                                                                                           
+SYS_IMPORT_SCHEMA_01                                                                                                                                                                                                                                      
+IMPDP_LOG                                                                                                                                                                                                                                                 
+REFRESH_TESTE_DP                                                                                                                                                                                                                                          
+PLAN_TABLE                                                                                                                                                                                                                                                
+TEATE_DEF                                                                                                                                                                                                                                                 
+SYS_IMPORT_FULL_01                                                                                                                                                                                                                                        
+
+9 linhas selecionadas.
+
+SQL>  DROP TABLE REFRESH_TESTE_DP;
+
+Tabela eliminada.
+
+SQL>  exec P_IMP_SCHEMA2('TESTE_DP');
+BEGIN P_IMP_SCHEMA2('TESTE_DP'); END;
+
+*
+ERRO na linha 1:
+ORA-39001: invalid argument value 
+ORA-06512: at "SYS.DBMS_SYS_ERROR", line 79 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 2926 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 3958 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 22 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 101 
+ORA-06512: at line 1 
+
+
+SQL> SELECT TABLE_NAME FROM DBA_TABLES WHERE TABLESPACE_NAME='USERS';
+
+TABLE_NAME                                                                                                                                                                                                                                                
+----------------------------------------                                                                                                                                                                                                                  
+LOG_TABELA_ERRO                                                                                                                                                                                                                                           
+LOG_TABELA                                                                                                                                                                                                                                                
+TMP_JC7MIGRACAO                                                                                                                                                                                                                                           
+SYS_IMPORT_SCHEMA_01                                                                                                                                                                                                                                      
+IMPDP_LOG                                                                                                                                                                                                                                                 
+REFRESH_TESTE_DP                                                                                                                                                                                                                                          
+PLAN_TABLE                                                                                                                                                                                                                                                
+TEATE_DEF                                                                                                                                                                                                                                                 
+SYS_IMPORT_FULL_01                                                                                                                                                                                                                                        
+
+9 linhas selecionadas.
+
+SQL> SELECT TABLE_NAME FROM DBA_TABLES WHERE TABLESPACE_NAME='USERS';
+
+TABLE_NAME                                                                                                                                                                                                                                                
+----------------------------------------                                                                                                                                                                                                                  
+LOG_TABELA_ERRO                                                                                                                                                                                                                                           
+LOG_TABELA                                                                                                                                                                                                                                                
+TMP_JC7MIGRACAO                                                                                                                                                                                                                                           
+SYS_IMPORT_SCHEMA_01                                                                                                                                                                                                                                      
+IMPDP_LOG                                                                                                                                                                                                                                                 
+REFRESH_TESTE_DP                                                                                                                                                                                                                                          
+PLAN_TABLE                                                                                                                                                                                                                                                
+TEATE_DEF                                                                                                                                                                                                                                                 
+SYS_IMPORT_FULL_01                                                                                                                                                                                                                                        
+
+9 linhas selecionadas.
+
+SQL>  DROP TABLE REFRESH_TESTE_DP;
+
+Tabela eliminada.
+
+SQL> @P_IMP_SCHEMA2.SQL
+
+Procedimento criado.
+
+SQL> exec P_IMP_SCHEMA2('TESTE_DP');
+BEGIN P_IMP_SCHEMA2('TESTE_DP'); END;
+
+*
+ERRO na linha 1:
+ORA-31634: job already exists 
+ORA-06512: at "SYS.DBMS_SYS_ERROR", line 79 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 911 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 4354 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 19 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 101 
+ORA-06512: at line 1 
+
+
+SQL> @USR2
+
+Sessão alterada.
+
+
+OSUSER                 SID    SERIAL# PROGRAM    MACHINE                        LOGON_TIME     BLOCK_GETS CONSISTENT_GETS PHYSICAL_READS BLOCK_CHANGES                                                                                                    
+-------------------- ----- ---------- ---------- ------------------------------ -------------- ---------- --------------- -------------- -------------                                                                                                    
+oradev                 115      42555 oracle@ori orion                          30/03/07 17:15        309            3834             51           307                                                                                                    
+oracle                 122      25558 emagent@or orion                          30/03/07 15:14       3456           31183            335          3639                                                                                                    
+rodrigob               159       3869 sqlplusw.e DOMAIN\WKT-0370                30/03/07 16:42      58411         2027249           2783         62559                                                                                                    
+
+SQL> @MATA_LOCK
+Informe o valor para sid: 115
+alter system kill session '115,42555';                                                                                                                                                                  
+
+SQL> alter system kill session '115,42555';
+alter system kill session '115,42555'
+*
+ERRO na linha 1:
+ORA-00031: session marked for kill 
+
+
+SQL>  @USR2
+
+Sessão alterada.
+
+
+OSUSER                 SID    SERIAL# PROGRAM    MACHINE                        LOGON_TIME     BLOCK_GETS CONSISTENT_GETS PHYSICAL_READS BLOCK_CHANGES                                                                                                    
+-------------------- ----- ---------- ---------- ------------------------------ -------------- ---------- --------------- -------------- -------------                                                                                                    
+oracle                 122      25558 emagent@or orion                          30/03/07 15:14       3456           31693            335          3639                                                                                                    
+rodrigob               159       3869 sqlplusw.e DOMAIN\WKT-0370                30/03/07 16:42      58412         2027261           2783         62559                                                                                                    
+
+SQL> @P_IMP_SCHEMA2.SQL
+
+Procedimento criado.
+
+SQL> exec P_IMP_SCHEMA2('TESTE_DP');
+BEGIN P_IMP_SCHEMA2('TESTE_DP'); END;
+
+*
+ERRO na linha 1:
+ORA-39001: invalid argument value 
+ORA-06512: at "SYS.DBMS_SYS_ERROR", line 79 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 2926 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 3958 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 22 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 102 
+ORA-06512: at line 1 
+
+
+SQL> select * from dbarodrigob.impdp_log;
+
+OSUSER               USERNAME                       TERMINAL                                                                                                                                                                                              
+-------------------- ------------------------------ --------------------------------------------------------------------------------------------------------------------------------                                                                      
+OUTPUT                                                                                                                                                                                                                                                    
+--------------------------------------------------------------------------------                                                                                                                                                                          
+rodrigob             SYS                            WKT-037010                                                                                                                                                                                            
+                                                                                                                                                                                                                                                          
+FLASHBACK automatically enabled to preserve database integrity.                                                                                                                                                                                           
+Starting "SYS"."REFRESH_TESTE_DP":                                                                                                                                                                                                                        
+Estimate in progress using BLOCKS method...                                                                                                                                                                                                               
+Processing object type SCHEMA_EXPORT/TABLE/TABLE_DATA                                                                                                                                                                                                     
+ORA-39125: Worker unexpected fatal error in KUPW$WORKER.CONFIGURE_METADATA_UNLOA                                                                                                                                                                          
+D while calling DBMS_METADATA.SET_FILTER [ESTIMATE_PHASE]                                                                                                                                                                                                 
+ORA-31604: invalid NAME parameter "TABLESPACE_EXPR" for object type SCHEMA_EXPOR                                                                                                                                                                          
+T in function SET_FILTER                                                                                                                                                                                                                                  
+ORA-06512: at "SYS.DBMS_SYS_ERROR", line 116                                                                                                                                                                                                              
+ORA-06512: at "SYS.DBMS_METADATA_INT", line 4676                                                                                                                                                                                                          
+ORA-06512: at "SYS.DBMS_METADATA_INT", line 8552                                                                                                                                                                                                          
+ORA-06512: at "SYS.DBMS_METADATA", line 2881                                                                                                                                                                                                              
+                                                                                                                                                                                                                                                          
+ORA-06512: at "SYS.DBMS_SYS_ERROR", line 105                                                                                                                                                                                                              
+ORA-06512: at "SYS.KUPW$WORKER", line 6241                                                                                                                                                                                                                
+                                                                                                                                                                                                                                                          
+----- PL/SQL Call Stack -----                                                                                                                                                                                                                             
+  object      line  object                                                                                                                                                                                                                                
+  handle    number  name                                                                                                                                                                                                                                  
+0x4005243cec8     14916  package body SYS.KUPW$WORKER                                                                                                                                                                                                     
+0x4005243cec8      6300  package body SYS.KUPW$WORKER                                                                                                                                                                                                     
+0x4005243cec8      5077  package body SYS.KUPW$WORKER                                                                                                                                                                                                     
+0x4005243cec8      8957  package body SYS.KUPW$WORKER                                                                                                                                                                                                     
+0x4005243cec8      3873  package body SYS.KUPW$WORKER                                                                                                                                                                                                     
+0x4005243cec8      6917  package body SYS.KUPW$WORKER                                                                                                                                                                                                     
+0x4005243cec8      1262  package body SYS.KUPW$WORKER                                                                                                                                                                                                     
+0x40047f7a7b8         2  anonymous block                                                                                                                                                                                                                  
+                                                                                                                                                                                                                                                          
+Job "SYS"."REFRESH_TESTE_DP" stopped due to fatal error at 17:12:02                                                                                                                                                                                       
+                                                                                                                                                                                                                                                          
+
+SQL> delete dbarodrigob.impdp_log;
+
+1 linha deletada.
+
+SQL> commit;
+
+Commit concluído.
+
+SQL> @USR2
+
+Sessão alterada.
+
+
+OSUSER                 SID    SERIAL# PROGRAM    MACHINE                        LOGON_TIME     BLOCK_GETS CONSISTENT_GETS PHYSICAL_READS BLOCK_CHANGES                                                                                                    
+-------------------- ----- ---------- ---------- ------------------------------ -------------- ---------- --------------- -------------- -------------                                                                                                    
+oradev                 115      42589 oracle@ori orion                          30/03/07 17:25        311            3684             50           308                                                                                                    
+oracle                 122      25558 emagent@or orion                          30/03/07 15:14       3456           32278            335          3639                                                                                                    
+rodrigob               159       3869 sqlplusw.e DOMAIN\WKT-0370                30/03/07 16:42      64559         2038466           2787         69483                                                                                                    
+
+SQL> @mata_lock
+Informe o valor para sid: 115
+alter system kill session '115,42589';                                                                                                                                                                  
+
+SQL> alter system kill session '115,42589';
+alter system kill session '115,42589'
+*
+ERRO na linha 1:
+ORA-00031: session marked for kill 
+
+
+SQL>  @USR2
+
+Sessão alterada.
+
+
+OSUSER                 SID    SERIAL# PROGRAM    MACHINE                        LOGON_TIME     BLOCK_GETS CONSISTENT_GETS PHYSICAL_READS BLOCK_CHANGES                                                                                                    
+-------------------- ----- ---------- ---------- ------------------------------ -------------- ---------- --------------- -------------- -------------                                                                                                    
+oracle                 122      25558 emagent@or orion                          30/03/07 15:14       3456           32548            335          3639                                                                                                    
+rodrigob               159       3869 sqlplusw.e DOMAIN\WKT-0370                30/03/07 16:42      64560         2038478           2787         69483                                                                                                    
+
+SQL>  @P_IMP_SCHEMA2.SQL
+
+Procedimento criado.
+
+SQL>  exec P_IMP_SCHEMA2('TESTE_DP');
+BEGIN P_IMP_SCHEMA2('TESTE_DP'); END;
+
+*
+ERRO na linha 1:
+ORA-31626: job does not exist 
+ORA-06512: at "SYS.DBMS_SYS_ERROR", line 79 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 911 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 4356 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 19 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 102 
+ORA-06512: at line 1 
+
+
+SQL> DROP TABLE REFRESH_TESTE_DP;
+
+Tabela eliminada.
+
+SQL> exec P_IMP_SCHEMA2('TESTE_DP');
+BEGIN P_IMP_SCHEMA2('TESTE_DP'); END;
+
+*
+ERRO na linha 1:
+ORA-39001: invalid argument value 
+ORA-06512: at "SYS.DBMS_SYS_ERROR", line 79 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 2926 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 3958 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 22 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 102 
+ORA-06512: at line 1 
+
+
+SQL> @USR2
+
+Sessão alterada.
+
+
+OSUSER                 SID    SERIAL# PROGRAM    MACHINE                        LOGON_TIME     BLOCK_GETS CONSISTENT_GETS PHYSICAL_READS BLOCK_CHANGES                                                                                                    
+-------------------- ----- ---------- ---------- ------------------------------ -------------- ---------- --------------- -------------- -------------                                                                                                    
+oradev                 115      42609 oracle@ori orion                          30/03/07 17:30        311            3652             53           308                                                                                                    
+oracle                 122      25558 emagent@or orion                          30/03/07 15:14       3456           33043            335          3639                                                                                                    
+rodrigob               159       3869 sqlplusw.e DOMAIN\WKT-0370                30/03/07 16:42      70865         2053280           2795         76575                                                                                                    
+
+SQL>  @mata_lock
+Informe o valor para sid: 115
+alter system kill session '115,42609';                                                                                                                                                                  
+
+SQL> alter system kill session '115,42609';
+alter system kill session '115,42609'
+*
+ERRO na linha 1:
+ORA-00031: session marked for kill 
+
+
+SQL> DROP TABLE REFRESH_TESTE_DP;
+
+Tabela eliminada.
+
+SQL> @P_IMP_SCHEMA2.SQL
+
+Procedimento criado.
+
+SQL> exec P_IMP_SCHEMA2('TESTE_DP');
+BEGIN P_IMP_SCHEMA2('TESTE_DP'); END;
+
+*
+ERRO na linha 1:
+ORA-39001: invalid argument value 
+ORA-06512: at "SYS.DBMS_SYS_ERROR", line 79 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 2926 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 3958 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 23 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 102 
+ORA-06512: at line 1 
+
+
+SQL> @USR2
+
+Sessão alterada.
+
+
+OSUSER                 SID    SERIAL# PROGRAM    MACHINE                        LOGON_TIME     BLOCK_GETS CONSISTENT_GETS PHYSICAL_READS BLOCK_CHANGES                                                                                                    
+-------------------- ----- ---------- ---------- ------------------------------ -------------- ---------- --------------- -------------- -------------                                                                                                    
+oradev                 115      42682 oracle@ori orion                          30/03/07 17:39        326            3501             50           317                                                                                                    
+oracle                 122      25558 emagent@or orion                          30/03/07 15:14       3456           34408            335          3639                                                                                                    
+rodrigob               159       3869 sqlplusw.e DOMAIN\WKT-0370                30/03/07 16:42      77192         2071342           2839         83702                                                                                                    
+
+SQL> @mata_lock
+Informe o valor para sid: 115
+alter system kill session '115,42682';                                                                                                                                                                  
+
+SQL> alter system kill session '115,42682';
+alter system kill session '115,42682'
+*
+ERRO na linha 1:
+ORA-00031: session marked for kill 
+
+
+SQL> @USR2
+
+Sessão alterada.
+
+
+OSUSER                 SID    SERIAL# PROGRAM    MACHINE                        LOGON_TIME     BLOCK_GETS CONSISTENT_GETS PHYSICAL_READS BLOCK_CHANGES                                                                                                    
+-------------------- ----- ---------- ---------- ------------------------------ -------------- ---------- --------------- -------------- -------------                                                                                                    
+oracle                 122      25558 emagent@or orion                          30/03/07 15:14       3456           34648            335          3639                                                                                                    
+rodrigob               159       3869 sqlplusw.e DOMAIN\WKT-0370                30/03/07 16:42      77193         2071354           2839         83702                                                                                                    
+
+SQL>  DROP TABLE REFRESH_TESTE_DP;
+
+Tabela eliminada.
+
+SQL>  @P_IMP_SCHEMA2.SQL
+
+Procedimento criado.
+
+SQL> exec P_IMP_SCHEMA2('TESTE_DP');
+BEGIN P_IMP_SCHEMA2('TESTE_DP'); END;
+
+*
+ERRO na linha 1:
+ORA-39001: invalid argument value 
+ORA-06512: at "SYS.DBMS_SYS_ERROR", line 79 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 2926 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 3958 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 23 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 102 
+ORA-06512: at line 1 
+
+
+SQL> @P_IMP_SCHEMA2.SQL
+
+Procedimento criado.
+
+SQL>  exec P_IMP_SCHEMA2('TESTE_DP');
+BEGIN P_IMP_SCHEMA2('TESTE_DP'); END;
+
+*
+ERRO na linha 1:
+ORA-31634: job already exists 
+ORA-06512: at "SYS.DBMS_SYS_ERROR", line 79 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 911 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 4354 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 19 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 102 
+ORA-06512: at line 1 
+
+
+SQL> @USR2
+
+Sessão alterada.
+
+
+OSUSER                 SID    SERIAL# PROGRAM    MACHINE                        LOGON_TIME     BLOCK_GETS CONSISTENT_GETS PHYSICAL_READS BLOCK_CHANGES                                                                                                    
+-------------------- ----- ---------- ---------- ------------------------------ -------------- ---------- --------------- -------------- -------------                                                                                                    
+oradev                 115      42699 oracle@ori orion                          30/03/07 17:41        308            3797             50           304                                                                                                    
+oracle                 122      25558 emagent@or orion                          30/03/07 15:14       3456           36628            335          3639                                                                                                    
+apache                 149        331 httpd@devl devlinux.uninov                30/03/07 17:51         73          336302         316400             8                                                                                                    
+rodrigob               159       3869 sqlplusw.e DOMAIN\WKT-0370                30/03/07 16:42      84114         2085530           2855         91641                                                                                                    
+
+SQL> @mata_lock
+Informe o valor para sid: 115
+alter system kill session '115,42699';                                                                                                                                                                  
+
+SQL> alter system kill session '115,42699';
+alter system kill session '115,42699'
+*
+ERRO na linha 1:
+ORA-00031: session marked for kill 
+
+
+SQL>  DROP TABLE REFRESH_TESTE_DP;
+
+Tabela eliminada.
+
+SQL> exec P_IMP_SCHEMA2('TESTE_DP');
+BEGIN P_IMP_SCHEMA2('TESTE_DP'); END;
+
+*
+ERRO na linha 1:
+ORA-39001: invalid argument value 
+ORA-06512: at "SYS.DBMS_SYS_ERROR", line 79 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 2926 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 3958 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 23 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 102 
+ORA-06512: at line 1 
+
+
+SQL> @USR2
+
+Sessão alterada.
+
+
+OSUSER                 SID    SERIAL# PROGRAM    MACHINE                        LOGON_TIME     BLOCK_GETS CONSISTENT_GETS PHYSICAL_READS BLOCK_CHANGES                                                                                                    
+-------------------- ----- ---------- ---------- ------------------------------ -------------- ---------- --------------- -------------- -------------                                                                                                    
+oradev                 115      42715 oracle@ori orion                          30/03/07 17:54        311            4479             52           307                                                                                                    
+oracle                 122      25558 emagent@or orion                          30/03/07 15:14       3456           37213            335          3639                                                                                                    
+rodrigob               159       3869 sqlplusw.e DOMAIN\WKT-0370                30/03/07 16:42      89721         2102905           2966         97834                                                                                                    
+
+SQL> @mata_lock
+Informe o valor para sid: 115
+alter system kill session '115,42715';                                                                                                                                                                  
+
+SQL> alter system kill session '115,42715';
+alter system kill session '115,42715'
+*
+ERRO na linha 1:
+ORA-00031: session marked for kill 
+
+
+SQL> DROP TABLE REFRESH_TESTE_DP;
+
+Tabela eliminada.
+
+SQL> @P_IMP_SCHEMA2.SQL
+
+Procedimento criado.
+
+SQL>  exec P_IMP_SCHEMA2('TESTE_DP');
+BEGIN P_IMP_SCHEMA2('TESTE_DP'); END;
+
+*
+ERRO na linha 1:
+ORA-39001: invalid argument value 
+ORA-06512: at "SYS.DBMS_SYS_ERROR", line 79 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 2926 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 3958 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 23 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 102 
+ORA-06512: at line 1 
+
+
+SQL>  @USR2
+
+Sessão alterada.
+
+
+OSUSER                 SID    SERIAL# PROGRAM    MACHINE                        LOGON_TIME     BLOCK_GETS CONSISTENT_GETS PHYSICAL_READS BLOCK_CHANGES                                                                                                    
+-------------------- ----- ---------- ---------- ------------------------------ -------------- ---------- --------------- -------------- -------------                                                                                                    
+oracle                 122      25558 emagent@or orion                          30/03/07 15:14       3467           37956            351          3650                                                                                                    
+oradev                 149        376 oracle@ori orion                          30/03/07 17:57        324            4506             50           314                                                                                                    
+rodrigob               159       3869 sqlplusw.e DOMAIN\WKT-0370                30/03/07 16:42      95985         2114015           2968        104873                                                                                                    
+
+SQL> @mata_lock
+Informe o valor para sid: 1498
+
+não há linhas selecionadas
+
+SQL>  @mata_lock
+Informe o valor para sid: 149
+alter system kill session '149,376';                                                                                                                                                                    
+
+SQL> alter system kill session '149,376';
+alter system kill session '149,376'
+*
+ERRO na linha 1:
+ORA-00031: session marked for kill 
+
+
+SQL> DROP TABLE REFRESH_TESTE_DP;
+
+Tabela eliminada.
+
+SQL> @P_IMP_SCHEMA2.SQL
+
+Procedimento criado.
+
+SQL> 
+SQL> exec P_IMP_SCHEMA2('TESTE_DP');
+BEGIN P_IMP_SCHEMA2('TESTE_DP'); END;
+
+*
+ERRO na linha 1:
+ORA-39001: invalid argument value 
+ORA-06512: at "SYS.DBMS_SYS_ERROR", line 79 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 2926 
+ORA-06512: at "SYS.DBMS_DATAPUMP", line 3958 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 23 
+ORA-06512: at "SYS.P_IMP_SCHEMA2", line 102 
+ORA-06512: at line 1 
+
+
+SQL>  @USR2
+
+Sessão alterada.
+
+
+OSUSER                 SID    SERIAL# PROGRAM    MACHINE                        LOGON_TIME     BLOCK_GETS CONSISTENT_GETS PHYSICAL_READS BLOCK_CHANGES                                                                                                    
+-------------------- ----- ---------- ---------- ------------------------------ -------------- ---------- --------------- -------------- -------------                                                                                                    
+oracle                 122      25558 emagent@or orion                          30/03/07 15:14       3467           38781            351          3650                                                                                                    
+oradev                 149        387 oracle@ori orion                          30/03/07 18:00        328            3989             59           313                                                                                                    
+rodrigob               159       3869 sqlplusw.e DOMAIN\WKT-0370                30/03/07 16:42     102530         2130190           2991        112239                                                                                                    
+
+SQL> @MATA_LOCK
+Informe o valor para sid: 148
+alter system kill session '148,20162';                                                                                                                                                                  
+
+SQL> @MATA_LOCK
+Informe o valor para sid: 149
+alter system kill session '149,387';                                                                                                                                                                    
+
+SQL> alter system kill session '149,387';
+alter system kill session '149,387'
+*
+ERRO na linha 1:
+ORA-00031: session marked for kill 
+
+
+SQL> DROP TABLE REFRESH_TESTE_DP;
+
+Tabela eliminada.
+
+SQL>  @P_IMP_SCHEMA2.SQL
+
+Procedimento criado.
+
+SQL> exec P_IMP_SCHEMA2('TESTE_DP');
+FLASHBACK automatically enabled to preserve database integrity.                                                                                                                                         
+Starting "SYS"."REFRESH_TESTE_DP":                                                                                                                                                                      
+Estimate in progress using BLOCKS method...                                                                                                                                                             
+Processing object type TABLE_EXPORT/TABLE/TABLE_DATA                                                                                                                                                    
+Total estimation using BLOCKS method: 128 KB                                                                                                                                                            
+Processing object type TABLE_EXPORT/TABLE/TABLE                                                                                                                                                         
+. . imported "TESTE_DP"."TESTE"                               3 rows                                                                                                                                    
+. . imported "TESTE_DP"."TESTE2"                              1 rows                                                                                                                                    
+Processing object type TABLE_EXPORT/TABLE/GRANT/OWNER_GRANT/OBJECT_GRANT                                                                                                                                
+ORA-39083: Object type OBJECT_GRANT failed to create with error:
+ORA-01917: user or role 'R_TESTE_DP' does not exist
+Failing sql is:
+GRANT DELETE ON "TESTE_DP"."TESTE" TO "R_TESTE_DP"
+                
+ORA-39083: Object type OBJECT_GRANT failed to create with error:
+ORA-01917: user or role 'R_TESTE_DP' does not exist
+Failing sql is:
+GRANT INSERT ON "TESTE_DP"."TESTE" TO "R_TESTE_DP"
+                
+ORA-39083: Object type OBJECT_GRANT failed to create with error:
+ORA-01917: user or role 'R_TESTE_DP' does not exist
+Failing sql is:
+GRANT SELECT ON "TESTE_DP"."TESTE" TO "R_TESTE_DP"
+                
+ORA-39083: Object type OBJECT_GRANT failed to create with error:
+ORA-01917: user or role 'R_TESTE_DP' does not exist
+Failing sql is:
+GRANT UPDATE ON "TESTE_DP"."TESTE" TO "R_TESTE_DP"
+                
+ORA-39083: Object type OBJECT_GRANT failed to create with error:
+ORA-01917: user or role 'R_TESTE_DP' does not exist
+Failing sql is:
+GRANT DELETE ON "TESTE_DP"."TESTE2" TO "R_TESTE_DP"
+               
+ORA-39083: Object type OBJECT_GRANT failed to create with error:
+ORA-01917: user or role 'R_TESTE_DP' does not exist
+Failing sql is:
+GRANT INSERT ON "TESTE_DP"."TESTE2" TO "R_TESTE_DP"
+               
+ORA-39083: Object type OBJECT_GRANT failed to create with error:
+ORA-01917: user or role 'R_TESTE_DP' does not exist
+Failing sql is:
+GRANT SELECT ON "TESTE_DP"."TESTE2" TO "R_TESTE_DP"
+               
+ORA-39083: Object type OBJECT_GRANT failed to create with error:
+ORA-01917: user or role 'R_TESTE_DP' does not exist
+Failing sql is:
+GRANT UPDATE ON "TESTE_DP"."TESTE2" TO "R_TESTE_DP"
+               
+Processing object type TABLE_EXPORT/TABLE/INDEX/INDEX                                                                                                                                                   
+Processing object type TABLE_EXPORT/TABLE/CONSTRAINT/CONSTRAINT                                                                                                                                         
+ORA-39083: Object type CONSTRAINT failed to create with error:
+ORA-14063: Unusable index exists on unique/primary constraint key
+Failing sql is:
+ALTER TABLE "TESTE_DP"."TESTE" ADD CONSTRAINT          
+"PK_TESTE" PRIMARY KEY ("C1") USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645 PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1         
+BUFFER_POOL DEFAULT) TABLESPACE "USERS"                                                                                                                                                                 
+Processing object type TABLE_EXPORT/TABLE/INDEX/STATISTICS/INDEX_STATISTICS                                                                                                                             
+Processing object type TABLE_EXPORT/TABLE/CONSTRAINT/REF_CONSTRAINT                                                                                                                                     
+ORA-39083: Object type REF_CONSTRAINT failed to create with error:
+ORA-02270: no matching unique or primary key for this column-list
+Failing sql is:
+ALTER TABLE "TESTE_DP"."TESTE2" ADD CONSTRAINT     
+"FK_TESTE2_TESTE" FOREIGN KEY ("C2") REFERENCES "TESTE_DP"."TESTE" ("C1") ENABLE
+                                                                                                                       
+Processing object type TABLE_EXPORT/TABLE/TRIGGER                                                                                                                                                       
+Processing object type TABLE_EXPORT/TABLE/STATISTICS/TABLE_STATISTICS                                                                                                                                   
+*** Job percent done = 100                                                                                                                                                                              
+Job "SYS"."REFRESH_TESTE_DP" completed with 10 error(s) at 18:05:35                                                                                                                                     
+Job has completed                                                                                                                                                                                       
+Final job state = COMPLETED                                                                                                                                                                             
+
+Procedimento PL/SQL concluído com sucesso.
+
+SQL> DESC TESTE_DP.TESTE_LOG
+ Nome                                                                                                              Nulo?    Tipo
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ C1                                                                                                                         NUMBER
+ C2                                                                                                                         VARCHAR2(10)
+
+SQL> exec P_IMP_SCHEMA2('TESTE_DP');
+FLASHBACK automatically enabled to preserve database integrity.                                                                                                                                         
+Starting "SYS"."REFRESH_TESTE_DP":                                                                                                                                                                      
+Estimate in progress using BLOCKS method...                                                                                                                                                             
+Processing object type TABLE_EXPORT/TABLE/TABLE_DATA                                                                                                                                                    
+Total estimation using BLOCKS method: 128 KB                                                                                                                                                            
+Processing object type TABLE_EXPORT/TABLE/TABLE                                                                                                                                                         
+. . imported "TESTE_DP"."TESTE"                               3 rows                                                                                                                                    
+. . imported "TESTE_DP"."TESTE2"                              1 rows                                                                                                                                    
+Processing object type TABLE_EXPORT/TABLE/GRANT/OWNER_GRANT/OBJECT_GRANT                                                                                                                                
+ORA-39083: Object type OBJECT_GRANT failed to create with error:
+ORA-01917: user or role 'R_TESTE_DP' does not exist
+Failing sql is:
+GRANT DELETE ON "TESTE_DP"."TESTE" TO "R_TESTE_DP"
+                
+ORA-39083: Object type OBJECT_GRANT failed to create with error:
+ORA-01917: user or role 'R_TESTE_DP' does not exist
+Failing sql is:
+GRANT INSERT ON "TESTE_DP"."TESTE" TO "R_TESTE_DP"
+                
+ORA-39083: Object type OBJECT_GRANT failed to create with error:
+ORA-01917: user or role 'R_TESTE_DP' does not exist
+Failing sql is:
+GRANT SELECT ON "TESTE_DP"."TESTE" TO "R_TESTE_DP"
+                
+ORA-39083: Object type OBJECT_GRANT failed to create with error:
+ORA-01917: user or role 'R_TESTE_DP' does not exist
+Failing sql is:
+GRANT UPDATE ON "TESTE_DP"."TESTE" TO "R_TESTE_DP"
+                
+ORA-39083: Object type OBJECT_GRANT failed to create with error:
+ORA-01917: user or role 'R_TESTE_DP' does not exist
+Failing sql is:
+GRANT DELETE ON "TESTE_DP"."TESTE2" TO "R_TESTE_DP"
+               
+ORA-39083: Object type OBJECT_GRANT failed to create with error:
+ORA-01917: user or role 'R_TESTE_DP' does not exist
+Failing sql is:
+GRANT INSERT ON "TESTE_DP"."TESTE2" TO "R_TESTE_DP"
+               
+ORA-39083: Object type OBJECT_GRANT failed to create with error:
+ORA-01917: user or role 'R_TESTE_DP' does not exist
+Failing sql is:
+GRANT SELECT ON "TESTE_DP"."TESTE2" TO "R_TESTE_DP"
+               
+ORA-39083: Object type OBJECT_GRANT failed to create with error:
+ORA-01917: user or role 'R_TESTE_DP' does not exist
+Failing sql is:
+GRANT UPDATE ON "TESTE_DP"."TESTE2" TO "R_TESTE_DP"
+               
+Processing object type TABLE_EXPORT/TABLE/INDEX/INDEX                                                                                                                                                   
+Processing object type TABLE_EXPORT/TABLE/CONSTRAINT/CONSTRAINT                                                                                                                                         
+ORA-39083: Object type CONSTRAINT failed to create with error:
+ORA-14063: Unusable index exists on unique/primary constraint key
+Failing sql is:
+ALTER TABLE "TESTE_DP"."TESTE" ADD CONSTRAINT          
+"PK_TESTE" PRIMARY KEY ("C1") USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645 PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1         
+BUFFER_POOL DEFAULT) TABLESPACE "USERS"                                                                                                                                                                 
+Processing object type TABLE_EXPORT/TABLE/INDEX/STATISTICS/INDEX_STATISTICS                                                                                                                             
+Processing object type TABLE_EXPORT/TABLE/CONSTRAINT/REF_CONSTRAINT                                                                                                                                     
+ORA-39083: Object type REF_CONSTRAINT failed to create with error:
+ORA-02270: no matching unique or primary key for this column-list
+Failing sql is:
+ALTER TABLE "TESTE_DP"."TESTE2" ADD CONSTRAINT     
+"FK_TESTE2_TESTE" FOREIGN KEY ("C2") REFERENCES "TESTE_DP"."TESTE" ("C1") ENABLE
+                                                                                                                       
+Processing object type TABLE_EXPORT/TABLE/TRIGGER                                                                                                                                                       
+Processing object type TABLE_EXPORT/TABLE/STATISTICS/TABLE_STATISTICS                                                                                                                                   
+*** Job percent done = 100                                                                                                                                                                              
+Job "SYS"."REFRESH_TESTE_DP" completed with 10 error(s) at 18:13:36                                                                                                                                     
+Job has completed                                                                                                                                                                                       
+Final job state = COMPLETED                                                                                                                                                                             
+
+Procedimento PL/SQL concluído com sucesso.
+
+SQL> @ind_col
+Tabela: teste
+owner: teste_dp
+IX_TESTE_01                    C3                                           1                                                                                                                           
+PK_TESTE                       C1                                           1                                                                                                                           
+
+         3                                                                                                                                                                                              
+
+IX_TESTE_01                                0                                                                                                                                                            
+PK_TESTE                                   3                                                                                                                                                            
+
+SQL> select count(1), object_type from dba_objects where owner='TESTE_DP';
+select count(1), object_type from dba_objects where owner='TESTE_DP'
+                          *
+ERRO na linha 1:
+ORA-00937: not a single-group group function 
+
+
+SQL> select count(1), object_type from dba_objects where owner='TESTE_DP' group by object_type;
+         1 FUNCTION                                                                                                                                                                                     
+         2 INDEX                                                                                                                                                                                        
+         1 PROCEDURE                                                                                                                                                                                    
+         1 SEQUENCE                                                                                                                                                                                     
+         3 TABLE                                                                                                                                                                                        
+         1 TRIGGER                                                                                                                                                                                      
+
+6 linhas selecionadas.
+
+SQL> select object_name from dba_objects  where owner='TESTE_DP';
+SQ_TESTE                                                                                                                                                                                                
+IX_TESTE_01                                                                                                                                                                                             
+TESTE2                                                                                                                                                                                                  
+TESTE_LOG                                                                                                                                                                                               
+PK_TESTE                                                                                                                                                                                                
+F_TESTE_DP                                                                                                                                                                                              
+P_TESTE_DP                                                                                                                                                                                              
+TESTE                                                                                                                                                                                                   
+TRG_TESTE                                                                                                                                                                                               
+
+9 linhas selecionadas.
+
+SQL> drop user teste_dp cascade;
+
+Usuário eliminado.
+
+SQL> @P_IMP_SCHEMA2.SQL
+
+Procedimento criado.
+
+SQL> @OBJ
+Digite o nome do Objeto: P_IMP_SCHEMA
+Digite o owner: 
+
+Sessão alterada.
+
+
+não há linhas selecionadas
+
+
+não há linhas selecionadas
+
+SQL>  @OBJ
+Digite o nome do Objeto: P_IMP_SCHEMA
+Digite o owner: SYS
+
+Sessão alterada.
+
+
+OWNER                          OBJECT_NAME                              OBJECT_TYPE         CREATED          LAST_DDL_TIME                                                                              
+------------------------------ ---------------------------------------- ------------------- ---------------- ----------------                                                                           
+SYS                            P_IMP_SCHEMA                             PROCEDURE           02/02/2007 15:57 02/02/2007 16:15                                                                           
+SYS                            P_IMP_SCHEMA2                            PROCEDURE           30/03/2007 16:42 30/03/2007 19:17                                                                           
+
+
+não há linhas selecionadas
+
+SQL> @FREESPACE
+Prefixo da tablespace: 
+
+                                                         Pct                                                                                          
+TABLESPACE            Total(Mb)  Used(Mb)  Free(Mb)     Free Largest(Mb) FRAGM STATUS                                                                 
+-------------------- ---------- --------- --------- -------- ----------- ----- -------                                                                
+APLICD                     10.0        .1       9.9     99.0         9.9     1                                                                        
+DADOSADV                42400.0   41629.4     770.6      1.8       115.0   166                                                                        
+INDEXADV                25100.0   24757.0     343.0      1.4       116.9     9                                                                        
+SEUD                      950.0     671.1     278.9     29.4       278.9     1                                                                        
+SEULOG                    500.0     210.9     289.1     57.8       289.1     2                                                                        
+SEUMIG                   1050.0     893.9     156.1     14.9        58.9    11                                                                        
+SEUX                      370.0     233.0     137.0     37.0       137.0     1                                                                        
+SYSAUX                    500.0     420.9      79.1     15.8        78.7     3                                                                        
+SYSTEM                    700.0     570.7     129.3     18.5       128.9     3                                                                        
+UNDOTBS1                 3000.0    2327.4     672.6     22.4       369.9    34                                                                        
+USERS                     500.0     165.9     334.1     66.8        31.1   588                                                                        
+                     ---------- --------- ---------                                                                                                   
+sum                     75080.0   71880.3    3199.7                                                                                                   
+
+11 linhas selecionadas.
+
+SQL> @P_IMP_SCHEMA2.SQL
+
+Procedimento criado.
+
+SQL> exit

@@ -1,0 +1,40 @@
+create or replace package seu.pa_idusuario IS
+
+procedure set_idusuario (user_id NUMBER);
+
+procedure set_origem (v_origem varchar2);
+
+end;
+/
+
+
+CREATE OR REPLACE PACKAGE BODY seu.pa_idusuario IS
+
+PROCEDURE set_idusuario (user_id NUMBER) IS
+
+	BEGIN
+
+    DBMS_SESSION.SET_CONTEXT('ctx_idusuario', 'idusuario', user_id);
+    
+	END set_idusuario;
+
+PROCEDURE set_origem (v_origem varchar2) IS
+
+	BEGIN
+
+    DBMS_SESSION.SET_CONTEXT('ctx_idusuario', 'origem', v_origem);
+    
+	END set_origem;
+
+END pa_idusuario;
+
+/
+
+CREATE CONTEXT ctx_idusuario USING seu.pa_idusuario;
+
+
+exec seu.pa_idusuario.set_idusuario(1);
+
+exec seu.pa_idusuario.set_origem('/pagina_teste');
+
+select SYS_CONTEXT('ctx_idusuario','origem') from dual;

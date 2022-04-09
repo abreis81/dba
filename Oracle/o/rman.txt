@@ -1,0 +1,331 @@
+/*
+
+   recovery manager - RMAN ( linha de comando )
+
+   V$BACKUP_CORRUPTION
+
+*/
+
+o recovery manager eh uma ferramenta do oracle 8 que se destina a gerir as operacoes de backup e 
+recuperacao de uma ou mais bases de dados. o rman possui um repositorio chamado
+recovery catalog, cuja localizacao fisica aconselha-se que seja mantida numa base de dados
+e numa maquina separadas das bases de dados e maquinas de producao.
+
+para user o rman na sua plenitude eh necessario possuir as seguintes condicoes:
+
+1-o repositorio do rman nao vai ficar na mesma base de dados ou maquina que qualquer uma das bases de dados das quais se pretendera fazer backup/recuperacao
+2-deve existir conectividade entre a maquina onde ficara instalado o rman e as maquinas com as bases de dados a fazer backup
+3-de preferencia criar uma base de dados so para uso do rman
+4-criar um tablespace com cerca 10m ( nome recomendado RCVCAT )
+5-desenhar uma arquitetura de logs com 3 grupos de 2 elementos e 1m de tamanho
+6-criar um usuario chamado RMAN com o rcvcat como default tablespace e um temporary tablespace chamado temp
+7-pode ser atribuido o role de DBA a este usuario
+8-rodar o script catrman.sql sob o schema RMAN
+9-connectar ao recovery manager
+
+  c:>RMAN80 target sys/admin rcvcat rman/rman@ocpe
+
+  os argumentos do rman:
+  ----------------------
+  RCVCAT   - permite especificar na linha de comando o nome do usuario e nome do servico do esquema que contem o repositorio instalado
+  TARGET   - define qual a base de dados que vai ser alvo de uma operacao de backup ou recuperacao. deve ser incluido neste argumento o nome e password de um usuario com privilegios de acesso de SYSDBA
+  CMDFILE  - nome do ficheiro com os comando para serem executados em modo batch
+  MSGLOG   - nome de um ficheiro que sera gerado com o log do processo
+  APPEND   - se for incluido, este parametro fara com que a escrita no ficheiro de log seja feita no final, caso contrario o ficheiro sera sobreposto
+
+10-quando se usa o rman pela primeira vez ou quando se conecta ao repositorio com uma base de dados TARGET nova, tem de se registrar a base de dados. o registro de uma base de dados num repositorio eh uma operacao que so se faz uma vez
+
+   REGISTER DATABASE;
+
+11-sincronizar o repositorio, esta operacao ler o controlfile e atualiza o repositorio
+
+   resync catalog;
+
+12-outra operacao de sincronizacao que deve ser feita no repositorio eh quando a base de dados for aberto com a opcao RESETLOGS
+
+   RESET DATABASE;
+
+13-abrir um canal de comunicacao com o sistema operacional e apos uso liberar o recurso, existe duas formas de abrir:
+
+   .ALLOCATE CHANNEL FOR DELETE
+   .ALLOCATE CHANNEL <codigo_canal>
+
+   .a diferenca entre ambos esta no local onde podem ser utilizados, o primeiro pode ser
+    usado diretamente no console do RMAN e so para criar canais com o proposito de remocao
+    de ficheiros. o segundo eh usado dentro de um comando de agrupamento chamando RUN e 
+    que veremos mais tarde.
+
+   ex. primeiro caso
+   -----------------
+
+   allocate channel for delete type disk;
+
+
+   .apos uso deve ser liberado
+
+   release channel;
+
+
+14-no RMAN existe dois tipos de backups.
+
+   .backup por imagens ( image copies )
+   .backup por conjuntos ( backup sets )   
+
+
+15-manutencao do repositorio, que pode guardar dois tipos de backup disponiveis. comandos:
+
+   .change
+   .catalog
+   .list
+   .report
+
+   comando CHANGE
+   --------------
+
+   CHANGE ARCHIVELOG   <codigo>
+          DATAFILECOPY <codigo> | <tag>
+          BACKUPPIECE  <codigo>  
+          
+          UNCATALOG | DELETE | UNAVAILABLE | AVAILABLE 
+
+   .segue um exemplo do comando CHANGE com a remocao de um datafile do repositorio, do controlfile e do sistema operacional
+
+   RMAN> allocate channel for delete type disk;
+
+   RMAN> CHANGE DATAFILECOPY
+         'd:\db\oradata\ocpe\data\dat01ocpe.dbf' delete;
+
+   RMAN> release channel;
+
+   
+   comand CATALOG
+   --------------
+
+   .o catalog eh usado para enriquecer o repositorio com informacao que nao se encontrava
+    no controlfile da base de dados registrada. com este comando eh possivel catalogar no
+    repositorio copias de backup de datafiles, archived logs ou ate mesmo controlfiles
+
+   CATALOG CONTROLFILECOPY "<nome_do_controlfile>"
+           DATAFILECOPY    "<nome_do_datafile>"
+           ARCHIVELOG      "<nome_do_archivelog>"
+
+           TAG | LEVEL
+
+
+    exemplo
+
+    RMAN> CATALOG DATAFILECOPY 
+          "D:\DB\ORADATA\OCPE\SCRIPT\DATA\DAT01OCPE.DBF";
+
+
+    comando REPORT
+    --------------
+
+    .o comando report eh usado para pesquisar informacoes relacionada com as operacoes
+     de backup e recuperacao quer no caso em que se usam backup sets, quer no caso em
+     que se usam image copies
+
+    .quais os ficheiros que necessitam de archived logs com mais do que 2 dias ???
+
+    RMAN> report need backup days 2 database;
+
+    .qual o constituicao da base de dados ??? ( pode referir a um instante no passado )
+
+    RMAN> report schema;
+
+    .quais os backups que ja podem ser apagados
+
+    RMAN> report obsolete;
+
+    .quais os datafiles dos tablespaces system e tools que precisam de um backup porque nao foram abrangidos nos ultimos 4 backups incrementais ???
+
+    RMAN> report need backup incremental 4 tablespace system, tools;
+
+
+    comando LIST
+    ------------
+
+    .o comando list eh usado para olhar para dentro do repositorio e retirar informacoes
+     sobre copias de ficheiros que estao catalogados, assim como sobre os backup sets ja 
+     construidos e sobre os archived logs
+
+    .listar todas as copias de backup registradas no repositorio, para um tablespace em 
+     particular
+ 
+    RMAN> list copy of tablespace ts_dados;
+
+    .listar todas as base de dados registradas no repositorio. as bases de dados que
+     aparecem duas vezes, sao as que foram alvo de um comando RESET DATABASE dentro do RMAN
+
+    RMAN> list incarnation of database;
+
+    .listar todos os backups sets de qualquer datafile ( ao nivel da base de dados ) feitos
+     ate ao dia 19 de novembro 1999
+
+    RMAN> list backupset of database until time = "19-NOV-99";
+
+
+    
+15-comandos de backup e recuperacao
+
+   todos os comandos que permitem implementar estar operacoes dizem-se run commands 
+   porque executam dentro de um outro comando chamado run. os run commands podem
+   executar dentro do comando run diretamente ou entao atraves de um ficheiro onde estao
+   armazenados ( script ) e abragem ate comandos que podem ser executados isoladamente
+   como os comandos RESYNC ou ALLOCATE CHANNEL
+
+   sintax:
+
+   RUN 
+     ALLOCATE CHANNEL ...
+     BACKUP ...
+     CHANGE...
+     @|@@ <nome_do_ficheiro>
+     COPY ...
+     EXECUTE SCRIPT ...
+     HOST ....
+     RECOVER ...
+     RELEASE CHANELL...
+     REPLICATE ...
+     RESTORE ...
+     RESYNC ...
+     SQL "comando DDL"
+     SWITCH ...
+     VALIDATE ....
+
+   comando RUN BACKUP 
+
+   .eh usado para criar backup sets. os backups set sao constituidos por datafiles, controlfiles
+    ou archived logs, em que o primeiro e ultimo tipos de ficheiros nao se podem misturar. o
+    mesmo ficheiro tambem nao pode pertencer a mais do que um backup set.
+
+    .criacao de um backup completo da base de dados para 2 tapes, sem limite de tamanho do
+     backup set, mas com um maximo de 5 ficheiros por backup set. o nome de cada backup piece
+     deve ter o seguinte formato:   DFBS_<nome_da_base>_<backup_piece>.<backup_set>
+
+     RMAN> run {
+           allocate channel c1 type "SBT_TAPE";
+           allocate channel c2 type "SBT_TABE";
+           backup full filesperset 5
+              database format "DFBS_%d_%p.%s";
+           release channel c1;
+           release channel c2; }
+
+
+     .criar um backup completo de todos os archived logs para disco. o nome de cada backup piece
+      deve ter o seguinte formato: ALBS_<nome_da_base>_<backup_piece>.<backup_set>
+
+      RMAN> run {
+             allocate channel c1 type disk;
+             backup full (archived all delete input
+                 format "c:\db\oradata\ocpe\backup\ALBS_%d_%p.%s");
+             release channel c1;}
+
+
+
+   comando RUN COPY
+
+   .o comando copy eh usado para produzir copias de ficheiros ( image copies ) e difere
+    do comando backup uma vez que as copias de seguranca podem ser imediatamente usadas,
+    ao passo que a aplicacao dos backup sets deve ser precedida de uma operacao de RESTORE.
+    o comando copy pode ser usado para os seguintes ficheiros:
+
+      .datafiles
+      .copias catalogadas de datafiles
+      .archived logs
+      .controlfiles
+      .copias de backup de controlfiles
+
+    no exemplo que segue eh feita uma copia do datafile com codigo 8 para uma image copies
+    com o nome DADOS1_ORA.BK no diretorio d:\orant\database\archive
+
+    RMAN> run {
+           allocate channel c1 type disk;
+           copy datafile 8 to 
+           "d::\orant\database\archive\dados1_ora.bk";
+           release channel c1; }
+
+
+
+   comando RUN SWITCH
+
+   .depois de ter criado uma copia de um ficheiro ou mesmo depois de o catalogar, este 
+    ficheiro pode substituir o original atraves de uma operacao de troca (switch ). o
+    comando switch nao vai copiar nada para lado nenhum, apenas modificar o apontador 
+    interno do controlfile para a copia e transforma-la dentro do repositorio, num
+    ficheiro online.
+
+    RMAN> run {
+           allocate channel c1 type disk;
+           switch datafile 6 to datafilecopy to "d:\orant\database\archive\dados1_ora.bk";
+           release channel c1; }
+
+
+
+   comando RUN RESTORE
+
+   .para repor um datafile o respectivo tablespace necessita estar off-line, ou entao o proprio
+    datafile. no caso do tablespace system, ou quando se trata de uma reposicao completa, a
+    base de dados TARGET tem de estar fechada.
+
+   .reposicao de backup set
+
+   RMAN> run {
+          allocate channel c1 type disk;
+          restore validade channel c1 from backupset datafile 6;
+          release channel c1; }
+
+   .reposicao de uma image copies
+
+   RMAN> run {
+          allocate channel c1 type disk;
+          restore datafile 6;
+          release channel c1; }
+
+
+
+   comando RUN RECOVER
+
+   .para efetuar uma recuperacao ao nivel da base de dados eh necessario que esta se encontre
+    em estado MOUNT
+
+   RMAN> run {
+          allocate channel c1 type disk;
+          recover database;
+          release channel c1; }
+
+16-criacao de scripts no RMAN
+
+   .criar um script
+
+   RMAN> CREATE SCRIPT "backupD" {
+           allocate channel c1 type disk;
+           backup incremental level 2 tablespace ts_dados1 format "d:\db\oradata\ocpe\backup\bkp_%p.%s";
+           release channel c1; }
+
+
+   .alterar um script
+
+   RMAN> REPLACE SCRIPT "backupD" {
+           allocate channel c1 type disk;
+           sql "alter system archive log all";
+           backup incremental level 2 tablespace ts_dados1 format "d:\db\oradata\ocpe\backup\bkp_%p.%s";
+           release channel c1; }
+
+
+   .remover um script
+
+   RMAN> delete script "BackupD";
+
+
+   .listar um script
+
+   RMAN> print script "BackupD";
+
+
+   .execucao de um script
+
+   RMAN> run {
+          execute script "BackupD"; }
+
+ 

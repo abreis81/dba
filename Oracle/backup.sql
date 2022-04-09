@@ -1,0 +1,15 @@
+set linesize 2000;
+set pagesize 1000;
+set long 9999999;
+set TRIMS on;
+set ECHO off;
+set FEED off;
+set HEAD off;
+COLUMN DDL FORMAT a9999;
+exec dbms_metadata.set_transform_param(dbms_metadata.session_transform,'SQLTERMINATOR',true);
+spool &dir_saida/TRANSACTION.bkp;
+select dbms_metadata.get_ddl('PACKAGE','TRANSACTION','SYSAU') "DDL" from dual;
+spool off;
+set FEED on;
+set HEAD on;
+set time on;

@@ -1,0 +1,12 @@
+SET SERVEROUTPUT ON SIZE 50000
+BEGIN
+                FOR RC1 IN (SELECT DISTINCT view_NAME FROM DBA_views WHERE OWNER='SEU') 
+                        LOOP
+                               BEGIN
+                                    EXECUTE IMMEDIATE 'create synonym PRESEU.'||RC1.view_NAME||' for seu.'||RC1.view_NAME;
+                               EXCEPTION WHEN OTHERS THEN
+                                    DBMS_OUTPUT.PUT_LINE('ERRO AO CRIAR SYNONYM '||RC1.CONSTRAINT_NAME||' '||SQLERRM);
+                               END;
+                END LOOP;
+END;
+/

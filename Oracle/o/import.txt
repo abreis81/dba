@@ -1,0 +1,32 @@
+/*
+
+  import
+
+*/
+
+BUFFER        = tamanho do buffer atraves do qual os dados sao importados
+COMMIT        = por predefinicao o IMPORT faz um commit depois de cada tabela importada; mas pode aumentar esta frequencia com COMMIT=Y para evitar o crescimento dos segmentos de rollback.
+DESTROY       = indica se numa importacao completa os tablespaces devem reutilizar os datafiles ou nao
+FEEDBACK      = idem ao export
+FILE          = nome do ficheiro a ser importado
+FROMUSER      = alternativa ao parametro FULL=Y; lista de utilizadores a importar. se o exportfile for um full export, so sao importados os objetos dos utilizadores mencionados por este parametro, ignorando o restando do ficheiro.
+INCTYPE       = especifica o tipo de importacao incremental se for esse o caso: SYSTEM ou RESTORE. o primeiro valor corresponde a uma importacao ao nivel dos objetos internos a base e o segundo e referente aos objetos e respectivos dados dos utilizados exportados.
+TOUSER        = lista de utilizadores da base de dados destino para onde se destinan os objetos contidos num full import. existem tres formas de operar com este parametro: 
+                1: IMP usuario/password FROMUSER=GALPDBA TOUSER=GASDBA
+                2: IMP usuario/password FROMUSER=GALPDBA TOUSER=GASDBA TABLES=(trans_abast,carta_galp)
+                3: IMP usuario/password FROMUSER=GALPDBA,SAPDBA TOUSER=GALP,SAP
+FULL          = obrigatorio quando nao ha FROMUSER ou TABLES. indica se o ficheiro de export dever ser todo importado ou nao.
+GRANTS        = importar ou nao as atribuicoes de privilegios de objeto. privilegio de sistema sao sempre importado
+HELP          = mostra ajuda
+INDEXES       = indicar se vai importar os indices criados para as tabelas. os segmentos de indices LOB e os indices criados para implementar a unicidade das constraints sao sempre importados, independentemente do valor deste parametro
+IGNORE        = indica se devem ser ignorados ou nao os erros de criacao do objeto se esse ja existir. deve estar com o valor y quando se pretendem apenas importar dados, se estiver com valor N e se a tabela ja existir nao importa dados nenhuns e ignora a tabela. para import sucessivos deste tipo deve ser usado o parametro CONSTRAINT=N na exportacao de modo a evitar a criacao de duplicados das constraints.
+INDEXFILE     = nome de um ficheiro para onde sao escritos todos os comando de criacao de indices que foram criado explicitamente. os indices criados implicitamente para implementar a unicidade de constraints PK e UK nao sao incluidos. os objetos sobre os quais foram criados os indices sao incluidos mas comentados com o comando REMARK
+LOG           = ficheiro de log com todas as mensagens informativas e mensagens de erro que sao igualmente enviadas para o ecra.
+PARFILE       = idem ao export
+ROWS          = indica se as linhas devem ser importadas
+SHOW          = com este parametro igual a Y nao é importado nenhum objeto do ficheiro, antes é extraido todo o codigo SQL e é mostrado no ecra. uma forma de captar tudo isso seria.
+                IMP usuario/password FILE=todabase.dmp FULL=Y SHOW=Y LOG=script.sql
+TABLES        = obrigatorio quando nao ha FROMUSER ou FULL. lista de tabela a importar.
+                IMP usuario/password FILE=expdat.dmp FROMUSER=GALPDBA TABLES=clientes
+
+ 

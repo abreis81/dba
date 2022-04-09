@@ -1,0 +1,10 @@
+
+
+mt -f /dev/st0 rewind   (rebobinar)
+mt -f /dev/st0 eject
+mt -f /dev/st0 erase    (apaga conteudo)
+
+
+tar -cvf /dev/st0 arquivo          (Gravar)
+tar -tvf /dev/st0                  (Listar o conteudo)
+tar -xvf /dev/st0 arquivo          (Extrai o arquivo)

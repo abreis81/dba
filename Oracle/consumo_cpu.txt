@@ -1,0 +1,17 @@
+spool querys.txt
+set echo off
+set long 50000
+set pages 1000
+set lines 150
+col USR_BANC format a15;
+col QUERY    format a50
+col SO_PROC  format a15
+column sid format 999999
+column serial# format 9999999999
+column logon format a15
+select a.sid SID, a.serial# SERIAL#, a.username USR_BANC, b.spid SO_PROC, 
+to_char(logon_time,'dd/mm/yy hh24:mi') logon, c.sql_text QUERY 
+from v$session a,v$process b, v$sqlarea c
+where a.sql_address=c.address and a.paddr=b.addr and a.STATUS = 'ACTIVE'
+and a.username not in ('SYSTEM','SYS') AND A.USERNAME IS NOT NULL;
+spool off

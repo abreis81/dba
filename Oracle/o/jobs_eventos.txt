@@ -1,0 +1,62 @@
+1 - Criar um usuário (sysdba, por exemplo) com privilégios de dba
+    ou select any table.
+
+2 - Criar as tabelas que monitorarão a v$session_wait:
+
+create table event
+(EVENT                                    VARCHAR2(64)
+ TOTAL_EVENT                              NUMBER(5)
+ DT_EVENT                                 DATE)
+storage (initial 30k next 10K)
+/
+
+create table wait
+(EVENT                                    VARCHAR2(64)
+ P1TEXT                                   VARCHAR2(64)
+ P1                                       NUMBER
+ P1RAW                                    RAW(4)
+ P2TEXT                                   VARCHAR2(64)
+ P2                                       NUMBER
+ P2RAW                                    RAW(4)
+ P3TEXT                                   VARCHAR2(64)
+ P3                                       NUMBER
+ P3RAW                                    RAW(4)
+ WAIT_TIME                                NUMBER
+ SECONDS_IN_WAIT                          NUMBER
+ STATE                                    VARCHAR2(19)
+ DT_EVENT                                 DATE)
+storage (initial 40k next 20k)
+/
+
+create table event_param
+(EVENT                                    VARCHAR2(64))
+/
+
+3 - Os jobs que farão a coleta dos dados da v$session. O 1. servirá para levantar os dados
+    durante 2 ou 3 dias dos eventos. O 2. será para monitorar mais detalhadamente um deter-
+    minado evento. Para isso, basta inserir o(s) evento(s) na tabela event_param.
+
+variable jobno number;
+begin
+DBMS_JOB.SUBMIT(:jobno,
+'insert into event
+select event,count(*),sysdate from v$session_wait
+group by event;',
+sysdate, 'sysdate+1/280');
+commit;
+end;
+/
+
+
+variable jobno number;
+begin
+DBMS_JOB.SUBMIT(:jobno,
+'insert into wait
+select a.event,a.p1text,a.p1,a.p1raw,a.p2text,a.p2,a.p2raw,a.p3text,a.p3,a.p3raw,
+a.wait_time,a.seconds_in_wait,a.state,sysdate
+from v$session_wait a, event_param b
+where a.event=b.event;',
+sysdate, 'sysdate+1/280');
+commit;
+end;
+/

@@ -1,0 +1,39 @@
+PARAMETRO DO UTILITARIO EXPORT
+------------------------------
+
+USERID       = usuario e password que possue permissao para fazer o export
+BUFFER       = tamanho do buffer usado na exportacao convencional para construcao dos comandos SQL       
+COMPRESS     = se quer manter os parametros de storage ao importar os objetos ou vai comprimir desfragmentando o espaco ocupado
+CONSISTENT   = indicica se a imagem dos dados exportados eh consistente entre si. se existir uma table pai e filho relacionadas por uma chave estrangeira garante a integridade da informacao
+CONSTRAINTS  = indica se a restricao de integridade serao exportadas juntamente com a tabela
+DIRECT       = este parametro determina se a exportacao e CONVENCIONAL ou DIRETA. CONVENCIONAL cria um buffer em memoria para a construcao dos comandos sql ao passo DIRETA nao cria e por isso e mais rapida porem nao aceita os tipos REF, LOB, TYPE
+FEEDBACK     = frequencia com que o processo mostra um ponto durante a exportacao, expresso em linhas
+FILE         = parametro obrigatorio e representa o nome do ficheiro. a extensao aconselha-se ser DMP
+FULL         = OBRIGATORIO SE NAO FOR ESPECIFICADO O PARAMETRO OWNER ou TABLE. indica se vai exportar a base de dados toda ou nao. o usuario sob qual e feita a exportacao tem de possuir o privilegio EXP_FULL_DATABASE direta ou indiretamento atraves da role DBA
+GRANTS       = indica se sao exportadas as atribuicoes de privilegios. GRANTS=Y exporta todas as atribuicoes mas quando o contexo e um usuario em particular entao so podem ser exportadas as atribuicoes feitas por esse usuario
+HELP         = se o binario for exportado com HELP=Y entao sao mostradas os nomes de todos os parametros possiveis
+INCTYPE      = especifica o tipo de export: INCREMENTAL, CUMULATIVE ou COMPLETE. sugestao: COMPLETE para mensal, CUMULATIVE para semanal e INCREMENTAL para diario
+INDEXES      = indice se o export vai abranger os indices
+LOG          = ficheiro de log da operacao de exportacao
+OWNER        = OBRIGATORIO SE NAO FOR ESPECIFICADO O PARAMETRO FULL ou TABLES. indica os nomes dos usuarios a exportar, abrindo mao da exportacao FULL ou TABLE
+PARFILE      = espeficica um ficheiro com uma lista de parametros de exportacao ja com os respectivos valores. a forma de ser invocada eh: exp80 system/manager PARFILE=ficheiro.txt
+RECORDLENGTH = tamanho de um buffer de i/o para a criacao do ficheiro de exportacao. tem de ser igual ou maior ao valor do parametro BUFFER ate um limite de 64k
+ROWS         = indica se as linhas das tabelas sao para incluir na exportacao
+STATISTICS   = indica que tipo de estatisticas calcular na operacao de importacao: ESTIMATE, COMPUTE OU NONE
+TABLES       = obrigatorio se nao for especificado valor para FULL ou OWNER. nomes das tabelas a exportar. em oracle 8 poder especificar particao individual para ser exportada do seguinte modo: TABELA:PARTICAO pode igualmente ser indicado como prefixo qual o esquema de onde se deseja exportar a tabela, apenas se houver privilegios para tal
+
+observacoes:
+1-o parametro INCTYPE so pode ser usado em se tratar de um export total da base de dados
+  como parametro FULL=Y e CONSISTENT=N
+2-os parametros TABLES,OWNER,FULL sao multuamente exclusivos e corresponde aos modos 
+  TABELA, USUARIO OU BASE DE DADOS. no modo tabela a exportacao so pode ser feita para um 
+  conjunto de tabelas ( ainda que de diferentes esquemas ) no modo usuario podem ser 
+  exportados varios utilizadores, todos no mesmo ficheiro; e por fim no modo BASE DE DADOS
+  pode ser exportada todas a base de dados de forma completa, cumulativa ou incremental.
+3-é aconselhado desativar as constraints antes de fazer um export com o parametro
+  CONSTRAINTS=Y e apos a importacao ativar novamente.
+
+
+dica:
+se quiser fazer um export de oracle 8 para importar em oracle 7 deve correr sob o schema
+SYS o script CATEXP7.SQL  e ter instalados o EXP73,IMP73

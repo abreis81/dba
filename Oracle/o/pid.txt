@@ -1,0 +1,6 @@
+PROMPT Entre com o nome do usuario
+accept usuario
+select a.spid from v$process a, v$session b
+where a.addr=b.paddr and b.username=upper('&usuario')
+/
+ 

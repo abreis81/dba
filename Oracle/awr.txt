@@ -1,0 +1,94 @@
+Oracle usa o AWR para detectar e analisar problemas,antes que eles possam provocar uma
+interrupção no banco.
+Nele contém os snapshots de todas estatísticas e cargas de trabalho importantes no banco em
+intervalos de 60 minutos(default), e são mantidas por 7 dias (default), e depois descartadas.
+
+Para emitir um relatório,basta chamar o script de dentro do SQL Plus:
+@?/rdbms/admin/awrrpt.sql
+
+Para fazer comparações entre dois períodos e ver as diferenças, basta executar o seguinte script:
+@?/rdbms/admin/awrddrpt.sql
+
+Caso deseje ver o plano de execução (Explain Plan) de algumas das queries apresentadas no relatório em um determinado período, basta executar este outro relatório:
+@?/rdbms/admin/awrsqrpt.sql
+
+ 
+Para criar snapshots manualmente, basta fazer o seguinte:
+ 
+EXEC DBMS_WORKLOAD_REPOSITORY.create_snapshot;
+
+
+O parâmetro STATISTICS_LEVEL deve estar com o valor TYPICAL ou ALL para que o relatório AWR traga as estatísticas completas. Caso esteja com o valor BASIC o snapshot poderá ser criado mas algumas estatísticas estarão faltando.
+ 
+Para alterar settings dos snapshots colhidos automaticamente:
+ 
+BEGIN
+  DBMS_WORKLOAD_REPOSITORY.modify_snapshot_settings(
+    retention => 43200,        -- Minutos (= 30 Dias). Caso nenhum valor seja especificado o Oracle irá utilizar o valor corrente.
+    interval  => 60);          -- Minutos. Caso nenhum valor seja especificado o Oracle irá utilizar o valor corrente.
+END;
+/
+ 
+Aumentando a retenção para 45 dias:
+exec DBMS_WORKLOAD_REPOSITORY.modify_snapshot_settings(retention => 64800);
+ 
+Para verificar valores correntes dos snapshots colhidos automaticamente:
+select * from dba_hist_wr_control;
+ 
+Para apagar um range de snapshots:
+ 
+BEGIN
+  DBMS_WORKLOAD_REPOSITORY.drop_snapshot_range (
+    low_snap_id  => 15000,
+    high_snap_id => 15050);
+END;
+/
+
+
+ 
+Como interpretar um relatório AWR?
+No início do relatório temos informações sobre a base de dados, se está em RAC ou não, o DB ID, a versão etc.
+
+
+WORKLOAD REPOSITORY report for
+ 
+DB Name         DB Id    Instance     Inst Num Release     RAC Host
+------------ ----------- ------------ -------- ----------- --- ------------
+prod        2627801140 inst_test           2 10.2.0.3.0  NO    db
+ 
+              Snap Id      Snap Time      Sessions Curs/Sess
+            --------- ------------------- -------- ---------
+Begin Snap:     25160 14-Jul-08 17:00:59        53       1.2
+  End Snap:     25161 14-Jul-08 18:00:18        57       1.2
+   Elapsed:               59.32 (mins)
+   DB Time:              295.81 (mins)
+
+Na próxima seção temos o tamanhos dos caches e suas respectivas variações de tamanho durante o período em que o relatório foi emitido. Todos estes parâmetros podem ser editados no pfile/spfile.
+ 
+Cache Sizes
+~~~~~~~~~~~                       Begin                                                End
+                             ---------- ----------
+               Buffer Cache:     2,000M     2,000M  Std Block Size:        32K
+           Shared Pool Size:       304M       304M      Log Buffer:    30,752K
+
+Na seção Load Profile pode-se analisar a carga da instância por segundo ou por transação. Vocë pode ainda comparar esta seção entre dois AWR Reports para ver se a carga de sua instância aumentou ou diminuiu.
+ 
+Aumento de Redo Size & Block Changes: Se houver um aumento nisto, provavelmente você está fazendo mais INSERTS, UPDATES e DELETES do que antes.
+Load Profile
+~~~~~~~~~~~~                            Per Second       Per Transaction
+                                   ---------------       ---------------
+                  Redo size:          2,369,109.72          2,183,459.12
+              Logical reads:             17,727.53             16,338.35
+              Block changes:              5,579.17              5,141.97
+             Physical reads:                839.34                773.57
+            Physical writes:                591.31                544.98
+                 User calls:                 11.66                 10.74
+                     Parses:                 11.67                 10.75
+                Hard parses:                  0.48                  0.45
+                      Sorts:                  1.56                  1.43
+                     Logons:                  0.39                  0.36
+                   Executes:                 12.46                 11.48
+               Transactions:                  1.09
+ 
+  % Blocks changed per Read:   31.47    Recursive Call %:    92.77
+ Rollback per transaction %:   93.81       Rows per Sort:  2072.81

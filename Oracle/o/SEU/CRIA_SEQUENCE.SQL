@@ -1,0 +1,46 @@
+col object_name format a50
+
+accept tabela prompt "Nome da tabela: "
+
+Prompt "criando a sequence para a tabela &&tabela"
+
+SET SERVEROUTPUT ON SIZE 50000
+
+declare
+
+cursor c1 is select table_name from dba_tables where owner='SEU' AND TABLE_NAME = upper('&&tabela');
+str varchar2(2000);
+
+BEGIN
+
+	for rc1 in c1 loop
+		BEGIN
+			STR := 'CREATE SEQUENCE SEU.SEQ_'||rc1.table_name||'_INSERT NOCYCLE NOORDER NOCACHE MAXVALUE 9999999999 MINVALUE 1 INCREMENT BY 1 START WITH 1';
+			execute immediate str;
+			--DBMS_OUTPUT.PUT_LINE(STR);
+			str := 'grant select on SEU.SEQ_'||rc1.table_name||'_INSERT to r_seu_all';
+			execute immediate str;
+			--DBMS_OUTPUT.PUT_LINE(STR);
+			
+			begin
+				str := 'CREATE OR REPLACE TRIGGER SEU.TRG_'||RC1.TABLE_NAME||'_INCR_I BEFORE'||CHR(10)
+							 ||'INSERT ON SEU.'||RC1.TABLE_NAME||' REFERENCING OLD AS OLD NEW AS NEW FOR EACH ROW '||CHR(10)
+							 ||'BEGIN'||CHR(10)
+							 ||'SELECT SEQ_'||RC1.TABLE_NAME||'_INSERT.NEXTVAL'||CHR(10)
+							 ||'INTO :new.S'||SUBSTR(RC1.TABLE_NAME,4,3)||'_NREG'||CHR(10)
+							 ||'FROM DUAL;'||CHR(10)
+							 ||'END;';
+				EXECUTE IMMEDIATE STR;
+				--DBMS_OUTPUT.PUT_LINE(STR);
+			EXCEPTION WHEN OTHERS THEN
+					DBMS_OUTPUT.PUT_LINE('ERRO AO CRIAR TRIGGER NA TABELA '||RC1.TABLE_NAME);
+			END;
+		EXCEPTION WHEN OTHERS THEN
+				DBMS_OUTPUT.PUT_LINE('ERRO AO CRIAR SEQUENCE NA TABELA '||RC1.TABLE_NAME);
+		END;
+	END LOOP;
+
+End;
+/
+
+select object_name, status from dba_objects where object_name like upper('%&&tabela%');

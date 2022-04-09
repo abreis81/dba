@@ -1,0 +1,32 @@
+fcespracd002.funcesp.com.br.newdev2> 
+fcespracd002.funcesp.com.br.newdev2> set echo on;
+fcespracd002.funcesp.com.br.newdev2> connect / as sysdba
+ERROR:
+ORA-12560: TNS:protocol adapter error 
+
+
+Warning: You are no longer connected to ORACLE.
+fcespracd002.funcesp.com.br.newdev2> set pagesize 1000
+fcespracd002.funcesp.com.br.newdev2> col comp_name format a36
+fcespracd002.funcesp.com.br.newdev2> col version format a12
+fcespracd002.funcesp.com.br.newdev2> col status format a8
+fcespracd002.funcesp.com.br.newdev2> col owner format a12
+fcespracd002.funcesp.com.br.newdev2> col object_name format a35
+fcespracd002.funcesp.com.br.newdev2> col name format a25
+fcespracd002.funcesp.com.br.newdev2> 
+fcespracd002.funcesp.com.br.newdev2> -- Check status of XDB
+fcespracd002.funcesp.com.br.newdev2> 
+fcespracd002.funcesp.com.br.newdev2> select comp_name, version, status
+  2  from dba_registry
+  3  where comp_id = 'XDB';
+SP2-0640: Not connected
+fcespracd002.funcesp.com.br.newdev2> 
+fcespracd002.funcesp.com.br.newdev2> -- Check for invalid objects owned by XDB
+fcespracd002.funcesp.com.br.newdev2> 
+fcespracd002.funcesp.com.br.newdev2> select owner, object_name, object_type, status
+  2  from dba_objects
+  3  where status = 'INVALID'
+  4  and owner = 'XDB';
+SP2-0640: Not connected
+fcespracd002.funcesp.com.br.newdev2> 
+fcespracd002.funcesp.com.br.newdev2> spool off;

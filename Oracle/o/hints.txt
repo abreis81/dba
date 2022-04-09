@@ -1,0 +1,28 @@
+/*
+
+regras para comandos SQL
+
+*/
+
+-- usando a regra RULE no comando sql
+select /*+ RULE */ nom_clien from sub_conta
+
+ou
+
+select --+ RULE nom_clien from sub_conta
+
+
+-- comando fazendo full na tabela e utilizando 5 processos simultaneos
+select /*+ FULL(sub_conta) PARALLEL(sub_conta,5) */ nom_clien from sub_conta
+
+-- outros hints
+CLUSTER()
+ORDERED
+INDEX(tab,ind)
+APPEND
+MERGE
+ROWID
+RULE
+CHOOSE
+FIRST_ROWS
+

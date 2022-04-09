@@ -1,0 +1,653 @@
+chmod 666 /backup_rman/archive/FCESPP/*
+chmod 666 /backup_rman/full/FCESPP/*
+
+
+## startup no mount
+
+[oracle@OLD_FCESPORAH001 dbs]$ env  |grep ORA
+HOSTNAME=OLD_FCESPORAH001
+ORACLE_UNQNAME=FCESPP
+ORACLE_SID=FCESPP
+ORACLE_BASE=/orabin/oracle
+ORACLE_HOME=/orabin/oracle/app/12ee
+[oracle@OLD_FCESPORAH001 dbs]$ sqlplus / as sysdba
+
+SQL*Plus: Release 12.2.0.1.0 Production on Sat May 1 19:20:22 2021
+
+Copyright (c) 1982, 2016, Oracle.  All rights reserved.
+
+Connected to an idle instance.
+
+SQL> startup nomount;
+ORA-32004: obsolete or deprecated parameter(s) specified for RDBMS instance
+ORACLE instance started.
+
+Total System Global Area 1.4596E+10 bytes
+Fixed Size                  8637544 bytes
+Variable Size            7012877208 bytes
+Database Buffers         7549747200 bytes
+Redo Buffers               24915968 bytes
+SQL> exit
+Disconnected from Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production
+[oracle@OLD_FCESPORAH001 dbs]$
+
+
+
+## restore controlfile
+
+[oracle@OLD_FCESPORAH001 restore]$ rman target /
+
+Recovery Manager: Release 12.2.0.1.0 - Production on Sat May 1 19:21:45 2021
+
+Copyright (c) 1982, 2017, Oracle and/or its affiliates.  All rights reserved.
+
+connected to target database: FCESPP (not mounted)
+
+RMAN> restore controlfile from '/backup_rman/full/FCESPP/bkp_cntrl_FCESPP_1071194529_146424';
+
+Starting restore at 01-MAY-21
+allocated channel: ORA_DISK_1
+channel ORA_DISK_1: SID=353 device type=DISK
+
+channel ORA_DISK_1: restoring control file
+channel ORA_DISK_1: restore complete, elapsed time: 00:00:01
+output file name=/dados/oracle/FCESPP/controlfile/control01.ctl
+output file name=/dados/oracle/FCESPP/controlfile/control02.ctl
+Finished restore at 01-MAY-21
+
+RMAN>
+
+RMAN>
+
+RMAN> exit
+
+
+### mount database
+
+[oracle@OLD_FCESPORAH001 restore]$ sqlplus / as sysdba
+
+SQL*Plus: Release 12.2.0.1.0 Production on Sat May 1 19:30:41 2021
+
+Copyright (c) 1982, 2016, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production
+
+SQL> alter database mount;
+
+Database altered.
+
+SQL> exit
+
+
+####### catalog
+
+
+[oracle@OLD_FCESPORAH001 restore]$ rman target /
+
+Recovery Manager: Release 12.2.0.1.0 - Production on Sat May 1 19:33:15 2021
+
+Copyright (c) 1982, 2017, Oracle and/or its affiliates.  All rights reserved.
+
+connected to target database: FCESPP (DBID=3049145905, not open)
+
+RMAN>  catalog start with '/backup_rman/full/FCESPP/';
+
+using target database control file instead of recovery catalog
+searching for all files that match the pattern /backup_rman/full/FCESPP/
+
+List of Files Unknown to the Database
+=====================================
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_ukvti6kf_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_ujvti6kd_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/backup_hot_FCESPP_30042021_0115_30042021.log
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_v6vti7ic_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_v2vti7bg_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_utvti73b_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_udvti65t_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_v3vti7em_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_u4vti5lq_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_uvvti742_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_uuvti73u_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_vevti81q_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_ulvti6kp_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_uqvti6rv_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_v7vti7j9_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_u9vti5m8_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_ufvti661_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_v5vti7i8_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_u8vti5m2_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/bkp_cntrl_FCESPP_1071194529_146424
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_v9vti7ph_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_u5vti5lq_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_unvti6l4_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_urvti6uv_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_umvti6kv_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_uhvti669_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_uovti6ld_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_vcvti81c_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_ubvti65c_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_ugvti664_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_vgvti83c_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_v0vti748_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_u6vti5lq_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_ucvti65s_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_vavti7qu_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_upvti6lm_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_vbvti7ru_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_vfvti82o_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/FCESPP2_30042021_0115_30042021.log
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_vdvti81g_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_uivti6i8_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_u3vti5lq_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_usvti736_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_u2vti5lq_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_v4vti7i4_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_uevti65v_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_v8vti7k2_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_v1vti792_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_u7vti5lt_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_uavti65c_1_1_1_1_30_04_2021
+
+Do you really want to catalog the above files (enter YES or NO)? yes
+cataloging files...
+cataloging done
+
+List of Cataloged Files
+=======================
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_ukvti6kf_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_ujvti6kd_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_v6vti7ic_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_v2vti7bg_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_utvti73b_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_udvti65t_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_v3vti7em_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_u4vti5lq_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_uvvti742_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_uuvti73u_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_vevti81q_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_ulvti6kp_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_uqvti6rv_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_v7vti7j9_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_u9vti5m8_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_ufvti661_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_v5vti7i8_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_u8vti5m2_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/bkp_cntrl_FCESPP_1071194529_146424
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_v9vti7ph_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_u5vti5lq_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_unvti6l4_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_urvti6uv_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_umvti6kv_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_uhvti669_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_uovti6ld_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_vcvti81c_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_ubvti65c_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_ugvti664_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_vgvti83c_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_v0vti748_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_u6vti5lq_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_ucvti65s_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_vavti7qu_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_upvti6lm_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_vbvti7ru_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_vfvti82o_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_vdvti81g_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_uivti6i8_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_u3vti5lq_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_usvti736_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_u2vti5lq_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_v4vti7i4_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_uevti65v_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_v8vti7k2_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_v1vti792_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_u7vti5lt_1_1_1_1_30_04_2021
+File Name: /backup_rman/full/FCESPP/ORCL_FULL_FCESPP_3049145905_uavti65c_1_1_1_1_30_04_2021
+
+List of Files Which Were Not Cataloged
+=======================================
+File Name: /backup_rman/full/FCESPP/backup_hot_FCESPP_30042021_0115_30042021.log
+  RMAN-07517: Reason: The file header is corrupted
+File Name: /backup_rman/full/FCESPP/FCESPP2_30042021_0115_30042021.log
+  RMAN-07517: Reason: The file header is corrupted
+
+RMAN>
+
+#####################################  restore database
+
+vi /dados/oracle/restore/restore_full.sh
+
+. /home/oracle/.bash_profile
+
+$ORACLE_HOME/bin/rman target / msglog /dados/oracle/restore/rman_restore_hot.log << EOF
+run
+{
+set until time "to_date('2021-05-01:08:00:00', 'yyyy-mm-dd:hh24:mi:ss')";
+ set newname for datafile 6 to '/dados/oracle/FCESPP/oradata/users.708.1054103099;'
+set newname for datafile 113 to '/dados/oracle/FCESPP/oradata/ts_iben_dt_01.395.1054116953;'
+set newname for datafile 296 to '/dados/oracle/FCESPP/oradata/ts_attefin_dt_01.308.1054114599;'
+set newname for datafile 349 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.441.1054375511;'
+set newname for datafile 8 to '/dados/oracle/FCESPP/oradata/indx.680.1054116933;'
+set newname for datafile 197 to '/dados/oracle/FCESPP/oradata/users.405.1054103391;'
+set newname for datafile 96 to '/dados/oracle/FCESPP/oradata/ts_crm_ix_02.600.1054116833;'
+set newname for datafile 11 to '/dados/oracle/FCESPP/oradata/tools.433.1054116935;'
+set newname for datafile 215 to '/dados/oracle/FCESPP/oradata/tb_dr_lock_dt.288.1054111087;'
+set newname for datafile 203 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_ix_01.675.1054115317;'
+set newname for datafile 91 to '/dados/oracle/FCESPP/oradata/ts_corp_ix_01.660.1054116935;'
+set newname for datafile 266 to '/dados/oracle/FCESPP/oradata/ts_own_portal_lb_01.653.1054115761;'
+set newname for datafile 98 to '/dados/oracle/FCESPP/oradata/ts_crm_ix_03_tmp.359.1054116367;'
+set newname for datafile 90 to '/dados/oracle/FCESPP/oradata/ts_corp_dt_01.710.1054116881;'
+set newname for datafile 16 to '/dados/oracle/FCESPP/oradata/ts_ans_dt_02.571.1054113407;'
+set newname for datafile 198 to '/dados/oracle/FCESPP/oradata/ts_ans_dt_02.713.1054113481;'
+set newname for datafile 123 to '/dados/oracle/FCESPP/oradata/ts_int_dt_01.435.1054116663;'
+set newname for datafile 12 to '/dados/oracle/FCESPP/oradata/ts_acesdata_dt_01.358.1054115679;'
+set newname for datafile 282 to '/dados/oracle/FCESPP/oradata/ts_drlocksc_dt_01.427.1054115919;'
+set newname for datafile 13 to '/dados/oracle/FCESPP/oradata/ts_acesindx_ix_01.363.1054116337;'
+set newname for datafile 227 to '/dados/oracle/FCESPP/oradata/ts_att_dt_01.399.1054096455;'
+set newname for datafile 23 to '/dados/oracle/FCESPP/oradata/ts_att_dt_02.428.1054112053;'
+set newname for datafile 24 to '/dados/oracle/FCESPP/oradata/ts_att_dt_02.564.1054112105;'
+set newname for datafile 25 to '/dados/oracle/FCESPP/oradata/ts_att_dt_02.638.1054112153;'
+set newname for datafile 146 to '/dados/oracle/FCESPP/oradata/ts_poli_dt_02.393.1054112205;'
+set newname for datafile 18 to '/dados/oracle/FCESPP/oradata/ts_ans_ix_02.423.1054115619;'
+set newname for datafile 28 to '/dados/oracle/FCESPP/oradata/ts_att_dt_03.714.1054094783;'
+set newname for datafile 29 to '/dados/oracle/FCESPP/oradata/ts_att_dt_03.319.1054094893;'
+set newname for datafile 30 to '/dados/oracle/FCESPP/oradata/ts_att_dt_03.582.1054094989;'
+set newname for datafile 31 to '/dados/oracle/FCESPP/oradata/ts_att_dt_03.605.1054095125;'
+set newname for datafile 32 to '/dados/oracle/FCESPP/oradata/ts_att_dt_03.313.1054095201;'
+set newname for datafile 33 to '/dados/oracle/FCESPP/oradata/ts_att_dt_03.328.1054095337;'
+set newname for datafile 34 to '/dados/oracle/FCESPP/oradata/ts_att_dt_03.314.1054095421;'
+set newname for datafile 35 to '/dados/oracle/FCESPP/oradata/ts_att_dt_03.375.1054095517;'
+set newname for datafile 36 to '/dados/oracle/FCESPP/oradata/ts_att_dt_03.568.1054095701;'
+set newname for datafile 37 to '/dados/oracle/FCESPP/oradata/ts_att_dt_03.267.1054095817;'
+set newname for datafile 38 to '/dados/oracle/FCESPP/oradata/ts_att_dt_03.416.1054095937;'
+set newname for datafile 39 to '/dados/oracle/FCESPP/oradata/ts_att_dt_03.586.1054096045;'
+set newname for datafile 40 to '/dados/oracle/FCESPP/oradata/ts_att_dt_03.640.1054096141;'
+set newname for datafile 21 to '/dados/oracle/FCESPP/oradata/ts_att_dt_01.337.1054096231;'
+set newname for datafile 42 to '/dados/oracle/FCESPP/oradata/ts_att_dt_03_l.671.1054107601;'
+set newname for datafile 43 to '/dados/oracle/FCESPP/oradata/ts_att_dt_03_l.570.1054107697;'
+set newname for datafile 44 to '/dados/oracle/FCESPP/oradata/ts_att_dt_03_l.413.1054107823;'
+set newname for datafile 45 to '/dados/oracle/FCESPP/oradata/ts_att_dt_03_l.356.1054107923;'
+set newname for datafile 298 to '/dados/oracle/FCESPP/oradata/ts_nsconnect_dt_01.341.1054108005;'
+set newname for datafile 234 to '/dados/oracle/FCESPP/oradata/ts_att_ix_01.396.1054110049;'
+set newname for datafile 48 to '/dados/oracle/FCESPP/oradata/ts_att_ix_02.588.1054111275;'
+set newname for datafile 49 to '/dados/oracle/FCESPP/oradata/ts_att_ix_02.345.1054111313;'
+set newname for datafile 50 to '/dados/oracle/FCESPP/oradata/ts_att_ix_02.587.1054111363;'
+set newname for datafile 51 to '/dados/oracle/FCESPP/oradata/ts_att_ix_02.326.1054111403;'
+set newname for datafile 52 to '/dados/oracle/FCESPP/oradata/ts_att_ix_02.668.1054111441;'
+set newname for datafile 307 to '/dados/oracle/FCESPP/oradata/ts_bisaude_ix_01.597.1054111477;'
+set newname for datafile 54 to '/dados/oracle/FCESPP/oradata/ts_att_ix_02_l.340.1054115173;'
+set newname for datafile 10 to '/dados/oracle/FCESPP/oradata/tb_dr_lock_ix.339.1054115203;'
+set newname for datafile 56 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.309.1054090015;'
+set newname for datafile 57 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.270.1054090191;'
+set newname for datafile 58 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.684.1054090293;'
+set newname for datafile 59 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.409.1054090477;'
+set newname for datafile 60 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.730.1054090625;'
+set newname for datafile 61 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.329.1054090745;'
+set newname for datafile 62 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.404.1054090863;'
+set newname for datafile 63 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.419.1054090939;'
+set newname for datafile 64 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.351.1054091017;'
+set newname for datafile 65 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.669.1054091093;'
+set newname for datafile 66 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.563.1054091197;'
+set newname for datafile 67 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.320.1054091309;'
+set newname for datafile 68 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.392.1054091413;'
+set newname for datafile 69 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.683.1054091487;'
+set newname for datafile 70 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.424.1054091563;'
+set newname for datafile 71 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.639.1054091667;'
+set newname for datafile 72 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.595.1054091781;'
+set newname for datafile 73 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.585.1054091853;'
+set newname for datafile 74 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.376.1054091935;'
+set newname for datafile 75 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.704.1054092005;'
+set newname for datafile 76 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.601.1054092081;'
+set newname for datafile 77 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.408.1054092261;'
+set newname for datafile 78 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.425.1054092337;'
+set newname for datafile 79 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.327.1054092413;'
+set newname for datafile 80 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.307.1054092561;'
+set newname for datafile 81 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.321.1054092639;'
+set newname for datafile 82 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.572.1054092703;'
+set newname for datafile 83 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.302.1054092819;'
+set newname for datafile 257 to '/dados/oracle/FCESPP/oradata/ts_protheus_dt_01.324.1054092929;'
+set newname for datafile 103 to '/dados/oracle/FCESPP/oradata/ts_fac_proc_dt_01.614.1054116903;'
+set newname for datafile 86 to '/dados/oracle/FCESPP/oradata/ts_cms_ix_01.664.1054116853;'
+set newname for datafile 87 to '/dados/oracle/FCESPP/oradata/ts_cms_ix_02.625.1054116853;'
+set newname for datafile 99 to '/dados/oracle/FCESPP/oradata/ts_cve_dt_01.626.1054116853;'
+set newname for datafile 304 to '/dados/oracle/FCESPP/oradata/ts_protheustss_dt_01.432.1054116567;'
+set newname for datafile 154 to '/dados/oracle/FCESPP/oradata/ts_portal_common_lb_01.365.1054116781;'
+set newname for datafile 95 to '/dados/oracle/FCESPP/oradata/ts_crm_ix_01.690.1054116883;'
+set newname for datafile 130 to '/dados/oracle/FCESPP/oradata/ts_kpes_ix_01.720.1054116935;'
+set newname for datafile 156 to '/dados/oracle/FCESPP/oradata/ts_portal_master_ix_01.398.1054116807;'
+set newname for datafile 137 to '/dados/oracle/FCESPP/oradata/ts_opport_ix_01.663.1054116715;'
+set newname for datafile 19 to '/dados/oracle/FCESPP/oradata/ts_apdat_dt_01.377.1054115871;'
+set newname for datafile 114 to '/dados/oracle/FCESPP/oradata/ts_iben_ix_01.636.1054116885;'
+set newname for datafile 97 to '/dados/oracle/FCESPP/oradata/ts_crm_ix_03.648.1054116835;'
+set newname for datafile 100 to '/dados/oracle/FCESPP/oradata/ts_cve_ix_01.632.1054116837;'
+set newname for datafile 102 to '/dados/oracle/FCESPP/oradata/ts_espaider_ix_01.352.1054116391;'
+set newname for datafile 122 to '/dados/oracle/FCESPP/oradata/ts_inf_ix_01.624.1054116855;'
+set newname for datafile 104 to '/dados/oracle/FCESPP/oradata/ts_fac_proc_ix_01.699.1054116837;'
+set newname for datafile 141 to '/dados/oracle/FCESPP/oradata/ts_opp_hist_dt_01.296.1054116199;'
+set newname for datafile 110 to '/dados/oracle/FCESPP/oradata/ts_i4819_dt_01.346.1054116415;'
+set newname for datafile 158 to '/dados/oracle/FCESPP/oradata/ts_portal_plugins_dt_01.430.1054116905;'
+set newname for datafile 170 to '/dados/oracle/FCESPP/oradata/ts_scr_ix_01.661.1054116841;'
+set newname for datafile 126 to '/dados/oracle/FCESPP/oradata/ts_ipl_ix_01.583.1054116821;'
+set newname for datafile 293 to '/dados/oracle/FCESPP/oradata/ts_funcesp_dt_01.287.1054112679;'
+set newname for datafile 295 to '/dados/oracle/FCESPP/oradata/ts_attefin_ix_01.342.1054115047;'
+set newname for datafile 180 to '/dados/oracle/FCESPP/oradata/ts_ymfger_ix_01.294.1054116107;'
+set newname for datafile 108 to '/dados/oracle/FCESPP/oradata/ts_hist_dt_01.354.1054116065;'
+set newname for datafile 132 to '/dados/oracle/FCESPP/oradata/ts_opport_dt_02.362.1054116439;'
+set newname for datafile 112 to '/dados/oracle/FCESPP/oradata/ts_i4819_ix_01.703.1054114805;'
+set newname for datafile 303 to '/dados/oracle/FCESPP/oradata/ts_sconnect_ix_01.335.1054114881;'
+set newname for datafile 152 to '/dados/oracle/FCESPP/oradata/ts_portal_common_dt_01.650.1054116955;'
+set newname for datafile 121 to '/dados/oracle/FCESPP/oradata/ts_inf_dt_01.380.1054116887;'
+set newname for datafile 236 to '/dados/oracle/FCESPP/oradata/ts_ifc_dt_01.697.1054107115;'
+set newname for datafile 117 to '/dados/oracle/FCESPP/oradata/ts_ifc_dt_02.421.1054113249;'
+set newname for datafile 15 to '/dados/oracle/FCESPP/oradata/ts_ans_dt_02.407.1054113335;'
+set newname for datafile 262 to '/dados/oracle/FCESPP/oradata/ts_ifc_ix_01.686.1054112941;'
+set newname for datafile 120 to '/dados/oracle/FCESPP/oradata/ts_ifc_ix_02.695.1054113623;'
+set newname for datafile 131 to '/dados/oracle/FCESPP/oradata/ts_opport_dt_01.436.1054113715;'
+set newname for datafile 129 to '/dados/oracle/FCESPP/oradata/ts_kpes_dt_01.388.1054116887;'
+set newname for datafile 142 to '/dados/oracle/FCESPP/oradata/ts_plusi_dt_01.391.1054116855;'
+set newname for datafile 124 to '/dados/oracle/FCESPP/oradata/ts_int_ix_01.652.1054116673;'
+set newname for datafile 168 to '/dados/oracle/FCESPP/oradata/ts_saude_ix_02.616.1054116679;'
+set newname for datafile 148 to '/dados/oracle/FCESPP/oradata/ts_poli_ix_01.566.1054116751;'
+set newname for datafile 155 to '/dados/oracle/FCESPP/oradata/ts_portal_master_dt_01.634.1054116823;'
+set newname for datafile 165 to '/dados/oracle/FCESPP/oradata/ts_saude_dt_01.348.1054116489;'
+set newname for datafile 283 to '/dados/oracle/FCESPP/oradata/ts_drlocksc_ix_01.590.1054116597;'
+set newname for datafile 206 to '/dados/oracle/FCESPP/oradata/ts_pluscep_ix_01.718.1054116887;'
+set newname for datafile 160 to '/dados/oracle/FCESPP/oradata/ts_portal_plugins_lb_01.623.1054116937;'
+set newname for datafile 249 to '/dados/oracle/FCESPP/oradata/ts_opport_dt_01.293.1054113867;'
+set newname for datafile 127 to '/dados/oracle/FCESPP/oradata/ts_ire_dt_01.353.1054116465;'
+set newname for datafile 134 to '/dados/oracle/FCESPP/oradata/ts_opport_dt_03.603.1054110665;'
+set newname for datafile 135 to '/dados/oracle/FCESPP/oradata/ts_opport_dt_03.410.1054110765;'
+set newname for datafile 136 to '/dados/oracle/FCESPP/oradata/ts_opport_dt_03.712.1054110859;'
+set newname for datafile 9 to '/dados/oracle/FCESPP/oradata/tb_dr_lock_dt.274.1054110951;'
+set newname for datafile 166 to '/dados/oracle/FCESPP/oradata/ts_saude_dt_02.662.1054116721;'
+set newname for datafile 178 to '/dados/oracle/FCESPP/oradata/ts_ymfbdg_ix_01.344.1054116643;'
+set newname for datafile 140 to '/dados/oracle/FCESPP/oradata/ts_opport_ix_03.357.1054114393;'
+set newname for datafile 2 to '/dados/oracle/FCESPP/oradata/sysaux.290.1054114473;'
+set newname for datafile 177 to '/dados/oracle/FCESPP/oradata/ts_ymfbdg_dt_01.334.1054116243;'
+set newname for datafile 143 to '/dados/oracle/FCESPP/oradata/ts_plusi_ix_01.688.1054116857;'
+set newname for datafile 144 to '/dados/oracle/FCESPP/oradata/ts_plusi_ix_01.646.1054116857;'
+set newname for datafile 161 to '/dados/oracle/FCESPP/oradata/ts_recalc_dt_01.627.1054116857;'
+set newname for datafile 232 to '/dados/oracle/FCESPP/oradata/ts_poli_dt_01.273.1054110427;'
+set newname for datafile 147 to '/dados/oracle/FCESPP/oradata/ts_poli_dt_02.389.1054112327;'
+set newname for datafile 253 to '/dados/oracle/FCESPP/oradata/ts_poli_dt_02.618.1054112463;'
+set newname for datafile 329 to '/dados/oracle/FCESPP/oradata/ts_audit_protheus_dt_01.426.1054116757;'
+set newname for datafile 150 to '/dados/oracle/FCESPP/oradata/ts_poli_ix_02.310.1054109547;'
+set newname for datafile 151 to '/dados/oracle/FCESPP/oradata/ts_poli_ix_02.705.1054109645;'
+set newname for datafile 241 to '/dados/oracle/FCESPP/oradata/ts_poli_ix_02.315.1054109749;'
+set newname for datafile 153 to '/dados/oracle/FCESPP/oradata/ts_portal_common_ix_01.384.1054116961;'
+set newname for datafile 163 to '/dados/oracle/FCESPP/oradata/ts_riscos_dt_01.651.1054116965;'
+set newname for datafile 196 to '/dados/oracle/FCESPP/oradata/xdb.431.1054116789;'
+set newname for datafile 222 to '/dados/oracle/FCESPP/oradata/ts_pi_ix_01.573.1054116827;'
+set newname for datafile 171 to '/dados/oracle/FCESPP/oradata/ts_specto_dt_01.594.1054116813;'
+set newname for datafile 138 to '/dados/oracle/FCESPP/oradata/ts_opport_ix_02.723.1054116627;'
+set newname for datafile 159 to '/dados/oracle/FCESPP/oradata/ts_portal_plugins_ix_01.256.1054116911;'
+set newname for datafile 164 to '/dados/oracle/FCESPP/oradata/ts_riscos_ix_01.602.1054116915;'
+set newname for datafile 169 to '/dados/oracle/FCESPP/oradata/ts_scr_dt_01.711.1054116941;'
+set newname for datafile 162 to '/dados/oracle/FCESPP/oradata/ts_recalc_ix_01.381.1054116859;'
+set newname for datafile 167 to '/dados/oracle/FCESPP/oradata/ts_saude_ix_01.371.1054116859;'
+set newname for datafile 1 to '/dados/oracle/FCESPP/oradata/system.633.1054116967;'
+set newname for datafile 172 to '/dados/oracle/FCESPP/oradata/ts_specto_ix_01.628.1054116917;'
+set newname for datafile 88 to '/dados/oracle/FCESPP/oradata/ts_cnl_dt_01.349.1054116513;'
+set newname for datafile 331 to '/dados/oracle/FCESPP/oradata/ts_api_ix_01.666.1054116729;'
+set newname for datafile 173 to '/dados/oracle/FCESPP/oradata/ts_specto_monit_dt_01.350.1054116861;'
+set newname for datafile 330 to '/dados/oracle/FCESPP/oradata/ts_api_dt_01.591.1054116693;'
+set newname for datafile 176 to '/dados/oracle/FCESPP/oradata/ts_webcrm_ix_01.370.1054116943;'
+set newname for datafile 294 to '/dados/oracle/FCESPP/oradata/ts_attefin_lb_01.728.1054116843;'
+set newname for datafile 199 to '/dados/oracle/FCESPP/oradata/ts_plusinfo_dt_01.721.1054116815;'
+set newname for datafile 244 to '/dados/oracle/FCESPP/oradata/ts_attsched_dt_01.709.1054116919;'
+set newname for datafile 175 to '/dados/oracle/FCESPP/oradata/ts_webcrm_dt_01.689.1054116863;'
+set newname for datafile 204 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.277.1054075215;'
+set newname for datafile 200 to '/dados/oracle/FCESPP/oradata/ts_plusinfo_ix_01.700.1054116865;'
+set newname for datafile 221 to '/dados/oracle/FCESPP/oradata/ts_pi_dt_01.644.1054116943;'
+set newname for datafile 179 to '/dados/oracle/FCESPP/oradata/ts_ymfger_dt_01.305.1054116273;'
+set newname for datafile 17 to '/dados/oracle/FCESPP/oradata/ts_ans_ix_01.702.1054116657;'
+set newname for datafile 20 to '/dados/oracle/FCESPP/oradata/ts_apdat_ix_01.360.1054116305;'
+set newname for datafile 181 to '/dados/oracle/FCESPP/oradata/ts_ymfger_ix_01.347.1054116131;'
+set newname for datafile 101 to '/dados/oracle/FCESPP/oradata/ts_espaider_dt_01.367.1054116159;'
+set newname for datafile 183 to '/dados/oracle/FCESPP/oradata/ts_ymf_dt_01.641.1054099089;'
+set newname for datafile 184 to '/dados/oracle/FCESPP/oradata/ts_ymf_dt_01.278.1054099197;'
+set newname for datafile 185 to '/dados/oracle/FCESPP/oradata/ts_ymf_dt_01.584.1054099287;'
+set newname for datafile 186 to '/dados/oracle/FCESPP/oradata/ts_ymf_dt_01.325.1054099405;'
+set newname for datafile 187 to '/dados/oracle/FCESPP/oradata/ts_ymf_dt_01.578.1054099553;'
+set newname for datafile 188 to '/dados/oracle/FCESPP/oradata/ts_ymf_dt_01.673.1054099667;'
+set newname for datafile 207 to '/dados/oracle/FCESPP/oradata/ts_ymf_dt_01.676.1054099787;'
+set newname for datafile 190 to '/dados/oracle/FCESPP/oradata/ts_ymf_ix_01.291.1054100371;'
+set newname for datafile 191 to '/dados/oracle/FCESPP/oradata/ts_ymf_ix_01.318.1054100487;'
+set newname for datafile 192 to '/dados/oracle/FCESPP/oradata/ts_ymf_ix_01.299.1054100681;'
+set newname for datafile 193 to '/dados/oracle/FCESPP/oradata/ts_ymf_ix_01.604.1054100825;'
+set newname for datafile 194 to '/dados/oracle/FCESPP/oradata/ts_ymf_ix_01.434.1054101009;'
+set newname for datafile 195 to '/dados/oracle/FCESPP/oradata/ts_ymf_ix_01.373.1054101215;'
+set newname for datafile 226 to '/dados/oracle/FCESPP/oradata/ts_ymf_ix_01.406.1054101411;'
+set newname for datafile 205 to '/dados/oracle/FCESPP/oradata/ts_pluscep_dt_01.593.1054116793;'
+set newname for datafile 237 to '/dados/oracle/FCESPP/oradata/users.295.1054103537;'
+set newname for datafile 119 to '/dados/oracle/FCESPP/oradata/ts_ifc_ix_02.332.1054113507;'
+set newname for datafile 341 to '/dados/oracle/FCESPP/oradata/prd_stb.691.1054116819;'
+set newname for datafile 201 to '/dados/oracle/FCESPP/oradata/ts_plusinfo_lb_01.722.1054116869;'
+set newname for datafile 218 to '/dados/oracle/FCESPP/oradata/ts_own_portal_dt_01.368.1054116873;'
+set newname for datafile 26 to '/dados/oracle/FCESPP/oradata/ts_att_dt_02_l.323.1054115527;'
+set newname for datafile 299 to '/dados/oracle/FCESPP/oradata/ts_nsconnect_ix_01.330.1054115387;'
+set newname for datafile 211 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.589.1054075467;'
+set newname for datafile 214 to '/dados/oracle/FCESPP/oradata/ts_scamerp_lb_01.420.1054116797;'
+set newname for datafile 210 to '/dados/oracle/FCESPP/oradata/ts_scambnt_lb_01.397.1054116893;'
+set newname for datafile 228 to '/dados/oracle/FCESPP/oradata/ts_ymf_dt_01.655.1054099907;'
+set newname for datafile 337 to '/dados/oracle/FCESPP/oradata/undotbs10.275.1054106555;'
+set newname for datafile 139 to '/dados/oracle/FCESPP/oradata/ts_opport_ix_03.579.1054114325;'
+set newname for datafile 246 to '/dados/oracle/FCESPP/oradata/ts_attsched_lb_01.382.1054116897;'
+set newname for datafile 216 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.265.1054075753;'
+set newname for datafile 230 to '/dados/oracle/FCESPP/oradata/ts_scamerp_dt_01.282.1054105087;'
+set newname for datafile 255 to '/dados/oracle/FCESPP/oradata/ts_scamerp_ix_01.678.1054105829;'
+set newname for datafile 219 to '/dados/oracle/FCESPP/oradata/ts_own_portal_ix_01.575.1054116801;'
+set newname for datafile 47 to '/dados/oracle/FCESPP/oradata/ts_att_ix_02.300.1054111219;'
+set newname for datafile 217 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.281.1054076035;'
+set newname for datafile 220 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.280.1054076291;'
+set newname for datafile 14 to '/dados/oracle/FCESPP/oradata/ts_ans_dt_01.385.1054116879;'
+set newname for datafile 342 to '/dados/oracle/FCESPP/oradata/prd_wls.649.1054116805;'
+set newname for datafile 229 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.698.1054076665;'
+set newname for datafile 225 to '/dados/oracle/FCESPP/oradata/ts_attamd_lb_01.613.1054116943;'
+set newname for datafile 277 to '/dados/oracle/FCESPP/oradata/prd_ias_opss.629.1054116829;'
+set newname for datafile 251 to '/dados/oracle/FCESPP/oradata/ts_attamd_dt_01.725.1054104201;'
+set newname for datafile 265 to '/dados/oracle/FCESPP/oradata/ts_attamd_ix_01.729.1054109205;'
+set newname for datafile 3 to '/dados/oracle/FCESPP/oradata/ts_scambnt_dt_01.615.1054116947;'
+set newname for datafile 235 to '/dados/oracle/FCESPP/oradata/ts_ymf_ix_01.619.1054101523;'
+set newname for datafile 242 to '/dados/oracle/FCESPP/oradata/ts_att_dt_01.317.1054096711;'
+set newname for datafile 238 to '/dados/oracle/FCESPP/oradata/ts_ymf_dt_01.657.1054100123;'
+set newname for datafile 231 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.283.1054077251;'
+set newname for datafile 256 to '/dados/oracle/FCESPP/oradata/ts_scamerp_dt_01.621.1054105299;'
+set newname for datafile 233 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.726.1054077971;'
+set newname for datafile 133 to '/dados/oracle/FCESPP/oradata/ts_opport_dt_03.685.1054110593;'
+set newname for datafile 239 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.422.1054078725;'
+set newname for datafile 145 to '/dados/oracle/FCESPP/oradata/ts_poli_dt_01.715.1054110253;'
+set newname for datafile 306 to '/dados/oracle/FCESPP/oradata/ts_bisaude_dt_01.607.1054101643;'
+set newname for datafile 288 to '/dados/oracle/FCESPP/oradata/ts_ifc_dt_01.611.1054107349;'
+set newname for datafile 271 to '/dados/oracle/FCESPP/oradata/users.304.1054103685;'
+set newname for datafile 189 to '/dados/oracle/FCESPP/oradata/ts_ymf_ix_01.390.1054100217;'
+set newname for datafile 240 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.386.1054079679;'
+set newname for datafile 243 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.266.1054080453;'
+set newname for datafile 46 to '/dados/oracle/FCESPP/oradata/ts_att_ix_01.417.1054109817;'
+set newname for datafile 261 to '/dados/oracle/FCESPP/oradata/ts_att_dt_01.401.1054097019;'
+set newname for datafile 247 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.269.1054081231;'
+set newname for datafile 245 to '/dados/oracle/FCESPP/oradata/ts_attsched_ix_01.701.1054116923;'
+set newname for datafile 5 to '/dados/oracle/FCESPP/oradata/ts_scambnt_ix_01.574.1054116929;'
+set newname for datafile 84 to '/dados/oracle/FCESPP/oradata/ts_cms_dt_01.635.1054116901;'
+set newname for datafile 248 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.687.1054082089;'
+set newname for datafile 250 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.286.1054082971;'
+set newname for datafile 301 to '/dados/oracle/FCESPP/oradata/ts_sconnect_dt_01.336.1054113913;'
+set newname for datafile 252 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.268.1054083557;'
+set newname for datafile 263 to '/dados/oracle/FCESPP/oradata/ts_attamd_dt_01.642.1054104347;'
+set newname for datafile 254 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.271.1054084173;'
+set newname for datafile 106 to '/dados/oracle/FCESPP/oradata/ts_funcesp_dt_01.665.1054112471;'
+set newname for datafile 272 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.263.1054084645;'
+set newname for datafile 268 to '/dados/oracle/FCESPP/oradata/ts_scamerp_ix_01.716.1054106009;'
+set newname for datafile 267 to '/dados/oracle/FCESPP/oradata/ts_scamerp_dt_01.285.1054105471;'
+set newname for datafile 264 to '/dados/oracle/FCESPP/oradata/ts_protheus_dt_01.567.1054093141;'
+set newname for datafile 275 to '/dados/oracle/FCESPP/oradata/ts_protheus_ix_01.264.1054097765;'
+set newname for datafile 309 to '/dados/oracle/FCESPP/oradata/ts_intprotheus_dt_01.727.1054108741;'
+set newname for datafile 317 to '/dados/oracle/FCESPP/oradata/ts_intprotheus_ix_01.429.1054111971;'
+set newname for datafile 316 to '/dados/oracle/FCESPP/oradata/ts_att_dt_01.361.1054097237;'
+set newname for datafile 300 to '/dados/oracle/FCESPP/oradata/ts_nsconnect_lb_01.378.1054112957;'
+set newname for datafile 270 to '/dados/oracle/FCESPP/oradata/ts_attamd_dt_01.292.1054104525;'
+set newname for datafile 279 to '/dados/oracle/FCESPP/oradata/ts_protheus_dt_01.402.1054093407;'
+set newname for datafile 292 to '/dados/oracle/FCESPP/oradata/ts_attamd_ix_01.569.1054109351;'
+set newname for datafile 94 to '/dados/oracle/FCESPP/oradata/ts_crm_dt_03.565.1054115809;'
+set newname for datafile 269 to '/dados/oracle/FCESPP/oradata/ts_scamerp_dt_01.316.1054105595;'
+set newname for datafile 281 to '/dados/oracle/FCESPP/oradata/ts_scamerp_ix_01.707.1054106219;'
+set newname for datafile 213 to '/dados/oracle/FCESPP/oradata/ts_scamerp_ix_01.311.1054105685;'
+set newname for datafile 278 to '/dados/oracle/FCESPP/oradata/ts_attamd_dt_01.608.1054104673;'
+set newname for datafile 223 to '/dados/oracle/FCESPP/oradata/ts_attamd_dt_01.298.1054103943;'
+set newname for datafile 273 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.576.1054085133;'
+set newname for datafile 274 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.301.1054085511;'
+set newname for datafile 276 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.372.1054085923;'
+set newname for datafile 290 to '/dados/oracle/FCESPP/oradata/ts_protheus_ix_01.403.1054098041;'
+set newname for datafile 280 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.577.1054086309;'
+set newname for datafile 323 to '/dados/oracle/FCESPP/oradata/prd_iau.645.1054116829;'
+set newname for datafile 287 to '/dados/oracle/FCESPP/oradata/ts_attamd_dt_01.706.1054104801;'
+set newname for datafile 291 to '/dados/oracle/FCESPP/oradata/ts_protheus_dt_01.679.1054093687;'
+set newname for datafile 284 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.414.1054086689;'
+set newname for datafile 208 to '/dados/oracle/FCESPP/oradata/undotbs10.364.1054106247;'
+set newname for datafile 109 to '/dados/oracle/FCESPP/oradata/ts_hist_ix_01.693.1054116021;'
+set newname for datafile 157 to '/dados/oracle/FCESPP/oradata/ts_portal_master_lb_01.366.1054116615;'
+set newname for datafile 285 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.658.1054087017;'
+set newname for datafile 286 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.622.1054087309;'
+set newname for datafile 289 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.580.1054087561;'
+set newname for datafile 308 to '/dados/oracle/FCESPP/oradata/ts_attamd_dt_01.284.1054104875;'
+set newname for datafile 41 to '/dados/oracle/FCESPP/oradata/ts_att_dt_03_l.672.1054107491;'
+set newname for datafile 312 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.612.1054087811;'
+set newname for datafile 313 to '/dados/oracle/FCESPP/oradata/ts_protheus_ix_01.374.1054098377;'
+set newname for datafile 314 to '/dados/oracle/FCESPP/oradata/ts_protheus_dt_01.643.1054093901;'
+set newname for datafile 149 to '/dados/oracle/FCESPP/oradata/ts_poli_ix_02.682.1054109405;'
+set newname for datafile 118 to '/dados/oracle/FCESPP/oradata/ts_ifc_ix_01.331.1054112709;'
+set newname for datafile 315 to '/dados/oracle/FCESPP/oradata/prd_ias_ums.379.1054116847;'
+set newname for datafile 53 to '/dados/oracle/FCESPP/oradata/ts_att_ix_02_l.654.1054115125;'
+set newname for datafile 297 to '/dados/oracle/FCESPP/oradata/ts_attefin_dt_01.322.1054114675;'
+set newname for datafile 111 to '/dados/oracle/FCESPP/oradata/ts_i4819_ix_01.674.1054114725;'
+set newname for datafile 336 to '/dados/oracle/FCESPP/oradata/ts_nsconnect_dt_01.276.1054108261;'
+set newname for datafile 202 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_dt_01.355.1054115457;'
+set newname for datafile 116 to '/dados/oracle/FCESPP/oradata/ts_ifc_dt_02.387.1054113149;'
+set newname for datafile 302 to '/dados/oracle/FCESPP/oradata/ts_sconnect_dt_01.338.1054114033;'
+set newname for datafile 209 to '/dados/oracle/FCESPP/oradata/undotbs20.596.1054114121;'
+set newname for datafile 107 to '/dados/oracle/FCESPP/oradata/ts_funcesp_ix_01.343.1054114963;'
+set newname for datafile 128 to '/dados/oracle/FCESPP/oradata/ts_ire_ix_01.637.1054116581;'
+set newname for datafile 125 to '/dados/oracle/FCESPP/oradata/ts_ipl_dt_01.394.1054116745;'
+set newname for datafile 311 to '/dados/oracle/FCESPP/oradata/ts_bisaude_dt_01.717.1054101963;'
+set newname for datafile 345 to '/dados/oracle/FCESPP/oradata/ts_bisaude_ix_01.411.1054111629;'
+set newname for datafile 212 to '/dados/oracle/FCESPP/oradata/ts_scamerp_dt_01.412.1054104913;'
+set newname for datafile 310 to '/dados/oracle/FCESPP/oradata/ts_intprotheus_dt_01.606.1054108899;'
+set newname for datafile 224 to '/dados/oracle/FCESPP/oradata/ts_attamd_ix_01.724.1054108951;'
+set newname for datafile 326 to '/dados/oracle/FCESPP/oradata/ts_bisaude_dt_01.272.1054102213;'
+set newname for datafile 318 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.581.1054088053;'
+set newname for datafile 325 to '/dados/oracle/FCESPP/oradata/ts_protheus_ix_01.677.1054098521;'
+set newname for datafile 322 to '/dados/oracle/FCESPP/oradata/ts_protheus_dt_01.656.1054094083;'
+set newname for datafile 348 to '/dados/oracle/FCESPP/oradata/ts_att_dt_01.400.1054097457;'
+set newname for datafile 22 to '/dados/oracle/FCESPP/oradata/ts_att_dt_02.306.1054112001;'
+set newname for datafile 319 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.620.1054088389;'
+set newname for datafile 324 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.297.1054088661;'
+set newname for datafile 89 to '/dados/oracle/FCESPP/oradata/ts_cnl_ix_01.692.1054116775;'
+set newname for datafile 93 to '/dados/oracle/FCESPP/oradata/ts_crm_dt_02.415.1054116709;'
+set newname for datafile 332 to '/dados/oracle/FCESPP/oradata/ts_protheus_dt_01.592.1054094361;'
+set newname for datafile 328 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.609.1054088993;'
+set newname for datafile 334 to '/dados/oracle/FCESPP/oradata/ts_protheus_ix_01.696.1054098637;'
+set newname for datafile 327 to '/dados/oracle/FCESPP/oradata/ts_bisaude_dt_01.289.1054102431;'
+set newname for datafile 343 to '/dados/oracle/FCESPP/oradata/ts_bisaude_dt_01.279.1054102655;'
+set newname for datafile 346 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.303.1054089301;'
+set newname for datafile 320 to '/dados/oracle/FCESPP/oradata/ts_forponto_dt_01.681.1054116767;'
+set newname for datafile 321 to '/dados/oracle/FCESPP/oradata/ts_forponto_ix_01.383.1054116701;'
+set newname for datafile 305 to '/dados/oracle/FCESPP/oradata/ts_protheustss_ix_01.598.1054116737;'
+set newname for datafile 333 to '/dados/oracle/FCESPP/oradata/ts_protheus_dt_01.333.1054094461;'
+set newname for datafile 27 to '/dados/oracle/FCESPP/oradata/ts_att_dt_03.312.1054094685;'
+set newname for datafile 335 to '/dados/oracle/FCESPP/oradata/ts_protheus_ix_01.670.1054098757;'
+set newname for datafile 182 to '/dados/oracle/FCESPP/oradata/ts_ymf_dt_01.694.1054098883;'
+set newname for datafile 259 to '/dados/oracle/FCESPP/oradata/ts_intprotheus_dt_01.617.1054108501;'
+set newname for datafile 115 to '/dados/oracle/FCESPP/oradata/ts_ifc_dt_01.610.1054106817;'
+set newname for datafile 338 to '/dados/oracle/FCESPP/oradata/prod_mds.599.1054116847;'
+set newname for datafile 340 to '/dados/oracle/FCESPP/oradata/prd_odi_user.659.1054116849;'
+set newname for datafile 339 to '/dados/oracle/FCESPP/oradata/prd_mds.647.1054116831;'
+set newname for datafile 7 to '/dados/oracle/FCESPP/oradata/drsys.369.1054116831;'
+set newname for datafile 85 to '/dados/oracle/FCESPP/oradata/ts_cms_dt_02.719.1054116851;'
+set newname for datafile 105 to '/dados/oracle/FCESPP/oradata/ts_fac_proc_serv_dt_01.631.1054116819;'
+set newname for datafile 92 to '/dados/oracle/FCESPP/oradata/ts_crm_dt_01.630.1054116807;'
+set newname for datafile 344 to '/dados/oracle/FCESPP/oradata/ts_bisaude_dt_01.774.1054102725;'
+set newname for datafile 4 to '/dados/oracle/FCESPP/oradata/users.775.1054102803;'
+set newname for datafile 260 to '/dados/oracle/FCESPP/oradata/ts_intprotheus_ix_01.776.1054111731;'
+set newname for datafile 347 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.777.1054089585;'
+set newname for datafile 55 to '/dados/oracle/FCESPP/oradata/ts_att_ix_03.778.1054089873;'
+set newname for datafile 258 to '/dados/oracle/FCESPP/oradata/ts_protheus_ix_01.779.1054097539;'
+set newname for datafile 174 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.437.1054074919;'
+set newname for datafile 350 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.442.1054375523;'
+set newname for datafile 351 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.443.1054375531;'
+set newname for datafile 352 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.444.1054375539;'
+set newname for datafile 353 to '/dados/oracle/FCESPP/oradata/ts_att_ix_01.454.1058264381;'
+set newname for datafile 354 to '/dados/oracle/FCESPP/oradata/undotbs20.482.1062920477;'
+set newname for datafile 355 to '/dados/oracle/FCESPP/oradata/undotbs20.483.1062921677;'
+set newname for datafile 356 to '/dados/oracle/FCESPP/oradata/undotbs20.484.1062931783;'
+set newname for datafile 357 to '/dados/oracle/FCESPP/oradata/undotbs20.485.1062931785;'
+set newname for datafile 358 to '/dados/oracle/FCESPP/oradata/undotbs20.486.1062931789;'
+set newname for datafile 359 to '/dados/oracle/FCESPP/oradata/ts_protheus_dt_01.487.1064338005;'
+set newname for datafile 360 to '/dados/oracle/FCESPP/oradata/ts_protheus_dt_01.734.1064338013;'
+set newname for datafile 361 to '/dados/oracle/FCESPP/oradata/ts_protheus_dt_01.733.1064338125;'
+set newname for datafile 362 to '/dados/oracle/FCESPP/oradata/ts_protheus_ix_01.737.1064338219;'
+set newname for datafile 363 to '/dados/oracle/FCESPP/oradata/ts_intprotheus_ix_01.809.1064338337;'
+set newname for datafile 364 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.810.1066924691;'
+set newname for datafile 365 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.811.1066924693;'
+set newname for datafile 366 to '/dados/oracle/FCESPP/oradata/ts_plusoftcrm_lb_01.812.1066924799;'
+set newname for datafile 367 to '/dados/oracle/FCESPP/oradata/ts_att_dt_01.819.1070367673;'
+set newname for tempfile 11 to '/dados/oracle/FCESPP/oradata/prd_ias_temp.748.1045473739;'
+set newname for tempfile 12 to '/dados/oracle/FCESPP/oradata/prd_odi_temp.749.1045473739;'
+set newname for tempfile 10 to '/dados/oracle/FCESPP/oradata/prod_ias_temp.747.1045473739;'
+set newname for tempfile 1 to '/dados/oracle/FCESPP/oradata/temp.738.1045473737;'
+set newname for tempfile 13 to '/dados/oracle/FCESPP/oradata/temp.750.1045645143;'
+set newname for tempfile 14 to '/dados/oracle/FCESPP/oradata/temp.751.1045645209;'
+set newname for tempfile 15 to '/dados/oracle/FCESPP/oradata/temp.752.1045645213;'
+set newname for tempfile 16 to '/dados/oracle/FCESPP/oradata/temp.753.1045645213;'
+set newname for tempfile 17 to '/dados/oracle/FCESPP/oradata/temp.754.1045645215;'
+set newname for tempfile 18 to '/dados/oracle/FCESPP/oradata/temp.755.1045645443;'
+set newname for tempfile 19 to '/dados/oracle/FCESPP/oradata/temp.756.1045645445;'
+set newname for tempfile 9 to '/dados/oracle/FCESPP/oradata/temp01.739.1045473737;'
+set newname for tempfile 8 to '/dados/oracle/FCESPP/oradata/temp01.740.1045473737;'
+set newname for tempfile 7 to '/dados/oracle/FCESPP/oradata/temp01.741.1045473737;'
+set newname for tempfile 6 to '/dados/oracle/FCESPP/oradata/temp01.742.1045473739;'
+set newname for tempfile 5 to '/dados/oracle/FCESPP/oradata/temp01.743.1045473739;'
+set newname for tempfile 4 to '/dados/oracle/FCESPP/oradata/temp01.744.1045473739;'
+set newname for tempfile 3 to '/dados/oracle/FCESPP/oradata/temp01.745.1045473739;'
+set newname for tempfile 2 to '/dados/oracle/FCESPP/oradata/temp01.746.1045473739;'
+restore database;
+switch tempfile all;
+switch datafile all;
+}
+
+
+
+#### Catalog archive
+
+[oracle@OLD_FCESPORAH001 restore]$ rman target /
+
+Recovery Manager: Release 12.2.0.1.0 - Production on Sun May 2 10:17:30 2021
+
+Copyright (c) 1982, 2017, Oracle and/or its affiliates.  All rights reserved.
+
+connected to target database: FCESPP (DBID=3049145905, not open)
+
+RMAN> catalog start with '/backup_rman/archive/FCESPP';
+
+
+
+#### Recover database
+
+
+[oracle@OLD_FCESPORAH001 restore]$ cat recover.sh
+. /home/oracle/.bash_profile
+
+$ORACLE_HOME/bin/rman target / msglog /dados/oracle/restore/rman_recovery.log << EOF
+run
+{
+set until time "to_date('2021-05-01:08:00:00', 'yyyy-mm-dd:hh24:mi:ss')";
+recover database;
+}
+
+
+### Alter database open resetlogs
+
+
+
+
+

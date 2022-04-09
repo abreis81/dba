@@ -1,0 +1,72 @@
+#set termout on
+#set echo on
+spool sapdrdbms.lst
+
+connect internal
+
+REM # install data dictionary views:
+@$ORACLE_HOME/rdbms/admin/catalog.sql
+@$ORACLE_HOME/rdbms/admin/catproc.sql
+@$ORACLE_HOME/rdbms/admin/catblock.sql
+@$ORACLE_HOME/rdbms/admin/utlxplan.sql
+@$ORACLE_HOME/rdbms/admin/utltkprf.sql
+
+REM * Create additional rollback segment in SYSTEM before creating tablespace.
+REM *
+connect internal
+create rollback segment rbs00 tablespace system
+storage (initial 16k next 16k minextents 2 maxextents 20);
+
+REM * Use ALTER ROLLBACK SEGMENT ONLINE to put r0 online without shutting
+REM * down and restarting the database.
+REM *
+alter rollback segment rbs00 online;
+
+create tablespace rbs datafile
+	'/db/oradata/glpp/system/glpp_rbs.dbf' size 400M 
+default storage ( initial 2m next 2m pctincrease 0 minextents 5);
+
+create tablespace temp datafile
+	'/db/oradata/glpp/system/glpp_tmp.dbf' size 400M 
+default storage ( initial 2m next 2m  pctincrease  0);
+
+
+ALTER TABLESPACE temp offline;
+ALTER TABLESPACE temp TEMPORARY;
+ALTER TABLESPACE temp online;
+
+REM * Create rollback segments.
+REM *
+
+create rollback segment rbs01 tablespace rbs;
+create rollback segment rbs02 tablespace rbs;
+create rollback segment rbs03 tablespace rbs;
+create rollback segment rbs04 tablespace rbs;
+create rollback segment rbs05 tablespace rbs;
+create rollback segment rbs06 tablespace rbs;
+create rollback segment rbs07 tablespace rbs;
+create rollback segment rbs08 tablespace rbs;
+
+alter rollback segment rbs01 online;
+alter rollback segment rbs02 online;
+alter rollback segment rbs03 online;
+alter rollback segment rbs04 online;
+alter rollback segment rbs05 online;
+alter rollback segment rbs06 online;
+alter rollback segment rbs07 online;
+alter rollback segment rbs08 online;
+
+
+alter rollback segment rbs00 offline;
+
+alter user sys temporary tablespace temp;
+
+#revoke resource from system;
+#revoke resource on system from system;
+#grant resource on tools to system;
+#alter user system default tablespace SYSMANTBS temporary tablespace temp;
+
+connect system/manager
+@$ORACLE_HOME/sqlplus/admin/pupbld.sql
+shutdown immediate
+spool off

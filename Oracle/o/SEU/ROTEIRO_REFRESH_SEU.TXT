@@ -1,0 +1,38 @@
+declare
+	cursor c1 is select constraint_name, table_name from dba_constraints where owner='SEU' AND CONSTRAINT_TYPE='R';
+	str varchar2(1000);
+begin
+ for rc1 in c1 loop
+ 	str:='alter table seu.'||rc1.table_name||' drop constraint '||rc1.constraint_name;
+ 	execute immediate str;
+ end loop;
+end;
+/
+
+declare
+  cursor c1 is select sequence_name from dba_sequences where sequence_owner='SEU';
+  str varchar2(1000);
+begin
+	for rc1 in c1 loop
+ 		str:='drop sequence seu.'||rc1.sequence_name;
+		execute immediate str;
+	end loop;
+end;
+/
+
+declare
+	cursor c1 is select trigger_name from dba_triggers where owner='SEU';
+  str varchar2(1000);
+begin
+	for rc1 in c1 loop
+ 		str:='drop trigger seu.'||rc1.trigger_name;
+ 		execute immediate str;
+ 	end loop;
+end;
+/
+
+impdp dbarodrigob schemas=seu network_link=db TABLE_EXISTS_ACTION=truncate logfile=exp:imp_seudb2.log
+
+impdp dbarodrigob schemas=seu network_link=db include=trigger logfile=exp:imp_seudb2trigger.log
+
+impdp dbarodrigob schemas=seu network_link=db include=constraint logfile=exp:imp_seudb2cons.log

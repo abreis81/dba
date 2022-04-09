@@ -1,0 +1,296 @@
+/*
+
+   v$visao.sql
+
+   descricao das visoes mas importantes
+
+*/
+
+
+PARAMETROS DE INICIALIZACAO
+===========================
+FAST_START_IO_TARGET             - NUMERO DE BLOCOS RECUPERADOS NO RECOVERY DA INSTANCE
+
+
+BACKGROUND CHECKPOINTS           - CHECKPOINTS NO SEGUNDO PLANO INICIADOS
+BACKGROUND CHECKPOINTS COMPLETED - CHECKPOINTS NO SEGUNDO PLANO CONCLUIDOS
+
+
+OBS: SE AS DUAS ESTATISTICAS ACIMA TIVEREM VALORES SUPERIOR A UM OS
+CHECKPOINTS NAO ESTAO SENDO CONCLUIDOS ENTRE AS ALTERNANCIAS DE LOG. 
+VOCE PRECISA DE ARQUIVO DE LOG FILE MAIORES
+
+
+
+ESTATISTICAS GERAIS DO SISTEMA
+==============================
+V$DATABASE
+V$INSTANCE
+V$OPTION
+V$PARAMETER
+V$BACKUP
+V$PX_PROCESS_SYSSTAT
+V$PROCESS
+V$WAITSTAT               - ESTATISTICA DE CONTENCAO POR BLOCO
+V$SYSTEM_EVENT           - TOTAL DE ESPERA POR EVENTO ESPECIFICO
+
+
+MEMORIA
+=======
+V$BUFFER_POOL_STATISTICS - ALOCACAO DE POOL DE BUFFERS NA INSTANCE
+V$DB_OBJECT_CACHE        - OBJETOS DA BASE DE DADOS ARMAZENADOS EM CACHE DA BIBLIOTECA
+V$LIBRARYCACHE           - ESTATISTICAS DE ATIVIDADE E DESEMPENHO NO CACHE DA BIBLIOTECA
+V$ROWCACHE               - ESTATISTICAS DE ACERTO E ERROS DO DICIONARIO DE DADOS
+V$SYSSTAT                - ESTATISTICAS BASICAS DA INSTANCE
+V$SGASTAT
+
+
+DISCO
+=====
+V$DATAFILE
+V$FILESTAT               - ESTATISTICAS DE LEITURA/GRAVACAO DE ARQUIVO DE DADOS
+V$LOG 
+V$LOG_HISTORY
+V$DBFILE
+V$TEMPFILE
+V$TEMPSTAT               - ESTATISTICAS DE LEITURA/GRAVACAO EM ARQUIVOS DE DADOS DA TABLESPACE TEMPORARIA
+
+
+CONTENCAO
+=========
+V$LOCK
+V$ROLLNAME
+V$ROLLSTAT               - ESTATISTICA DE TODOS OS SEGMENTOS DE ROLLBACK
+V$WAITSTAT               - ESTATISTICA DE CONTENCAO POR BLOCO ( TIMED_STATISTICS=TRUE )
+V$LATCH                  - ESTATISTICA POR TIPO DE LATCH
+
+
+ESTATISTICAS SOBRE SESSOES
+==========================
+V$LOCK                   - BLOQUEIOS MANTIDOS ATUALMENTE PELO SERVIDOR E SOLIC. PENDENTES POR UM BLOQUEIO OU LATCH
+V$OPEN_CURSOR            - CURSORES ABERTOS NO MOMENTO E ANALISADOS POR SESSAO
+V$PROCESS
+V$SORT_USAGE             - TAMANHO DOS SEGMENTOS TEMPORARIOS E SESSAO QUE O CRIOU. IDENTIFICACAO DE PROCESSOS QUE ESTEJAM EFETUANDO CLASSIFICACO EM DISCO
+V$SESSION
+V$SESSTAT                - ESTATISTICAS DE SESSAO DO USUARIO
+V$TRANSACTION
+V$SESSION_EVENT          - INFORMACOES SOBRE ESPERAS POR UM EVENTO EM UMA SESSAO
+V$SESSION_WAIT           - RECURSOS OU EVENTOS PELOS QUAIS SESSOES ATIVAS ESTAO ESPERANDO
+V$PX_SESSTAT             - INFORMACOES SOBRE AS SESSOES QUE ESTEJAM REALIZANDO EXECUCOES PARALELAS
+V$PX_SESSION
+V$SESSION_OBJECT_CACHE
+
+
+
+OUTRAS
+======
+V$STATNAME               - ESTATISTICAS GERAIS 
+V$SGASTAT                - ESTATISTICAS DE MEMORIA ACUMULATIVAS
+V$EVENT_NAME             - EVENTOS DE ESPERA CATALOGADOS
+V$MYSTAT                 - ESTATISTICAS ACUMULATIVAS DA SESSAO DESDE A CONEXAO
+
+
+
+
+
+
+
+
+LIBRARY CACHE
+=============
+V$LIBRARYCACHE       - ESTATISTICAS SOBRE A SHARED POOL
+V$DB_OBJECT_CACHE    - OBJETOS CONTIDOS NA SHARED POOL
+V$SQLAREA            - ESTATISTICAS SOBRE CURSORES COMPARTILHADOS E SEUS 1000 PRIMEIRAS LETRAS
+V$SQLTEXT            - TEXTO COMPLETO SOBRE COMANDO CONTIDOS NA SHARED POOL
+V$SGASTAT            - ESTATISTICAS 
+
+
+BUFFER CACHE
+============
+V$BUFFER_POOL             - VARIOS POOLS COMPARTILHADOS
+V$BUFFER_POOL_STATISTICS  - ESTATISTICAS DA BUFFER CACHE
+V$BH                      - DESCREVE BLOCOS ARMAZENADOS NA BUFFER CACHE
+V$CACHE
+
+OBS: O PARAMETRO DB_BLOCK_LRU_LATCHES, GERENCIA QUANTOS LATCHES ATENDERAO A BUFFER CACHE.
+PARA SABER QUANDOS BLOCOS DEVERA COLOCAR PARA UM BUFFER POOL FACA UM ANALYSE NAS TABELAS
+E SOME TODOS OS BLOCOS DA VISAO DBA_TABLES ATRIBUTO BLOCKS.
+
+ESTATISTICAS:
+
+--
+-- quantos buffers foram percorridos na localizacao de um buffer livre
+--
+select name
+      ,values 
+  from v$sysstat
+ where name = 'free buffer inspected'
+/
+
+
+--
+-- free buffer waits: numero de esperas por um buffer livre
+-- buffer busy waits: numero de esperas por um buffer que ja estava em memoria
+--
+select event
+      ,total_waits
+  from v$system_event
+ where event in ('free buffer waits','buffer busy waits')
+/
+
+
+
+LATCHES
+=======
+
+--
+-- percentual de obtencao dos latches. todo recurso utilizado no rdbms necessida alocar um latch
+--
+select name
+      ,sleeps/gets 
+  from v$latch
+ where name = 'cache buffers lru chain'
+/
+
+
+FREE LISTS
+==========
+V$WAITSTAT
+V$SYSTEM_EVENT
+
+--
+--
+--
+select * from v$waitstat where class='segment header';
+
+--
+--
+--
+select event, total_waits
+from v$system_event
+where event='buffer busy waits'
+/
+
+--
+--
+--
+select s.segment_name,s.segment_type, s.freelists, w.wait_time, w.seconds_in_wait, w.state
+from dba_segments s, v$session_wait w
+where w.event='buffer busy waits'
+and w.p1 = s.header_file
+and w.p2 = s.header_block
+/
+
+
+
+
+REDO LOG BUFFER
+===============
+V$SESSION_WAIT
+V$SYSSTAT
+
+--
+-- log buffer space : indica se ocorreram esperas por espaco no buffer log
+-- em decorrencia de a sessao estar gravando dados no buffer log com mais rapidez 
+-- do que o LGWR eh capaz de suportar
+--
+select sid,event,seconds_in_wait, state from v$session_wait
+where event='log buffer space'
+/
+
+--
+-- redo buffer allocation retries : refrete o numero de vezes que um processo de usuario
+-- espera por espaco no buffer de redo log para copiar as novas entradas sobre as que foram
+-- gravadas em disco.
+--
+select name, value
+from v$sysstat
+where name = 'redo buffer allocation retries'
+/
+
+--
+-- redo log space requests : ( solicitacoes de espaco no redo log ) indica que o arquivo
+-- de log ativo esta cheio e que o servidor oracle aguarda a alocacao de espaco em disco para
+-- as entradas de redo log. Ou seja numero de vezes que LGWR nao conseguiu escrever em arquivo
+--
+select name, value
+from v$sysstat
+where name='redo log space requests'
+/
+
+--
+-- redo buffer allocation retries : tentativas mau sucedidas
+-- redo entries : tentativas bem sucedidas.
+-- o percentual do primeiro pelo segundo deve ser inferior a 1%
+--
+select name, value
+from v$sysstat
+where name in ('redo buffer allocation retries','redo entries')
+/
+
+--
+-- log file switch completion : ( conclusao de alternancia de arquivo de log ) identifica
+-- eventos de espera causados por alternancias de log. procure no alert.log a msg 
+-- CHECKPOINT NOT COMPLETE
+-- 
+select event, total_waits, time_waited, average_wait
+from v$system_event
+where event like 'log file switch completion%'
+/
+
+--
+-- checkpoint nao completados
+--
+select event, total_waits, time_waited, average_wait
+from v$system_event
+where event like 'log file switch (check%'
+/
+
+
+--
+-- identifica as esperas por alternancia de arquivo de log devido a um problema em arquivar
+-- o redo log
+-- 
+select event, total_waits, time_waited, average_wait
+from v$system_event
+where event like 'log file switch (arch%'
+/
+
+
+
+VARREDURAS INTEGRAIS DE TABELAS
+===============================
+
+db_file_multiblock_read_count   :   indica o numero maximo de blocos lidos em uma operacao de i/o
+
+table scans (long tables)       :   indica que estao ocorrendo muitos FULL TABLE SCAN as consultas precisam de indice
+table scans (short tables)      :   tabelas usadas com opcao de cache ( eu acho: com opcao de indice )
+table scans (rowid ranges)      :   tabelas acessadas por rowid
+
+select sid
+      ,serial#
+      ,opname
+      ,to_char(start_time,'HH24:MI:SS') as hora_inicio
+      ,(sofar/totalwork)*100 as percent_complete
+  from v$session_longops
+/
+
+
+
+LOG FILE
+========
+log file parallel write   : indica um possivel problema de i/o nos arquivos de log
+
+select * from v$system_event 
+where event='log file parallel write'
+/
+
+
+
+ARCHIVED
+========
+checkpoint write requests   : indica o numero de vezes que os checkpoints foram enviados
+                              ao DBWR. um numero elevado de checkpoints por transacao
+                              indica excesso de checkpoints.
+
+

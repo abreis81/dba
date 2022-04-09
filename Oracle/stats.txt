@@ -1,0 +1,93 @@
+
+Cost Based Optimizer (CBO) and Database Statistics
+Whenever a valid SQL statement is processed Oracle has to decide how to retrieve the necessary data. This decision can be made using one of two methods:
+
+    * Rule Based Optimizer (RBO) - This method is used if the server has no internal statistics relating to the objects referenced by the statement. This method is no longer favoured by Oracle and will be desupported in future releases.
+    * Cost Based Optimizer (CBO) - This method is used if internal statistics are present. The CBO checks several possible execution plans and selects the one with the lowest cost, where cost relates to system resources.
+
+If new objects are created, or the amount of data in the database changes the statistics will no longer represent the real state of the database so the CBO decision process may be seriously impaired. The mechanisms and issues relating to maintenance of internal statistics are explained below:
+
+    * Analyze Statement
+    * DBMS_UTILITY
+    * DBMS_STATS
+    * Scheduling Stats
+    * Transfering Stats
+    * Issues
+
+Analyze Statement
+The ANALYZE statement can be used to gather statistics for a specific table, index or cluster. The statistics can be computed exactly, or estimated based on a specific number of rows, or a percentage of rows:
+
+    ANALYZE TABLE employees COMPUTE STATISTICS;
+    ANALYZE INDEX employees_pk COMPUTE STATISTICS;
+
+    ANALYZE TABLE employees ESTIMATE STATISTICS SAMPLE 100 ROWS;
+    ANALYZE TABLE employees ESTIMATE STATISTICS SAMPLE 15 PERCENT;
+
+DBMS_UTILITY
+The DBMS_UTILITY package can be used to gather statistics for a whole schema or database. Both methods follow the same format as the analyze statement:
+
+    EXEC DBMS_UTILITY.analyze_schema('SCOTT','COMPUTE');
+    EXEC DBMS_UTILITY.analyze_schema('SCOTT','ESTIMATE', estimate_rows => 100);
+    EXEC DBMS_UTILITY.analyze_schema('SCOTT','ESTIMATE', estimate_percent => 15);
+
+    EXEC DBMS_UTILITY.analyze_database('COMPUTE');
+    EXEC DBMS_UTILITY.analyze_database('ESTIMATE', estimate_rows => 100);
+    EXEC DBMS_UTILITY.analyze_database('ESTIMATE', estimate_percent => 15);
+
+DBMS_STATS
+The DBMS_STATS package was introduced in Oracle 8i and is Oracles preferred method of gathering object statistics. Oracle list a number of benefits to using it including parallel execution, long term storage of statistics and transfer of statistics between servers. Once again, it follows a similar format to the other methods:
+
+    EXEC DBMS_STATS.gather_database_stats;
+    EXEC DBMS_STATS.gather_database_stats(estimate_percent => 15);
+
+    EXEC DBMS_STATS.gather_schema_stats('SCOTT');
+    EXEC DBMS_STATS.gather_schema_stats('SCOTT', estimate_percent => 15);
+
+    EXEC DBMS_STATS.gather_table_stats('SCOTT', 'EMPLOYEES');
+    EXEC DBMS_STATS.gather_table_stats('SCOTT', 'EMPLOYEES', estimate_percent => 15);
+
+    EXEC DBMS_STATS.gather_index_stats('SCOTT', 'EMPLOYEES_PK');
+    EXEC DBMS_STATS.gather_index_stats('SCOTT', 'EMPLOYEES_PK', estimate_percent => 15);
+
+This package also gives you the ability to delete statistics:
+
+    EXEC DBMS_STATS.delete_database_stats;
+    EXEC DBMS_STATS.delete_schema_stats('SCOTT');
+    EXEC DBMS_STATS.delete_table_stats('SCOTT', 'EMPLOYEES');
+    EXEC DBMS_STATS.delete_index_stats('SCOTT', 'EMPLOYEES_PK');
+
+Scheduling Stats
+Scheduling the gathering of statistics using DBMS_Job is the easiest way to make sure they are always up to date:
+
+    SET SERVEROUTPUT ON
+    DECLARE
+      l_job  NUMBER;
+    BEGIN
+
+      DBMS_JOB.submit(l_job,
+                      'BEGIN DBMS_STATS.gather_schema_stats(''SCOTT''); END;',
+                      SYSDATE,
+                      'SYSDATE + 1');
+      COMMIT;
+      DBMS_OUTPUT.put_line('Job: ' || l_job);
+    END;
+    /
+
+The above code sets up a job to gather statistics for SCOTT for the current time every day. You can list the current jobs on the server using the DBA_JOBS and DBA_JOBS_RUNNING views.
+
+Existing jobs can be removed using:
+
+    EXEC DBMS_JOB.remove(X);
+    COMMIT;
+
+Where 'X' is the number of the job to be removed.
+Transfering Stats
+It is possible to transfer statistics between servers allowing consistent execution plans between servers with varying amounts of data. First the statistics must be collected into a statistics table. In the following examples the statistics for the APPSCHEMA user are collected into a new table, STATS_TABLE, which is owned by DBASCHEMA:
+
+      SQL> EXEC DBMS_STATS.create_stat_table('DBASCHEMA','STATS_TABLE');
+      SQL> EXEC DBMS_STATS.export_schema_stats('APPSCHEMA','STATS_TABLE',NULL,'DBASCHEMA');
+
+This table can then be transfered to another server using your preferred method (Export/Import, SQLPlus Copy etc.) and the stats imported into the data dictionary as follows:
+
+      SQL> EXEC DBMS_STATS.import_schema_stats('APPSCHEMA','STATS_TABLE',NULL,'DBASCHEMA');
+      SQL> EXEC DBMS_STATS.drop_stat_table('DBASCHEMA','STATS_TABLE');

@@ -1,0 +1,1684 @@
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 22-JUL-02 12:07:49
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 22-JUL-02 17:45:16
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 23-JUL-02 09:50:32
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 23-JUL-02 09:53:48
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 29-JUL-02 08:55:22
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 31-JUL-02 09:11:31
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 06-AGO-02 13:36:49
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 06-AGO-02 14:26:29
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 06-AGO-02 14:26:29
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 06-AGO-02 16:55:37
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 06-AGO-02 16:55:37
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 07-AGO-02 19:35:38
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 08-AGO-02 10:46:31
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 08-AGO-02 10:47:20
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 08-AGO-02 10:49:00
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 08-AGO-02 10:49:00
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 08-AGO-02 10:49:04
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 08-AGO-02 10:49:04
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 08-AGO-02 10:53:05
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 08-AGO-02 10:53:10
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 08-AGO-02 10:53:10
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 08-AGO-02 10:57:29
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 08-AGO-02 10:57:34
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 08-AGO-02 10:57:34
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 08-AGO-02 11:54:15
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 08-AGO-02 11:54:17
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 08-AGO-02 11:54:17
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 12-AGO-02 12:24:06
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 14-AGO-02 16:24:02
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 14-AGO-02 16:24:05
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 14-AGO-02 16:24:05
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SID=orarep)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597)))(ADDRESS_LIST=(ADDRESS=(PROTOCOL=ipc)(KEY=orarep.world))(ADDRESS=(COMMUNITY=tcp.world)(PROTOCOL=TCP)(Host=10.241.123.1)(Port=1521))(ADDRESS=(COMMUNITY=tcp.world)(PROTOCOL=TCP)(Host=10.241.123.1)(Port=1526))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Windows 95 Shared Memory IPC NT Protocol Adaptor for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Windows NT TCP/IP NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 14-AGO-02 17:16:16
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12541
+    TNS-12541: TNS:não há ouvinte
+    ns secondary err code: 12560
+    nt main err code: 511
+    TNS-00511: Não há ouvinte
+    nt secondary err code: 61
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 16-AGO-02 17:51:55
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 16-AGO-02 17:51:57
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 16-AGO-02 17:51:58
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SID=orarep)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597)))(ADDRESS_LIST=(ADDRESS=(PROTOCOL=ipc)(KEY=orarep.world))(ADDRESS=(COMMUNITY=tcp.world)(PROTOCOL=TCP)(Host=10.241.123.1)(Port=1521))(ADDRESS=(COMMUNITY=tcp.world)(PROTOCOL=TCP)(Host=10.241.123.1)(Port=1526))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Windows 95 Shared Memory IPC NT Protocol Adaptor for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Windows NT TCP/IP NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 17-AGO-02 08:23:17
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12535
+    TNS-12535: TNS:tempo esgotado para operação
+    ns secondary err code: 12560
+    nt main err code: 505
+    TNS-00505: Operação com tempo de espera
+    nt secondary err code: 60
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 19-AGO-02 14:57:45
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 19-AGO-02 17:54:45
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 19-AGO-02 17:55:42
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 19-AGO-02 17:55:42
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 22-AGO-02 17:55:58
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 22-AGO-02 17:55:58
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 26-AGO-02 13:40:58
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 29-AGO-02 14:01:59
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 29-AGO-02 14:02:11
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 29-AGO-02 14:02:11
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 01-SET-02 03:30:55
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 04-SET-02 09:22:18
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 05-SET-02 10:36:02
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 05-SET-02 10:36:07
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 05-SET-02 10:36:07
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 05-SET-02 11:27:21
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 06-SET-02 11:20:54
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 06-SET-02 12:37:41
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 06-SET-02 13:00:32
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 06-SET-02 13:07:04
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 11-SET-02 10:41:48
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 13-SET-02 11:28:32
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 13-SET-02 11:28:36
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 13-SET-02 11:28:36
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 16-SET-02 14:08:05
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 19-SET-02 12:36:17
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 19-SET-02 12:36:44
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 19-SET-02 12:36:44
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 23-SET-02 09:30:22
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 23-SET-02 09:30:26
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 23-SET-02 09:30:26
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 24-SET-02 12:14:12
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 24-SET-02 12:14:13
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 25-SET-02 15:30:48
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 25-SET-02 15:31:35
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 25-SET-02 15:31:35
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 27-SET-02 10:26:34
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 28-SET-02 13:40:43
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 03-OUT-02 14:55:39
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 03-OUT-02 14:55:52
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=BEQ)(PROGRAM=oracle80)(ARGV0=oracle80ORCL)(ARGS='(DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))')))(CONNECT_DATA=(SID=ORCL)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Oracle Bequeath NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 03-OUT-02 14:55:52
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12560
+    TNS-12560: TNS:erro do adaptador de protocolo
+    ns secondary err code: 0
+    nt main err code: 102
+    TNS-00102: Erro de operação da vinculação Palavra-Chave-Valor
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12505, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SID=ford)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597)))(ADDRESS_LIST=(ADDRESS=(PROTOCOL=ipc)(KEY=ford.world))(ADDRESS=(COMMUNITY=tcp.world)(PROTOCOL=TCP)(Host=10.241.123.1)(Port=1521))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Windows 95 Shared Memory IPC NT Protocol Adaptor for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Windows NT TCP/IP NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 04-OUT-02 10:18:14
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12204
+    TNS-12204: TNS:dados recebidos recusados a partir de um aplicativo
+    ns main err code: 12564
+    TNS-12564: TNS:conexão recusada
+    ns secondary err code: 0
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SID=ORAT10)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597)))(ADDRESS_LIST=(ADDRESS=(PROTOCOL=ipc)(KEY=orat10.world))(ADDRESS=(PROTOCOL=TCP)(HOST=10.241.123.1)(PORT=1526))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Windows 95 Shared Memory IPC NT Protocol Adaptor for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Windows NT TCP/IP NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 08-OUT-02 11:43:07
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12541
+    TNS-12541: TNS:não há ouvinte
+    ns secondary err code: 12560
+    nt main err code: 511
+    TNS-00511: Não há ouvinte
+    nt secondary err code: 61
+    nt OS err code: 0
+
+
+***********************************************************************
+Fatal NI connect error 12203, connecting to:
+ (DESCRIPTION=(CONNECT_DATA=(SID=ORAT11)(CID=(PROGRAM=C:\ORAWIN95\BIN\PLUS80W.EXE)(HOST=D4229E869)(USER=z26106597)))(ADDRESS_LIST=(ADDRESS=(PROTOCOL=ipc)(KEY=orat11.world))(ADDRESS=(PROTOCOL=TCP)(HOST=10.241.123.1)(PORT=1526))))
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Windows 95 Shared Memory IPC NT Protocol Adaptor for 32-bit Windows: Version 8.0.5.0.0 - Production
+	Windows NT TCP/IP NT Protocol Adapter for 32-bit Windows: Version 8.0.5.0.0 - Production
+  Time: 08-OUT-02 11:43:14
+  Tracing not turned on.
+  Tns error struct:
+    nr err code: 12203
+    TNS-12203: TNS:não é possível estabelecer conexão com o destino
+    ns main err code: 12541
+    TNS-12541: TNS:não há ouvinte
+    ns secondary err code: 12560
+    nt main err code: 511
+    TNS-00511: Não há ouvinte
+    nt secondary err code: 61
+    nt OS err code: 0

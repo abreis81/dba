@@ -1,0 +1,109 @@
+/*
+  script:   replicacao_view.sql
+  objetivo: explanação sobre as visoes do ORACLE utilizadas na replicacao master detail e qual
+            suas interligacoes, quando perdemos transacoes ou existe enfileiramento. as 
+            visoes abaixo ( DEF*.* ) so podem ser alteradas usando as procedures contidas nas 
+            package DBMS_DEFER e DBMS_DEFER_SYS
+  autor:    Josivan
+  data:     
+*/
+
+DBA_REPSCHEMA              -
+DBA_REPSITES               - visao que lista os membros de cada grupo de objetos replicados
+DBA_REPGROUP               - visao que lista todos os objetos do grupo que inicialmente sao replicados
+DBA_REPCAT                 - 
+DBA_REPCATLOG              - para cada MASTER SITE contem o status de alguma requisicao administrativa
+                             asynchronous e alguma mensagem de erro gerada. todas as mensagem encontradas
+                             enquanto esta executando uma requisicao sao eventualmente transferida para o
+                             REPCATLOG para o master que originalmente o requisite. se uma requisicao 
+                             administrativa completa sem error, ultimamente todos os traces destas 
+                             requisicao sao removidos da visao REPCATLOG
+DBA_REPCOLUMN              - visao que lista as colunas replicadas para uma tabela
+DBA_REPCOLUMN_GROUP        - visao que lista todas as colunas do grupo que voce tenha definido para cada tabela replicada
+DBA_REPCONFLICT            - visao que mostra o nome das tabelas para qual voce tem definido um metodo
+                             de resolucao de conflito e o tipo de conflito que o metodo eh usado resolve
+DBA_REPDDL                 - segura DDL para replicacao de objetos
+DBA_REPGENERATED           - visao que mostra informacao sobre sistema objetos gerados
+DBA_REPGROUPED_COLUMN      -
+DBA_REPKEY_COLUMNS         - visao mostra informacao relativamente para as primary key column
+DBA_REPOBJECT              - visao que fornece informacao sobre os objetos em cada grupo replicado.
+DBA_REPPARAMETER_COLUMN    - em adicao para a inforamcao contida na visao REPRESOLUTION, a visao
+                             REPPARAMETER_COLUMN tambem contem informacao sobre as colunas que voce
+                             indica teria que ser usadas para resolver o conflito.
+                             estes sao os valores da coluna que sao passados como um LIST_OF_COLUMN_NAMES
+                             argumento o ADD_*, procedimento *_RESOLUTION na package DBMS_REPCAT
+DBA_REPPRIORITY            - visao que mostra os valores e nivel de prioridade de cada membro do grupo
+DBA_REPPRIORITY_GROUP      - visao que lista a prioridade e site, prioriza grupo que voce tem definido para um grupo de objetos replicados
+DBA_REPPROP                - visao que indica a tecnica usada para propagar operacoes sobre um objeto para o mesmo objeto em outro MASTER SITE. 
+DBA_REPRESOL_STATS_CONTROL - visao que lista informacao sobre estatisticas para resolucao de conflitos para todos objetos replicados na base de dados
+DBA_REPRESOLUTION          - visao que indica as rotinas usada para resolver ou atualizar, unica ou excluindo conflitos para cada tabela replicada usando nivel de linha por schema
+DBA_REPRESOLUTION_STATISTICS- visao que lista informacao sobre sucesso sobre update resolvidos
+DBA_REPRESOLUTION_METHOD   -
+DBA_REPGENOBJECTS          - visao com descricao objetos gerados para suporte a replicacao
+DBA_REPAUDIT_ATTRIBUTE     -
+DBA_REPAUDIT_COLUMN        -
+
+===============================================================================================
+TABELAS EM REPLICACAO MASTER DETAIL
+
+DEF$_AQCALL      - tabelas com as filas a serem enviadas/replicadas
+DEF$_AQERROR     - tabela com as filas que nao foram enviadas/replicadas
+DEF$_ERROR       - tabela com transacoes que ocasionarao erros
+DEF$_ORIGIN      - 
+DEF$_LOB         - tabela para replicacao de atributos CLOB,BLOB
+DEF$_TEMP$LOB    - tabela para atributos CLOB, BLOB
+DEF$_PROPAGATOR  - tabela com informacao sobre o propagador
+DEF$_DESTINATION - tabela com todas as transacoes a serem replicadas
+DEF$_CALLDEST    - tabela com informacoes sobre o destino
+DEF$_DEFAULTDEST - tabela com destino padrao quando nao se utiliza as facilidade do oracle replication
+
+===============================================================================================
+VISOES COM TRANSACOES DEFERRED EM REPLICACAO MASTER DETAIL
+
+
+OBS: as procedures abaixo so podem ser alteradas usando as packages
+     DBMS_DEFER e DBMS_DEFER_SYS
+
+DEFCALL         - visao que mostra todos os registro deferred.
+                  
+                  esta visao eh formada apos um UNION ALL das tabelas
+                  DEF$_AQCALL e DEF$_AQERROR
+             
+DEFCALLDEST     - visao que mostra o destino para cada deferred em DEFCALL
+DEFDEFAULTDEST  - visao da tabela DEF$_DEFAULTDEST. se voce nao esta usando as facilidades 
+                  do Oracle replication e nao aponta um destino para a transacao deferred 
+                  em DEFCALLDEST. a visao DEFDEFAULTDEST apontara automaticamente 
+                  o destino das deferred. a DEF$_DEFAULTDEST possui um sinonimo com o 
+                  nome (DEF$_DEFAULTDEST).
+
+DEFERRCOUNT     - visao da view DEFERROR que fornece informacao sobre a qtd de transacoes erradas para cada destino
+DEFERROR        - visao das tabelas DEF$_ERROR e USER$ que fornece o ID de cada transação que nao pode ser enviada ao destino. 
+                  voce pode usar este ID para localizar a fila associada com esta
+                  transacao. estas chamadas sao guardadas na visao DEFCALL. voce pode usar
+                  as procedures da package DBMS_DEFER_QUERY e determinar os argumentos para 
+                  os procedimentos listados na visao DEFCALL
+DEFLOB          - visao da tabela DEF$_LOB que guarda os parametros LOB para RPCs deferred
+DEFPROPAGATOR   - visao da tabela DEF$_PROPAGATOR e USER$ que mostra informacao sobre o propagador local da replicacao
+DEFSCHEDULE     - visao das tabelas DEF$_DESTINATION e JOB$ que mostra informacao sobre o proximo JOB a ser executado
+DEFTRAN         - visao das tabelas DEF$_AQCALL e DEF$_AQERROR com todas as transacoes deferred
+DEFTRANDEST     - visao das tableas DEF$_AQCALL, DEF$_DESTINATION e DEF$_CALLDEST e outras tabelas que lista o destino para transacoes deferred
+
+===============================================================================================
+REPLICACAO BASICA
+
+
+DBA_SNAPSHOTS                  - visao com informacao sobre todas os snapshots em um base de dados
+DBA_REGISTERED_SNAPSHOTS       - descricao local ou remotamente snapshots de tabelas locais
+DBA_REGISTERED_SNAPSHOT_GROUPS -
+DBA_SNAPSHOTS_LOGS             - visao de todos os snapshots_logs  na base de dados
+DBA_SNAPSHOT_LOG_FILTER_COLS   -
+DBA_SNAPSHOT_REFRESH_TIMES     - visao que lista a data e hora do ultimo refresh
+DBA_REFRESH                    - visao que lista cada grupo atualizado na base de dados e descreve
+                                 os interva-los de cada grupo
+DBA_REFRESH_CHILDREN           - 
+DBA_SNAPSHOT_REFRESH_TIMES     -
+DBA_REFRESH_CHILDREN           - visao que lista membros de cada grupo atualidado por owner
+                                 e inclui informacao sobre interva-los de refresh para cada membro
+
+
+

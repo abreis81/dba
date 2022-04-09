@@ -1,0 +1,8 @@
+10:33:15 FCESPP1--PROD > select instance_name from V$instance;
+
+INSTANCE_NAME                                                                                                                                                                                           
+----------------                                                                                                                                                                                        
+FCESPP1                                                                                                                                                                                                 
+
+Elapsed: 00:00:00.03
+10:33:28 FCESPP1--PROD > spool off;

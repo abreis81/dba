@@ -1,0 +1,249 @@
+PROMPT *******************  VERIFICAÇÃO DE USO DE TABLESPACE  ****************************
+
+SELECT  DISTINCT
+        A.NAME,
+        TRUNC(B.BYTES / (1024 * 1024),2) AS "TOTAL MB",
+        TRUNC(SUM(C.BYTES) / (1024 * 1024),2) AS "LIVRE MB",
+        TRUNC((B.BYTES / (1024 * 1024)) - (SUM(C.BYTES) / (1024 * 1024)),2) AS "USADO MB",
+        TRUNC(((B.BYTES / (1024 * 1024)) - (SUM(C.BYTES) / (1024 * 1024))) * 100 / (B.BYTES / (1024 * 1024)),2) AS "% USADO"
+FROM    V$TABLESPACE A, DBA_FREE_SPACE C, (SELECT    TS#, 
+                                                     SUM(BYTES) AS BYTES
+                                           FROM      V$DATAFILE
+                                           GROUP BY  TS# 
+                                           ) B
+WHERE   A.TS# = B.TS#
+AND     C.TABLESPACE_NAME = A.NAME
+GROUP BY A.NAME, B.BYTES
+UNION ALL
+SELECT  DISTINCT
+        D.NAME,
+        TRUNC(SUM(E.BYTES) / (1024 * 1024),2) AS "TOTAL MB",
+        TRUNC(SUM(F.BYTES_FREE) / (1024 * 1024),2) AS "LIVRE MB",
+        TRUNC((E.BYTES / (1024 * 1024)) - (SUM(F.BYTES_FREE) / (1024 * 1024)),2) AS "USADO MB",
+        TRUNC(((E.BYTES / (1024 * 1024)) - (SUM(F.BYTES_FREE) / (1024 * 1024))) * 100 / (E.BYTES / (1024 * 1024)),2) AS "% USADO"
+FROM    V$TABLESPACE D, V$TEMPFILE E, V$TEMP_SPACE_HEADER F
+WHERE   D.NAME = F.TABLESPACE_NAME
+GROUP BY D.NAME, E.BYTES
+ORDER BY "% USADO" DESC;
+
+PROMPT
+
+PROMPT ****************** MEMORIA, CONEXOES ***********************
+
+SELECT TRUNC(SUM(VALUE)/1024/1024) "SGA - MEMORIA ORACLE" FROM V$SGA;
+SELECT COUNT(*) AS CONEXOES FROM V$SESSION WHERE USERNAME IS NOT NULL;
+PROMPT
+
+
+PROMPT ***************** SESSIONS WAIT*************************************************
+SET LINESIZE 200
+SET PAGESIZE 1000
+
+COLUMN username FORMAT A20
+COLUMN event FORMAT A30
+
+SELECT NVL(s.username, '(oracle)') AS username,
+       s.sid,
+       s.serial#,
+       sw.event,
+       sw.wait_time,
+       sw.seconds_in_wait,
+       sw.state
+FROM   v$session_wait sw,
+       v$session s
+WHERE  s.sid = sw.sid
+ORDER BY sw.seconds_in_wait DESC;
+PROMPT
+
+PROMPT ****************LONG OPERARTIONS************************************************
+PROMPT
+
+
+set lines 100
+COLUMN machine FORMAT A30
+COLUMN progress_pct FORMAT 99999999.00
+COLUMN elapsed FORMAT A10
+COLUMN remaining FORMAT A10
+
+SELECT s.sid,
+       s.serial#,
+       s.machine,
+       ROUND(sl.elapsed_seconds/60) || ':' || MOD(sl.elapsed_seconds,60) elapsed,
+       ROUND(sl.time_remaining/60) || ':' || MOD(sl.time_remaining,60) remaining,
+       ROUND(sl.sofar/sl.totalwork*100, 2) progress_pct
+FROM   v$session s,
+       v$session_longops sl
+WHERE  s.sid     = sl.sid
+AND    s.serial# = sl.serial#;
+
+PROMPT
+PROMPT ****************LOCKED OBJECTS***************************************************
+
+COLUMN owner FORMAT A20
+COLUMN username FORMAT A20
+COLUMN object_owner FORMAT A20
+COLUMN object_name FORMAT A30
+COLUMN locked_mode FORMAT A15
+
+SELECT b.session_id AS sid,
+       NVL(b.oracle_username, '(oracle)') AS username,
+       a.owner AS object_owner,
+       a.object_name,
+       Decode(b.locked_mode, 0, 'None',
+                             1, 'Null (NULL)',
+                             2, 'Row-S (SS)',
+                             3, 'Row-X (SX)',
+                             4, 'Share (S)',
+                             5, 'S/Row-X (SSX)',
+                             6, 'Exclusive (X)',
+                             b.locked_mode) locked_mode,
+       b.os_user_name
+FROM   dba_objects a,
+       v$locked_object b
+WHERE  a.object_id = b.object_id
+ORDER BY 1, 2, 3, 4;
+
+SET PAGESIZE 14
+SET VERIFY ON
+
+PROMPT
+PROMPT **************** TOP SESSIONS *****************************************************
+
+SET LINESIZE 500
+SET PAGESIZE 1000
+SET VERIFY OFF
+
+COLUMN username FORMAT A15
+COLUMN machine FORMAT A25
+COLUMN logon_time FORMAT A20
+
+SELECT NVL(a.username, '(oracle)') AS username,
+       a.osuser,
+       a.sid,
+       a.serial#,
+       c.value ,
+       a.lockwait,
+       a.status,
+       a.module,
+       a.machine,
+       a.program,
+       TO_CHAR(a.logon_Time,'DD-MON-YYYY HH24:MI:SS') AS logon_time
+FROM   v$session a,
+       v$sesstat c,
+       v$statname d
+WHERE  a.sid        = c.sid
+AND    c.statistic# = d.statistic#
+AND    d.name       = DECODE(UPPER('c.value'), 'READS', 'session logical reads',
+                                          'EXECS', 'execute count',
+                                          'CPU',   'CPU used by this session',
+                                                   'CPU used by this session')
+ORDER BY c.value DESC;
+
+SET PAGESIZE 14
+
+PROMPT
+PROMPT ***************** SESSÕES ATIVAS **********************************************
+
+SET LINESIZE 500
+SET PAGESIZE 1000
+
+COLUMN username FORMAT A15
+COLUMN machine FORMAT A25
+COLUMN logon_time FORMAT A20
+
+SELECT NVL(s.username, '(oracle)') AS username,
+       s.osuser,
+       s.sid,
+       s.serial#,
+       p.spid,
+       s.lockwait,
+       s.status,
+       s.module,
+       s.machine,
+       s.program,
+       TO_CHAR(s.logon_Time,'DD-MON-YYYY HH24:MI:SS') AS logon_time
+FROM   v$session s,
+       v$process p
+WHERE  s.paddr  = p.addr
+AND    s.status = 'ACTIVE'
+ORDER BY s.username, s.osuser;
+
+SET PAGESIZE 14
+
+PROMPT
+PROMPT
+
+
+PROMPT *****************ROLLBACK INFORMATION*******************************************
+
+SET LINESIZE 200
+
+COLUMN username FORMAT A15
+
+SELECT s.username,
+       s.sid,
+       s.serial#,
+       t.used_ublk,
+       t.used_urec,
+       rs.segment_name,
+       r.rssize,
+       r.status
+FROM   v$transaction t,
+       v$session s,
+       v$rollstat r,
+       dba_rollback_segs rs
+WHERE  s.saddr = t.ses_addr
+AND    t.xidusn = r.usn
+AND   rs.segment_id = t.xidusn
+ORDER BY t.used_ublk DESC;
+
+
+prompt
+prompt
+
+PROMPT *********** MEMÓRIA ALOCADA POR SESSÃO *****************************************
+
+SET LINESIZE 200
+
+COLUMN username FORMAT A20
+COLUMN module FORMAT A20
+
+SELECT NVL(a.username,'(oracle)') AS username,
+       a.module,
+       A.OSUSER,
+       a.program,
+       Trunc(b.value/1024/1024) AS memory_MB
+FROM   v$session a,
+       v$sesstat b,
+       v$statname c
+WHERE  a.sid = b.sid
+AND    b.statistic# = c.statistic#
+AND    c.name = 'session pga memory'
+AND    a.program IS NOT NULL
+ORDER BY b.value DESC;
+
+
+PROMPT
+PROMPT
+PROMPT ********** ALTERAÇÃO USO DA PGA ************************************************
+
+SELECT ROUND(pga_target_for_estimate/1024/1024) target_mb,
+       estd_pga_cache_hit_percentage cache_hit_perc,
+       estd_overalloc_count
+FROM   v$pga_target_advice;
+
+
+PROMPT
+
+PROMPT ********** ARQUIVOS DE LOG *****************************************************
+SET LINES 1000;
+select * from v$log l join v$logfile f
+on l.group# = f.group#;
+
+
+PROMPT
+PROMPT
+PROMPT ***********FIM MONITORAMENTO****************************************************
+PROMPT
+PROMPT
+PROMPT

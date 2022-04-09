@@ -1,0 +1,29 @@
+################
+# Filename......: listener.ora
+# Name..........: DES_DSE.world
+# Date..........: 05-NOV-98 23:32:40
+################
+SQLNET.AUTHENTICATION_SERVICES = (NONE)
+
+USE_PLUG_AND_PLAY_LISTENER = OFF
+USE_CKPFILE_LISTENER = OFF
+LISTENER =
+  (ADDRESS_LIST =
+        (ADDRESS = 
+          (PROTOCOL = TCP)
+          (Host = frota)
+          (Port = 1521)
+        )
+  )
+STARTUP_WAIT_TIME_LISTENER = 0
+CONNECT_TIMEOUT_LISTENER = 20
+TRACE_LEVEL_LISTENER = OFF
+SID_LIST_LISTENER =
+  (SID_LIST =
+    (SID_DESC =
+      (GLOBAL_DBNAME = glpp.world)
+      (SID_NAME = glpp)
+      (ORACLE_HOME = /oracle/app/8.0.5)
+      (PRESPAWN_MAX = 10)
+    )
+  )

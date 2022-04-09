@@ -1,0 +1,33 @@
+/*
+
+  script:  err_sqlnet.sql
+  objetivo:  erro de conexao com a base de dados utilizando um NAT
+  autor: Josivan
+
+*/
+
+A seguinte package PL/SQL pode ser utilizada para adicionar suas proprias mensagens no 
+alert log ou arquivos de trace. dbms_system.ksdwrt(n,'mensagens'); Utilize n=1 para escrever 
+no trace Utilize n=2 para escrever no alert log Utilize n=3 para escrever em ambos Atenção: 
+esta package não é suportada pela Oracle Corp. Funciona no Oracle 8.0.5 e 8.1.5
+
+
+Um Network Address Translator (NAT) basicamente atua como um roteador de conexões 
+entre duas redes, uma delas (chamemos de interna) utiliza endereços IP privados que 
+devem ser convertidos a endereços IP "legais" antes dos pacotes serem enviados para a 
+outra rede (chamemos de externa). O cliente que fica fora do roteador NAT somente pode 
+contatar sistemas internos ao roteador NAT utilizando endereços IP externos. Nesse caso o 
+servidor aonde fica o Listener possue um endereço IP interno. O cliente se conecta com 
+sucesso ao Listener através do NAT referenciando o endereço IP externo do servidor. 
+O Listener então cria um processo de conexão e retorna ao cliente um endereço ao qual 
+o cliente deve se conectar. O endereço redirecionado inclui o endereço interno do servidor. 
+Quando o cliente tenta retornar ao endereço redirecionado ocorre a falha, porque o cliente 
+pode se conectar apenas a endereços IP externos. Vale para Bancos em UNIX e Windows NT. 
+A SOLUÇÂO Este problema pode ser resolvido instalando o Oracle Connection Manager na 
+rede interna e utilizando-o como um "proxy" de conexões SQL*Net. Nesse caso os clientes 
+se conectam ao Connection Manager, então o Connection Manager faz a conexão ao 
+Banco de Dados. Quando as conexões são roteadas pelo Connection Manager, o 
+redirecionamento de endereço IP ocorre isoladamente na rede interna. A chave para 
+que funcione é a configuração dos endereços IP. Os endereços IP internos e externos 
+devem ser especificados na configuração do Connection Manager. 
+

@@ -1,0 +1,67 @@
+set serveroutput on
+
+DECLARE
+ r RAW(32767);
+BEGIN
+  r := utl_raw.cast_to_raw('-=õ    Ä S¿zmhJM');
+  dbms_output.put_line(r);
+
+  r := utl_encode.base64_encode(r);
+  dbms_output.put_line(r);
+
+  r := utl_encode.base64_decode(r);
+  dbms_output.put_line(r);
+END;
+/
+
+
+DECLARE
+ r RAW(32767);
+BEGIN
+  SELECT SENHA INTO R FROM TESTE_CRYPT;
+  dbms_output.put_line(r);
+
+  r := utl_encode.base64_encode(r);
+  dbms_output.put_line(r);
+
+  r := utl_encode.base64_decode(r);
+  dbms_output.put_line(r);
+END;
+/
+
+DECLARE
+  r RAW(32767);
+BEGIN
+  SELECT SENHA INTO R FROM TESTE_CRYPT;
+  dbms_output.put_line(r);
+	r := utl_encode.base64_encode(r);
+  dbms_output.put_line(r);
+  dbms_output.put_line(utl_i18n.raw_to_char(r));
+end;
+/  
+
+
+DECLARE
+ c VARCHAR2(100);
+ senha varchar2(128);
+BEGIN
+  select utl_i18n.raw_to_char(senha) into senha from teste_crypt;
+  c := utl_encode.text_encode(senha,
+  'AL32UTF8', UTL_ENCODE.BASE64);
+
+  dbms_output.put_line(c);
+END;
+/
+
+
+DECLARE
+ c VARCHAR2(100);
+BEGIN
+  c := utl_encode.text_decode('LT31IAIJxKBTmh96bWhKTQ==', 
+  'AL32UTF8', UTL_ENCODE.BASE64);
+
+  dbms_output.put_line(c);
+END;
+/
+
+LT31IAIJxKBTmh96bWhKTQ==
